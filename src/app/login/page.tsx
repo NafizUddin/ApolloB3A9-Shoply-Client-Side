@@ -10,11 +10,11 @@ import Image from "next/image";
 export default function Login() {
   const [isActive, setIsActive] = useState(false);
 
+  console.log(isActive);
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-8 py-10 xl:py-0">
-      <div
-        className={`relative border-2 border-primary text-white rounded-2xl shadow-lg overflow-hidden w-[850px] max-w-full min-h-[520px] flex flex-col md:flex-row`}
-      >
+      <div className="relative border-2 border-primary text-white rounded-2xl shadow-lg overflow-hidden w-[850px] max-w-full lg:min-h-[520px] min-h-[620px] md:min-h-[580px]">
         {/* Form Containers */}
         {/* Sign In Part */}
         <div
@@ -22,9 +22,9 @@ export default function Login() {
             isActive
               ? "translate-x-full opacity-0 z-10"
               : "translate-x-0 opacity-100 z-20"
-          } w-1/2`}
+          } w-full lg:w-1/2`}
         >
-          <form className="flex flex-col items-center justify-center h-full px-10 text-white">
+          <div className="flex flex-col items-center justify-center h-full px-10 text-white">
             <Link href={"/"}>
               <Image
                 src={logo}
@@ -68,22 +68,28 @@ export default function Login() {
             <button className="px-6 py-2 bg-orange-500 text-white rounded-lg uppercase font-bold">
               Sign In
             </button>
-          </form>
+          </div>
         </div>
 
         {/* Sign Up Part */}
         <div
           className={`absolute top-0 left-0 h-full transition-all duration-700 ${
             isActive
-              ? "translate-x-full opacity-100 z-20"
-              : "translate-x-0 opacity-0 z-10"
-          } w-1/2`}
+              ? "translate-x-0 lg:translate-x-full opacity-100 z-20"
+              : "translate-x-full lg:translate-x-0 opacity-100 lg:opacity-0 z-10"
+          } w-full lg:w-1/2`}
         >
           <div className="flex flex-col items-center justify-center h-full px-10 text-white">
             <Link href={"/"}>
-              <h1 className="text-4xl font-semibold mb-5">Logo</h1>
+              <Image
+                src={logo}
+                alt="logo"
+                height={100}
+                width={100}
+                className="flex py-1"
+              />
             </Link>
-            <h1 className="text-2xl font-semibold mb-5">Create Account</h1>
+            <h1 className="text-2xl font-semibold my-5">Create Account</h1>
             <div className="flex space-x-3 mb-5">
               <a href="#" className="icon">
                 <FaGoogle className="w-6 h-6 text-gray-600" />
@@ -124,7 +130,7 @@ export default function Login() {
 
         {/* Toggle Panels */}
         <div
-          className={`absolute top-0 left-1/2 w-full h-1/2 md:h-full md:w-1/2 transition-all duration-700 bg-orange-500 text-white flex flex-col items-center justify-center px-6 ${
+          className={`hidden absolute top-0 left-1/2 w-full h-1/2 md:h-full md:w-1/2 transition-all duration-700 bg-orange-500 text-white lg:flex flex-col items-center justify-center px-6 ${
             isActive
               ? "translate-x-[-100%] rounded-r-[30%]"
               : "translate-x-0 rounded-l-[30%]"
@@ -146,6 +152,23 @@ export default function Login() {
               {isActive ? "Sign In" : "Sign Up"}
             </button>
           </div>
+        </div>
+
+        {/* Mobile Toggle Text */}
+        <div className="lg:hidden absolute bottom-5 left-1/2 transform  -translate-x-1/2 text-center z-50">
+          <p>
+            {" "}
+            {isActive
+              ? "Already have an account?"
+              : "Don't have an account?"}{" "}
+            <button
+              onClick={() => setIsActive(!isActive)}
+              className="text-primary font-bold hover:underline"
+            >
+              {" "}
+              {isActive ? "Login Now!" : "Sign Up Now!"}{" "}
+            </button>{" "}
+          </p>
         </div>
       </div>
     </div>
