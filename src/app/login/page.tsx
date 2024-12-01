@@ -13,6 +13,13 @@ import SHInput from "@/src/components/form/SHInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginValidationSchema from "@/src/schemas/login.schema";
 import registerValidationSchema from "@/src/schemas/register.schema";
+import { useAppDispatch } from "@/src/lib/redux/hooks";
+import {
+  useLoginMutation,
+  useSignUpMutation,
+} from "@/src/lib/redux/features/auth/authApi";
+import { setUser, TUser } from "@/src/lib/redux/features/auth/authSlice";
+import { verifyToken } from "@/src/utils/verifyToken";
 
 export type TLogin = {
   email: string;
@@ -24,9 +31,20 @@ export default function Login() {
   const redirect = searchParams.get("redirect");
   const router = useRouter();
   const [isActive, setIsActive] = useState(false);
+  const [signUp] = useSignUpMutation();
+  const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
 
-  const handleLogin: SubmitHandler<FieldValues> = (data) => {
+  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
+
+    try {
+      const res = await login(data).unwrap();
+      const user = verifyToken(res.data.accessToken) as TUser;
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSignUp: SubmitHandler<FieldValues> = async (data) => {
@@ -113,7 +131,7 @@ export default function Login() {
               <div className="flex justify-center items-center mb-10">
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-orange-500 text-white rounded-lg uppercase font-bold"
+                  className="relative h-10 w-24 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold"
                 >
                   Sign In
                 </button>
@@ -194,10 +212,10 @@ export default function Login() {
                 />
               </div>
 
-              <div className="flex justify-center items-center mb-10">
+              <div className="flex justify-center items-center mt-3 mb-10">
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-orange-500 text-white rounded-lg uppercase font-bold"
+                  className="relative h-10 w-24 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold"
                 >
                   Sign Up
                 </button>
