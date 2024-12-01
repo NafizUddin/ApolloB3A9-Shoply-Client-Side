@@ -24,9 +24,9 @@ interface IProps {
   pathname?: string;
 }
 
-export default function TRInput({
+export default function SHInput({
   variant = "underlined",
-  size = "lg",
+  size = "md",
   required = false,
   type = "text",
   label,

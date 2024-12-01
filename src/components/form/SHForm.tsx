@@ -13,7 +13,7 @@ interface IProps extends formConfig {
   onSubmit: SubmitHandler<any>;
 }
 
-export default function TRForm({
+export default function SHForm({
   children,
   onSubmit,
   defaultValues,
