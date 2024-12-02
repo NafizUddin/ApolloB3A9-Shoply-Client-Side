@@ -30,7 +30,7 @@ module.exports = {
               DEFAULT: "#f5840c",
             },
             secondary: {
-              DEFAULT: "#1773aa",
+              DEFAULT: " #0c84f5",
             },
           }, // dark theme colors
         },
