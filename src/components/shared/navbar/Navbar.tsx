@@ -17,11 +17,18 @@ import { siteConfig } from "@/src/config/site";
 import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import logo from "@/src/assets/logo.png";
+import { useAppSelector } from "@/src/lib/redux/hooks";
+import { selectCurrentUser } from "@/src/lib/redux/features/auth/authSlice";
+import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
+import NavbarUserDropdown from "./NavbarUserDropdown";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState(false);
-  const user = false;
+  // const reduxUser = useAppSelector(selectCurrentUser);
+  const { userData, isLoading } = useUserDetails();
+
+  // console.log("reduxUser", reduxUser);
+  // console.log("from hook", userData);
 
   return (
     <NextUINavbar
@@ -75,26 +82,25 @@ export default function Navbar() {
             </NavbarItem>
           ))}
         </div>
-        {/* <Image
+        <Image
           src={logo}
           alt="logo"
           height={170}
           width={170}
           className="flex lg:hidden"
-        /> */}
+        />
       </NavbarContent>
 
       <NavbarContent justify="end">
         <NavbarItem className="flex">
           {isLoading ? (
             <div className="animate-pulse w-10 h-10 rounded-full bg-gray-400 " />
-          ) : user ? (
-            // <NavbarUserDropdown user={user} />
-            ""
+          ) : userData ? (
+            <NavbarUserDropdown user={userData} />
           ) : (
             <Link href="/login">
               <div className="hidden md:block">
-                <Button color="secondary">Login</Button>
+                <Button color="primary">Login</Button>
               </div>
             </Link>
           )}

@@ -46,6 +46,20 @@ const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["users"],
     }),
+    getMyProfile: builder.query({
+      query: () => {
+        return {
+          url: "/users/me",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          userData: response.data,
+        };
+      },
+      providesTags: ["users"],
+    }),
   }),
 });
 
@@ -54,4 +68,5 @@ export const {
   useSignUpMutation,
   useGetAllUsersQuery,
   useUpdateUserMutation,
+  useGetMyProfileQuery,
 } = authApi;

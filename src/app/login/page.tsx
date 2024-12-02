@@ -20,6 +20,7 @@ import {
 } from "@/src/lib/redux/features/auth/authApi";
 import { setUser, TUser } from "@/src/lib/redux/features/auth/authSlice";
 import { verifyToken } from "@/src/utils/verifyToken";
+import toast from "react-hot-toast";
 
 export type TLogin = {
   email: string;
@@ -36,14 +37,26 @@ export default function Login() {
   const dispatch = useAppDispatch();
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    toast.loading("Loading...");
 
     try {
       const res = await login(data).unwrap();
-      const user = verifyToken(res.data.accessToken) as TUser;
-      dispatch(setUser({ user: user, token: res.data.accessToken }));
-    } catch (error) {
+      console.log(res);
+      if (res.success) {
+        toast.dismiss();
+        const user = verifyToken(res.data.accessToken) as TUser;
+        dispatch(setUser({ user: user, token: res.data.accessToken }));
+        toast.success("Logged in successfully", { duration: 3000 });
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
+      }
+    } catch (error: any) {
       console.log(error);
+      toast.dismiss();
+      toast.error(error?.message);
     }
   };
 
