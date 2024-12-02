@@ -75,13 +75,13 @@ export default function Navbar() {
             </NavbarItem>
           ))}
         </div>
-        <Image
+        {/* <Image
           src={logo}
           alt="logo"
           height={170}
           width={170}
           className="flex lg:hidden"
-        />
+        /> */}
       </NavbarContent>
 
       <NavbarContent justify="end">
