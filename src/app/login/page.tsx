@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaGoogle, FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import logo from "@/src/assets/logo.png";
 import Image from "next/image";
@@ -21,6 +21,13 @@ import {
 import { setUser, TUser } from "@/src/lib/redux/features/auth/authSlice";
 import { verifyToken } from "@/src/utils/verifyToken";
 import toast from "react-hot-toast";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/dropdown";
 
 export type TLogin = {
   email: string;
@@ -35,6 +42,9 @@ export default function Login() {
   const [signUp] = useSignUpMutation();
   const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
+  const [selectedRole, setSelectedRole] = useState<string>("User");
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
     toast.loading("Loading...");
@@ -63,6 +73,26 @@ export default function Login() {
   const handleSignUp: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
   };
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  const handleSelection = (role: string) => {
+    setSelectedRole(role);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-8 py-10 xl:py-0">
@@ -171,25 +201,49 @@ export default function Login() {
                 className="flex py-1"
               />
             </Link>
-            <h1 className="text-2xl font-semibold my-5">Create Account</h1>
-            {/* <input
-              type="text"
-              placeholder="Name"
-              className="w-full px-4 py-2 mb-4 bg-gray-200 rounded-lg focus:outline-none"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-2 mb-4 bg-gray-200 rounded-lg focus:outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 mb-4 bg-gray-200 rounded-lg focus:outline-none"
-            />
-            <button className="px-6 py-2 bg-orange-500 text-white rounded-lg uppercase font-bold">
-              Sign Up
-            </button> */}
+            <h1 className="text-2xl font-semibold mt-4 mb-2">Create Account</h1>
+
+            <div className="relative flex justify-center items-center gap-1 my-3">
+              {/* Dropdown Trigger */}
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center text-primary text-xl cursor-pointer"
+              >
+                <IoIosArrowDropdownCircle />
+              </button>
+
+              {/* Selected Role */}
+              <h1 className="text-center text-primary font-bold">
+                Register as {selectedRole}
+              </h1>
+
+              {/* Dropdown Menu */}
+              {isOpen && (
+                <div
+                  ref={dropdownRef}
+                  className="absolute top-[calc(100%+0.5rem)] left-0  border border-primary bg-black text-white shadow-lg rounded-md w-40 z-50"
+                >
+                  <div
+                    className="px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                    onClick={() => handleSelection("User")}
+                  >
+                    User
+                    {selectedRole === "User" && (
+                      <span className="ml-2 text-green-500">✔</span>
+                    )}
+                  </div>
+                  <div
+                    className="px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                    onClick={() => handleSelection("Vendor")}
+                  >
+                    Vendor
+                    {selectedRole === "Vendor" && (
+                      <span className="ml-2 text-green-500">✔</span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
 
             <SHForm
               // defaultValues={{
@@ -207,7 +261,7 @@ export default function Login() {
                   variant="bordered"
                 />
               </div>
-              <div className="py-2">
+              <div className="pb-2">
                 <SHInput
                   name="email"
                   label="Email"
@@ -216,7 +270,7 @@ export default function Login() {
                   variant="bordered"
                 />
               </div>
-              <div className="py-3">
+              <div className="pb-2">
                 <SHInput
                   name="password"
                   label="Password"

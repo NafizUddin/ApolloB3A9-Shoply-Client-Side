@@ -15,20 +15,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/src/config/site";
 import { Button } from "@nextui-org/button";
-import { useState } from "react";
 import logo from "@/src/assets/logo.png";
-import { useAppSelector } from "@/src/lib/redux/hooks";
-import { selectCurrentUser } from "@/src/lib/redux/features/auth/authSlice";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import NavbarUserDropdown from "./NavbarUserDropdown";
 
 export default function Navbar() {
   const pathname = usePathname();
-  // const reduxUser = useAppSelector(selectCurrentUser);
   const { userData, isLoading } = useUserDetails();
-
-  // console.log("reduxUser", reduxUser);
-  // console.log("from hook", userData);
 
   return (
     <NextUINavbar
@@ -94,7 +87,7 @@ export default function Navbar() {
       <NavbarContent justify="end">
         <NavbarItem className="flex">
           {isLoading ? (
-            <div className="animate-pulse w-10 h-10 rounded-full bg-gray-400 " />
+            <div className="animate-pulse w-10 h-10 rounded-full bg-gray-400" />
           ) : userData ? (
             <NavbarUserDropdown user={userData} />
           ) : (

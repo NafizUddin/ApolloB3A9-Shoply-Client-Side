@@ -1,5 +1,7 @@
 "use client";
 
+import { logout } from "@/src/lib/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/src/lib/redux/hooks";
 import { Avatar } from "@nextui-org/avatar";
 import {
   Dropdown,
@@ -14,11 +16,12 @@ import toast from "react-hot-toast";
 export default function NavbarUserDropdown({ user }: { user: any }) {
   const router = useRouter();
   const pathname = usePathname();
-
+  const dispatch = useAppDispatch();
   const { userData } = user;
-  console.log(userData);
 
   const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully", { duration: 3000 });
     // logout();
     // setUser(null);
     // userLoading(true);

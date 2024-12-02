@@ -18,7 +18,7 @@ const useUserDetails = () => {
 
   //   return { loadedUser, isLoading };
   if (!user) {
-    return { isLoading: false, userData: {} };
+    return { isLoading: false, userData: undefined };
   }
 
   return { userData: data, isLoading };
