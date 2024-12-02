@@ -11,11 +11,23 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
     signUp: builder.mutation({
-      query: (userInfo) => ({
-        url: "/auth/signup",
-        method: "POST",
-        body: userInfo,
-      }),
+      query: (userInfo) => {
+        const { role, ...remaining } = userInfo;
+
+        if (role === "User") {
+          return {
+            url: "/users/create-customer",
+            method: "POST",
+            body: remaining,
+          };
+        }
+
+        return {
+          url: "/users/create-vendor",
+          method: "POST",
+          body: remaining,
+        };
+      },
       invalidatesTags: ["users"],
     }),
     getAllUsers: builder.query({

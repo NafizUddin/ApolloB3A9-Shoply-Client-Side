@@ -71,7 +71,30 @@ export default function Login() {
   };
 
   const handleSignUp: SubmitHandler<FieldValues> = async (data) => {
+    toast.loading("Loading...");
     console.log(data);
+
+    const signUpData = { ...data, role: selectedRole };
+
+    try {
+      const res = await signUp(signUpData).unwrap();
+      console.log(res);
+      if (res.success) {
+        toast.dismiss();
+        const user = verifyToken(res.token) as TUser;
+        dispatch(setUser({ user: user, token: res.token }));
+        toast.success("Account created successfully!", { duration: 3000 });
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.dismiss();
+      toast.error(error?.message);
+    }
   };
 
   const toggleDropdown = () => setIsOpen(!isOpen);
