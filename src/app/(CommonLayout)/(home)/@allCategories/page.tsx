@@ -12,6 +12,7 @@ import { useGetAllCategoriesQuery } from "@/src/lib/redux/features/category/cate
 import { ICategory } from "@/src/types/model";
 import HomeCategoryCard from "@/src/components/Cards/HomeCategoryCard";
 import { useRef } from "react";
+import CategoryLoading from "@/src/components/LoadingCards/CategoryLoading";
 
 const AllCategories = () => {
   const { data: allCategories, isLoading } =
@@ -19,6 +20,22 @@ const AllCategories = () => {
 
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
+
+  const getCardCount = () => {
+    if (window.innerWidth >= 1280) return 5; // xl
+    if (window.innerWidth >= 1024) return 4; // lg
+    if (window.innerWidth >= 768) return 3; // md
+    return 1; // sm and below
+  };
+
+  const renderLoadingCards = () => {
+    const cardCount = getCardCount();
+    return Array.from({ length: cardCount }).map((_, index) => (
+      <SwiperSlide key={index}>
+        <CategoryLoading />
+      </SwiperSlide>
+    ));
+  };
 
   return (
     <div className="pb-14 px-8">
@@ -73,11 +90,13 @@ const AllCategories = () => {
             lg:grid-cols-4 
             xl:grid-cols-5"
         >
-          {allCategories?.map((category: ICategory, index: number) => (
-            <SwiperSlide key={index}>
-              <HomeCategoryCard category={category} />
-            </SwiperSlide>
-          ))}
+          {isLoading
+            ? renderLoadingCards()
+            : allCategories?.map((category: ICategory, index: number) => (
+                <SwiperSlide key={index}>
+                  <HomeCategoryCard category={category} />
+                </SwiperSlide>
+              ))}
         </div>
       </Swiper>
     </div>
