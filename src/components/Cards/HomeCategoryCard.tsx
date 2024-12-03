@@ -9,7 +9,7 @@ const HomeCategoryCard = ({ category }: { category: ICategory }) => {
           alt="Man Shirts"
           className="w-[235px] h-[235px] object-cover rounded-lg"
         />
-        <p className="absolute text-lg font-semibold bg-primary w-[185px] rounded-full -bottom-6 py-2 text-center">
+        <p className="absolute text-lg font-semibold bg-primary w-[185px] rounded-full -bottom-6 py-2 text-center hover:bg-[#c4650a] cursor-pointer">
           {category.name}
         </p>
       </div>

@@ -28,13 +28,13 @@ const AllCategories = () => {
         <div className="flex gap-4">
           <button
             ref={prevRef}
-            className="w-14 h-14 bg-primary rounded-full flex justify-center items-center"
+            className="w-10 h-10 md:w-14 md:h-14 bg-primary rounded-full flex justify-center items-center"
           >
             <BsArrowLeft className="text-white text-xl" />
           </button>
           <button
             ref={nextRef}
-            className="w-14 h-14 bg-primary rounded-full flex justify-center items-center"
+            className="w-10 h-10 md:w-14 md:h-14 bg-primary rounded-full flex justify-center items-center"
           >
             <BsArrowRight className="text-white text-xl" />
           </button>
