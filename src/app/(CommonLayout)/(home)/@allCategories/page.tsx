@@ -21,9 +21,10 @@ const AllCategories = () => {
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
   return (
-    <div className="pb-14 px-5">
-      <div className="flex justify-between items-center mb-8">
+    <div className="pb-14 px-8">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-10">
         <SectionTitle sub="Categories" heading="Browse Top Category" />
+        {/* navigation button */}
         <div className="flex gap-4">
           <button
             ref={prevRef}
@@ -41,8 +42,13 @@ const AllCategories = () => {
       </div>
 
       <Swiper
-        slidesPerView={5}
         spaceBetween={20}
+        breakpoints={{
+          640: { slidesPerView: 3 }, // For small screens
+          768: { slidesPerView: 3 }, // For medium screens
+          1024: { slidesPerView: 4 }, // For large screens
+          1280: { slidesPerView: 5 }, // For extra-large screens
+        }}
         loop={true}
         modules={[Navigation]}
         className="mySwiper"
@@ -60,11 +66,19 @@ const AllCategories = () => {
           }
         }}
       >
-        {allCategories?.map((category: ICategory, index: number) => (
-          <SwiperSlide key={index}>
-            <HomeCategoryCard category={category} />
-          </SwiperSlide>
-        ))}
+        <div
+          className="grid gap-4 
+            grid-cols-1 
+            md:grid-cols-3 
+            lg:grid-cols-4 
+            xl:grid-cols-5"
+        >
+          {allCategories?.map((category: ICategory, index: number) => (
+            <SwiperSlide key={index}>
+              <HomeCategoryCard category={category} />
+            </SwiperSlide>
+          ))}
+        </div>
       </Swiper>
     </div>
   );

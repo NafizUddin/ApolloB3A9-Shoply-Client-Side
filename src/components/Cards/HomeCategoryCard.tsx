@@ -13,7 +13,7 @@ const HomeCategoryCard = ({ category }: { category: ICategory }) => {
           {category.name}
         </p>
       </div>
-      <div className="border-l-2 border-dotted h-48" />
+      <div className="border-l-2 border-dotted h-48 hidden md:block" />
     </div>
   );
 };
