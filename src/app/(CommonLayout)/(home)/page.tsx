@@ -6,10 +6,10 @@ const page = () => {
   return (
     <div className="pt-16 lg:pt-0">
       <Banner />
-      <div className="py-16">
+      <div className="py-14">
         <ScrollingMarquee />
       </div>
-      <div className="py-16">
+      <div className="pb-8">
         <FeatureSection />
       </div>
     </div>
