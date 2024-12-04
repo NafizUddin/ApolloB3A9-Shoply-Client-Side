@@ -8,7 +8,6 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import bannerInfo from "@/src/jsons/bannerInfo.json";
 import parse from "html-react-parser";
-import styles from "./Banner.module.css";
 
 const Banner = () => {
   return (
