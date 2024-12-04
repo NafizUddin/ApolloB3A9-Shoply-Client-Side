@@ -59,8 +59,10 @@ export interface IProduct {
   price: number;
   inventoryCount: number;
   description?: string;
+  image: string;
   discount?: number;
   categoryId: string;
+  isDeleted: boolean;
   vendorId: string;
   orderDetails: IOrderDetail[];
   reviews: IReview[];

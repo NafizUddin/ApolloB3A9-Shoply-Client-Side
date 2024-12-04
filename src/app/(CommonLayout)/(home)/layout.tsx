@@ -4,14 +4,17 @@ import { ReactNode } from "react";
 const HomeLayout = ({
   children,
   allCategories,
+  allProducts,
 }: {
   children: ReactNode;
   allCategories: ReactNode;
+  allProducts: ReactNode;
 }) => {
   return (
     <>
       {children}
       {allCategories}
+      {allProducts}
       <Footer />
     </>
   );

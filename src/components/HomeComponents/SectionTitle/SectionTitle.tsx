@@ -1,17 +1,40 @@
+"use client";
+
 import { PiStarFourFill } from "react-icons/pi";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const SectionTitle = ({ sub, heading }: { sub: string; heading: string }) => {
+  const ref = useRef(null);
+
+  const isInView = useInView(ref);
+
   return (
-    <div className="">
-      <div className="flex items-center gap-2 uppercase justify-center md:justify-start">
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isInView ? 1 : 0 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -20 }}
+        transition={{ duration: 0.6, delay: 0.15, ease: "easeInOut" }}
+        className="flex items-center gap-2 uppercase justify-center md:justify-start"
+      >
         <PiStarFourFill className="text-primary" />
         <span className="font-medium text-primary">{sub}</span>
-      </div>
+      </motion.div>
 
-      <h1 className="mt-2 text-4xl font-bold text-white text-center md:text-left">
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : -20 }}
+        transition={{ duration: 0.6, delay: 0.3, ease: "easeInOut" }}
+        className="mt-2 text-4xl font-bold text-white text-center md:text-left"
+      >
         {heading}
-      </h1>
-    </div>
+      </motion.h1>
+    </motion.div>
   );
 };
 
