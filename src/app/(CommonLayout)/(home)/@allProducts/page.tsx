@@ -6,6 +6,7 @@ import { useGetAllProductsQuery } from "@/src/lib/redux/features/products/produc
 import { IProduct } from "@/src/types/model";
 import { useEffect, useState } from "react";
 import { Pagination } from "@nextui-org/pagination";
+import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 
 const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,26 +31,56 @@ const AllProducts = () => {
     setCurrentPage(page);
   };
 
+  const updateDataPerPage = () => {
+    const width = window.innerWidth;
+
+    if (width >= 1280) {
+      setDataPerPage(8); // For xl screens
+    } else if (width >= 768 && width < 1280) {
+      setDataPerPage(6); // For md to lg screens
+    } else {
+      setDataPerPage(4); // For sm screens
+    }
+  };
+
   useEffect(() => {
-    // Update queryObj whenever selectedSort changes
-    setQueryObj({
+    // Update dataPerPage on component mount and window resize
+    updateDataPerPage();
+    window.addEventListener("resize", updateDataPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updateDataPerPage);
+    };
+  }, []); // Empty dependency ensures this only runs once
+
+  useEffect(() => {
+    // Update queryObj whenever currentPage or dataPerPage changes
+    setQueryObj((prev) => ({
+      ...prev,
       page: currentPage,
       limit: dataPerPage,
-      flashSale: false,
-    });
+    }));
+
+    // Refetch data whenever queryObj changes
     refetch();
-  }, [currentPage, refetch]);
+  }, [currentPage, dataPerPage, refetch]);
 
   return (
     <div className="pb-14 px-8">
       <SectionTitle sub="Shop The Best" heading="Explore Our Collection" />
 
-      <div className="py-14 grid grid-cols-4 gap-3">
-        {allProductsResponse?.data?.map((singleProduct: IProduct) => (
-          <div key={singleProduct.id}>
-            <HomeProductCard singleProduct={singleProduct} />
-          </div>
-        ))}
+      <div className="py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        {isLoading
+          ? Array.from({ length: dataPerPage }).map((_, index) => (
+              <div key={index}>
+                <ProductLoading />
+              </div>
+            ))
+          : allProductsResponse?.data?.map((singleProduct: IProduct) => (
+              <div key={singleProduct.id}>
+                <HomeProductCard singleProduct={singleProduct} />
+              </div>
+            ))}
       </div>
 
       <div>

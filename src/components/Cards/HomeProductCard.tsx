@@ -7,9 +7,7 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
       {/* Image Section */}
       <div className="relative overflow-hidden rounded-lg">
         <img
-          width={400}
-          height={400}
-          className="h-[275px] w-[320px] rounded-lg object-cover duration-300 group-hover:scale-110"
+          className="h-[275px] w-[306px] rounded-lg object-cover duration-300 group-hover:scale-110"
           src={singleProduct.image}
           alt={singleProduct.name}
         />

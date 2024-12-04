@@ -1,4 +1,3 @@
-import { TResponseRedux } from "@/src/types";
 import { baseApi } from "../../api/baseApi";
 
 const productApi = baseApi.injectEndpoints({
