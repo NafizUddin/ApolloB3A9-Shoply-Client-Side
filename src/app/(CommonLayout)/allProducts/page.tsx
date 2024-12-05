@@ -17,6 +17,7 @@ import Slider from "react-slider";
 import { useGetAllProductsQuery } from "@/src/lib/redux/features/products/productApi";
 import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import HomeProductCard from "@/src/components/Cards/HomeProductCard";
+import { Pagination } from "@nextui-org/pagination";
 
 const AllProducts = () => {
   const [filterApplied, setFilterApplied] = useState(false);
@@ -38,6 +39,29 @@ const AllProducts = () => {
     sort,
   });
 
+  const updateDataPerPage = () => {
+    const width = window.innerWidth;
+
+    if (width >= 1280) {
+      setDataPerPage(12);
+    } else if (width >= 768 && width < 1280) {
+      setDataPerPage(9);
+    } else if (width >= 425 && width < 768) {
+      setDataPerPage(8);
+    } else {
+      setDataPerPage(6);
+    }
+  };
+
+  useEffect(() => {
+    updateDataPerPage();
+    window.addEventListener("resize", updateDataPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updateDataPerPage);
+    };
+  }, []);
+
   const { data: allCategories } = useGetAllCategoriesQuery(undefined);
 
   const {
@@ -45,6 +69,14 @@ const AllProducts = () => {
     isLoading,
     refetch,
   } = useGetAllProductsQuery(queryObj);
+
+  const totalPages = Math.ceil(
+    (allProductsResponse?.meta?.total || 0) / dataPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   // Debounce implementation using setTimeout for search
   useEffect(() => {
@@ -83,8 +115,8 @@ const AllProducts = () => {
   };
 
   useEffect(() => {
-    // Update queryObj whenever selectedSort changes
-    setQueryObj({
+    setQueryObj((prev) => ({
+      ...prev,
       sort,
       searchTerm: debouncedSearchTerm,
       category,
@@ -92,7 +124,7 @@ const AllProducts = () => {
       maxPrice,
       page: currentPage,
       limit: dataPerPage,
-    });
+    }));
     refetch();
   }, [
     sort,
@@ -105,7 +137,7 @@ const AllProducts = () => {
   ]);
 
   return (
-    <div>
+    <div className="pb-16">
       {/* Filter part */}
       <div className="flex flex-col xl:flex-row items-center my-5 p-4 border rounded-md border-primary shadow md:w-[95%] mx-auto gap-4">
         <div className="flex flex-col md:flex-row gap-4 flex-1 w-full">
@@ -287,6 +319,21 @@ const AllProducts = () => {
                 <HomeProductCard singleProduct={singleProduct} />
               </div>
             ))}
+      </div>
+
+      {/* Pagination part */}
+      <div className="pt-7">
+        {allProductsResponse?.data?.length > 0 && (
+          <div className="flex justify-center items-center mt-4">
+            <Pagination
+              total={totalPages}
+              initialPage={1}
+              page={currentPage}
+              onChange={handlePageChange}
+              showControls
+            />
+          </div>
+        )}
       </div>
     </div>
   );

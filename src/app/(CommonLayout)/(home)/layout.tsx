@@ -20,7 +20,6 @@ const HomeLayout = ({
       {allProducts}
       <DealOffer />
       {flashSale}
-      <Footer />
     </>
   );
 };
