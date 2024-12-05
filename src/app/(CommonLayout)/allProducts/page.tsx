@@ -25,7 +25,7 @@ const AllProducts = () => {
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage, setDataPerPage] = useState(4);
+  const [dataPerPage, setDataPerPage] = useState(12);
   const [minPrice, setMinPrice] = useState(500);
   const [maxPrice, setMaxPrice] = useState(7000);
   const [queryObj, setQueryObj] = useState({
@@ -35,6 +35,7 @@ const AllProducts = () => {
     minPrice,
     maxPrice,
     category,
+    sort,
   });
 
   const { data: allCategories } = useGetAllCategoriesQuery(undefined);
@@ -43,7 +44,7 @@ const AllProducts = () => {
     data: allProductsResponse,
     isLoading,
     refetch,
-  } = useGetAllProductsQuery(undefined);
+  } = useGetAllProductsQuery(queryObj);
 
   // Debounce implementation using setTimeout for search
   useEffect(() => {
@@ -81,7 +82,27 @@ const AllProducts = () => {
     setMaxPrice(values[1]);
   };
 
-  console.log(allProductsResponse);
+  useEffect(() => {
+    // Update queryObj whenever selectedSort changes
+    setQueryObj({
+      sort,
+      searchTerm: debouncedSearchTerm,
+      category,
+      minPrice,
+      maxPrice,
+      page: currentPage,
+      limit: dataPerPage,
+    });
+    refetch();
+  }, [
+    sort,
+    debouncedSearchTerm,
+    category,
+    minPrice,
+    maxPrice,
+    currentPage,
+    refetch,
+  ]);
 
   return (
     <div>
@@ -240,6 +261,8 @@ const AllProducts = () => {
                 setCategory("");
                 setSort("");
                 setFilterApplied(false);
+                setMinPrice(500);
+                setMaxPrice(7000);
               }}
             >
               <span>
