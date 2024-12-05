@@ -1,3 +1,4 @@
+import DealOffer from "@/src/components/HomeComponents/DealOffer/DealOffer";
 import Footer from "@/src/components/HomeComponents/Footer/Footer";
 import { ReactNode } from "react";
 
@@ -17,6 +18,7 @@ const HomeLayout = ({
       {children}
       {allCategories}
       {allProducts}
+      <DealOffer />
       {flashSale}
       <Footer />
     </>
