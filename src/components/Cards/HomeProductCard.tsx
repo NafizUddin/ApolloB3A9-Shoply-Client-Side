@@ -12,6 +12,12 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
           alt={singleProduct.name}
         />
 
+        {singleProduct.flashSale && (
+          <button className="absolute top-3 right-3 rounded-xl bg-primary px-3 py-1 font-medium duration-200">
+            {singleProduct.discount}% off
+          </button>
+        )}
+
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white">
           <span>
             <IoMdCart className="text-xl" />

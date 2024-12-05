@@ -5,16 +5,19 @@ const HomeLayout = ({
   children,
   allCategories,
   allProducts,
+  flashSale,
 }: {
   children: ReactNode;
   allCategories: ReactNode;
   allProducts: ReactNode;
+  flashSale: ReactNode;
 }) => {
   return (
     <>
       {children}
       {allCategories}
       {allProducts}
+      {flashSale}
       <Footer />
     </>
   );

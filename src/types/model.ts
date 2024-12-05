@@ -60,6 +60,7 @@ export interface IProduct {
   inventoryCount: number;
   description?: string;
   image: string;
+  flashSale?: boolean;
   discount?: number;
   categoryId: string;
   isDeleted: boolean;
