@@ -9,11 +9,14 @@ import {
 } from "@nextui-org/dropdown";
 import { Button } from "@nextui-org/button";
 import { useGetAllCategoriesQuery } from "@/src/lib/redux/features/category/categoryApi";
-import { ICategory } from "@/src/types/model";
+import { ICategory, IProduct } from "@/src/types/model";
 import { GrCompare } from "react-icons/gr";
 import { BiFilterAlt } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
 import Slider from "react-slider";
+import { useGetAllProductsQuery } from "@/src/lib/redux/features/products/productApi";
+import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
+import HomeProductCard from "@/src/components/Cards/HomeProductCard";
 
 const AllProducts = () => {
   const [filterApplied, setFilterApplied] = useState(false);
@@ -28,10 +31,19 @@ const AllProducts = () => {
   const [queryObj, setQueryObj] = useState({
     page: currentPage,
     limit: dataPerPage,
+    searchTerm: debouncedSearchTerm,
+    minPrice,
+    maxPrice,
+    category,
   });
 
-  const { data: allCategories, isLoading } =
-    useGetAllCategoriesQuery(undefined);
+  const { data: allCategories } = useGetAllCategoriesQuery(undefined);
+
+  const {
+    data: allProductsResponse,
+    isLoading,
+    refetch,
+  } = useGetAllProductsQuery(undefined);
 
   // Debounce implementation using setTimeout for search
   useEffect(() => {
@@ -45,12 +57,12 @@ const AllProducts = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (searchTerm || category || sort) {
+    if (searchTerm || category || sort || minPrice > 500 || maxPrice < 7000) {
       setFilterApplied(true);
     } else {
       setFilterApplied(false);
     }
-  }, [searchTerm, category, sort]);
+  }, [searchTerm, category, sort, minPrice, maxPrice]);
 
   const handleCategorySelect = (key: Key) => {
     setCategory(String(key));
@@ -69,7 +81,7 @@ const AllProducts = () => {
     setMaxPrice(values[1]);
   };
 
-  console.log(searchTerm);
+  console.log(allProductsResponse);
 
   return (
     <div>
@@ -155,7 +167,7 @@ const AllProducts = () => {
               className="slider"
               min={500}
               max={7000}
-              step={10} // adjust step value for finer control
+              step={10}
               value={[minPrice, maxPrice]}
               onChange={handleSliderChange}
             />
@@ -168,7 +180,6 @@ const AllProducts = () => {
       </div>
 
       {/* Filter show part */}
-
       {filterApplied && (
         <div className="border border-primary mt-4 p-4 flex gap-3 items-center md:w-[95%] mx-auto rounded-md shadow">
           <p className="font-semibold text-primary">Filtered By:</p>
@@ -177,7 +188,7 @@ const AllProducts = () => {
             className="flex flex-wrap gap-2"
           >
             {debouncedSearchTerm && (
-              <span className="bg-gray-200 px-3 py-2 rounded flex gap-2 items-center">
+              <span className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary">
                 <span>{debouncedSearchTerm}</span>
                 <span>
                   <ImCross className="text-sm" />
@@ -187,7 +198,7 @@ const AllProducts = () => {
             {category && (
               <span
                 onClick={() => setCategory("")}
-                className="bg-gray-200 px-3 py-2 rounded flex gap-2 items-center"
+                className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary"
               >
                 <span>{category}</span>
                 <span>
@@ -198,9 +209,25 @@ const AllProducts = () => {
             {sort && (
               <span
                 onClick={() => setSort("")}
-                className="bg-gray-200 px-3 py-2 rounded flex gap-2 items-center"
+                className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary cursor-pointer"
               >
-                <span>{sort}</span>
+                <span>{sort === "asc" ? "Low to High" : "High to Low"}</span>
+                <span>
+                  <ImCross className="text-sm" />
+                </span>
+              </span>
+            )}
+            {(minPrice > 500 || maxPrice < 7000) && (
+              <span
+                onClick={() => {
+                  setMinPrice(500);
+                  setMaxPrice(7000);
+                }}
+                className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary cursor-pointer"
+              >
+                <span>
+                  Price: {minPrice}-{maxPrice}
+                </span>
                 <span>
                   <ImCross className="text-sm" />
                 </span>
@@ -223,6 +250,21 @@ const AllProducts = () => {
           </div>
         </div>
       )}
+
+      {/* Product Card Part */}
+      <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-3">
+        {isLoading
+          ? Array.from({ length: dataPerPage }).map((_, index) => (
+              <div key={index}>
+                <ProductLoading />
+              </div>
+            ))
+          : allProductsResponse?.data?.map((singleProduct: IProduct) => (
+              <div key={singleProduct.id}>
+                <HomeProductCard singleProduct={singleProduct} />
+              </div>
+            ))}
+      </div>
     </div>
   );
 };

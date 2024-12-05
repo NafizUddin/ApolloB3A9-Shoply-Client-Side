@@ -13,7 +13,7 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
         />
 
         {singleProduct.flashSale && (
-          <button className="absolute top-3 right-3 rounded-xl bg-primary px-3 py-1 font-medium duration-200">
+          <button className="absolute top-3 right-3 rounded-xl bg-primary px-3 py-1 font-medium duration-200 text-white">
             {singleProduct.discount}% off
           </button>
         )}
@@ -28,7 +28,9 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
 
       {/* Details Section */}
       <div className="grid gap-2">
-        <h1 className="text-xl font-semibold">{singleProduct.name}</h1>
+        <h1 className="text-xl font-semibold text-white">
+          {singleProduct.name}
+        </h1>
         <div className="mt-5 flex items-center justify-between">
           <h2 className="font-medium md:text-xl text-white">
             <span>$</span> {singleProduct.price}
