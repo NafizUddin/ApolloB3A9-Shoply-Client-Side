@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const HomeCategoryCard = ({ category }: { category: ICategory }) => {
   const params = new URLSearchParams();
-  const userParams = new URLSearchParams();
   params.set("category", category.name);
 
   return (

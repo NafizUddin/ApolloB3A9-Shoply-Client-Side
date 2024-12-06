@@ -93,12 +93,19 @@ const AllProducts = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (searchTerm || category || sort || minPrice > 500 || maxPrice < 7000) {
+    if (
+      searchTerm ||
+      category ||
+      sort ||
+      minPrice > 500 ||
+      maxPrice < 7000 ||
+      selectedCategory
+    ) {
       setFilterApplied(true);
     } else {
       setFilterApplied(false);
     }
-  }, [searchTerm, category, sort, minPrice, maxPrice]);
+  }, [searchTerm, category, sort, minPrice, maxPrice, selectedCategory]);
 
   const handleCategorySelect = (key: Key) => {
     setCategory(String(key));
@@ -140,8 +147,6 @@ const AllProducts = () => {
     selectedCategory,
   ]);
 
-  console.log(selectedCategory);
-
   return (
     <div className="pb-16">
       {/* Filter part */}
@@ -164,7 +169,7 @@ const AllProducts = () => {
                 <Button
                   color="primary"
                   variant="bordered"
-                  className="capitalize font-medium"
+                  className="capitalize font-medium text-white"
                 >
                   {category || "Select Product Category"}
                 </Button>
@@ -191,7 +196,7 @@ const AllProducts = () => {
                 <Button
                   color="primary"
                   variant="bordered"
-                  className="capitalize font-medium"
+                  className="capitalize font-medium text-white"
                 >
                   Sort By Price
                 </Button>
@@ -214,9 +219,9 @@ const AllProducts = () => {
         </div>
         <div className="flex-1 w-full flex flex-col lg:flex-row gap-5 items-center">
           <div className=" flex lg:justify-start items-center w-full lg:w-96 xl:w-80">
-            <button className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-primary py-2 px-3 font-medium w-full xl:w-auto">
+            <button className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-white py-2 px-3 font-medium w-full xl:w-auto">
               <span>
-                <GrCompare className="text-xl text-primary" />
+                <GrCompare className="text-xl text-white" />
               </span>
               <span>Compare Products</span>
             </button>
@@ -231,7 +236,7 @@ const AllProducts = () => {
               onChange={handleSliderChange}
             />
 
-            <p className="xl:text-xl font-medium text-primary text-center">
+            <p className="xl:text-xl font-medium text-white text-center">
               Price Range: ${minPrice} - ${maxPrice}
             </p>
           </div>
@@ -241,13 +246,13 @@ const AllProducts = () => {
       {/* Filter show part */}
       {filterApplied && (
         <div className="border border-primary mt-4 p-4 flex gap-3 items-center md:w-[95%] mx-auto rounded-md shadow">
-          <p className="font-semibold text-primary">Filtered By:</p>
+          <p className="font-semibold text-white">Filtered By:</p>
           <div
             onClick={() => setSearchTerm("")}
             className="flex flex-wrap gap-2"
           >
             {debouncedSearchTerm && (
-              <span className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary">
+              <span className="border border-primary px-3 py-2 rounded-2xl flex gap-2 items-center text-white cursor-pointer">
                 <span>{debouncedSearchTerm}</span>
                 <span>
                   <ImCross className="text-sm" />
@@ -257,9 +262,29 @@ const AllProducts = () => {
             {category && (
               <span
                 onClick={() => setCategory("")}
-                className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary"
+                className="border border-primary px-3 py-2 rounded-2xl flex gap-2 items-center text-white cursor-pointer"
               >
                 <span>{category}</span>
+                <span>
+                  <ImCross className="text-sm" />
+                </span>
+              </span>
+            )}
+            {selectedCategory && (
+              <span
+                onClick={() => {
+                  setCategory("");
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.delete("category");
+                  window.history.replaceState(
+                    null,
+                    "",
+                    `?${params.toString()}`
+                  );
+                }}
+                className="border border-primary px-3 py-2 rounded-2xl flex gap-2 items-center text-white cursor-pointer"
+              >
+                <span>{selectedCategory}</span>
                 <span>
                   <ImCross className="text-sm" />
                 </span>
@@ -268,7 +293,7 @@ const AllProducts = () => {
             {sort && (
               <span
                 onClick={() => setSort("")}
-                className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary cursor-pointer"
+                className="border border-primary px-3 py-2 rounded-2xl flex gap-2 items-center text-white cursor-pointer"
               >
                 <span>{sort === "asc" ? "Low to High" : "High to Low"}</span>
                 <span>
@@ -282,7 +307,7 @@ const AllProducts = () => {
                   setMinPrice(500);
                   setMaxPrice(7000);
                 }}
-                className="border border-primary px-3 py-2 rounded flex gap-2 items-center text-primary cursor-pointer"
+                className="border border-primary px-3 py-2 rounded-2xl flex gap-2 items-center text-white cursor-pointer"
               >
                 <span>
                   Price: {minPrice}-{maxPrice}
@@ -293,7 +318,7 @@ const AllProducts = () => {
               </span>
             )}
             <button
-              className="px-3 py-2 flex items-center gap-2 text-primary border border-primary rounded-2xl"
+              className="px-3 py-2 flex items-center gap-2 text-white border border-primary rounded-2xl"
               onClick={() => {
                 setSearchTerm("");
                 setCategory("");
@@ -301,6 +326,9 @@ const AllProducts = () => {
                 setFilterApplied(false);
                 setMinPrice(500);
                 setMaxPrice(7000);
+                const params = new URLSearchParams(searchParams.toString());
+                params.delete("category");
+                window.history.replaceState(null, "", `?${params.toString()}`);
               }}
             >
               <span>
