@@ -1,3 +1,4 @@
+import { TResponseRedux } from "@/src/types";
 import { baseApi } from "../../api/baseApi";
 
 const productApi = baseApi.injectEndpoints({
@@ -63,7 +64,22 @@ const productApi = baseApi.injectEndpoints({
       },
       providesTags: ["products"],
     }),
+    getSingleProduct: builder.query({
+      query: (id) => {
+        console.log(id);
+        let url = `/products/${id}`;
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response.data;
+      },
+      providesTags: ["products"],
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery } = productApi;
+export const { useGetAllProductsQuery, useGetSingleProductQuery } = productApi;

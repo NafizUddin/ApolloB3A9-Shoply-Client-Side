@@ -1,7 +1,11 @@
 import { IProduct } from "@/src/types/model";
+import Link from "next/link";
 import { IoMdCart } from "react-icons/io";
 
 const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
+  const params = new URLSearchParams();
+  params.set("product", singleProduct.id);
+
   const discountPercentage = (singleProduct?.discount ?? 0) / 100;
   const discountAmount = singleProduct.price * discountPercentage;
   const discountedPrice = singleProduct.flashSale
@@ -14,7 +18,7 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
       <div className="relative overflow-hidden rounded-lg">
         <img
           className="h-[275px] w-[306px] rounded-lg object-cover duration-300 group-hover:scale-110"
-          src={singleProduct.image}
+          src={singleProduct.image[0]}
           alt={singleProduct.name}
         />
 
@@ -52,7 +56,9 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
         </div>
 
         <button className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
-          View Details
+          <Link href={`/productDetails?${params.toString()}`}>
+            View Details
+          </Link>
         </button>
       </div>
     </div>
