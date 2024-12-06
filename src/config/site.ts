@@ -14,8 +14,8 @@ export const siteConfig = {
       href: "/allProducts",
     },
     {
-      label: "Contact",
-      href: "/contact",
+      label: "Flash Sale",
+      href: "/flashSale",
     },
   ],
   navMenuItems: [
@@ -24,12 +24,12 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "About",
-      href: "/about",
+      label: "Products",
+      href: "/allProducts",
     },
     {
-      label: "Contact",
-      href: "/contact",
+      label: "Flash Sale",
+      href: "/flashSale",
     },
     {
       label: "Login",
