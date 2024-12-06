@@ -18,8 +18,11 @@ import { useGetAllProductsQuery } from "@/src/lib/redux/features/products/produc
 import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import HomeProductCard from "@/src/components/Cards/HomeProductCard";
 import { Pagination } from "@nextui-org/pagination";
+import { useSearchParams } from "next/navigation";
 
 const AllProducts = () => {
+  const searchParams = useSearchParams();
+  const selectedCategory = searchParams.get("category");
   const [filterApplied, setFilterApplied] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -35,7 +38,7 @@ const AllProducts = () => {
     searchTerm: debouncedSearchTerm,
     minPrice,
     maxPrice,
-    category,
+    category: category || selectedCategory,
     sort,
   });
 
@@ -119,7 +122,7 @@ const AllProducts = () => {
       ...prev,
       sort,
       searchTerm: debouncedSearchTerm,
-      category,
+      category: category || selectedCategory,
       minPrice,
       maxPrice,
       page: currentPage,
@@ -134,7 +137,10 @@ const AllProducts = () => {
     maxPrice,
     currentPage,
     refetch,
+    selectedCategory,
   ]);
+
+  console.log(selectedCategory);
 
   return (
     <div className="pb-16">
@@ -148,7 +154,7 @@ const AllProducts = () => {
             placeholder="Search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-xl border-2 border-primary py-[6px] px-6 text-base font-medium outline-none focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-primary"
+            className="w-full rounded-xl border-2 border-primary py-[6px] px-6 text-base font-medium outline-none focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-white"
           />
 
           {/* Category filter part */}
