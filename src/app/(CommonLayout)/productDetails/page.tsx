@@ -9,8 +9,9 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsCart3 } from "react-icons/bs";
-import { FaTruckFast } from "react-icons/fa6";
+import { FaCircleXmark, FaTruckFast } from "react-icons/fa6";
 import { MdAssignmentReturn } from "react-icons/md";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -149,7 +150,7 @@ const ProductDetails = () => {
             Select the quantity of products:
           </p>
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-3 w-[70%] lg:w-full mx-auto">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-3 w-[70%] lg:w-11/12 mx-auto lg:mx-0">
             <div className="flex-1 mt-4 lg:mt-0">
               <QuantitySelector
                 quantity={quantity}
@@ -192,14 +193,31 @@ const ProductDetails = () => {
             <span className="text-gray-400">{data?.vendor?.shopName}</span>
           </h1>
 
-          <div className="flex space-x-4 mt-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mt-2">
+            {inStock ? (
+              <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+                <span className="text-xl text-primary">
+                  <AiFillCheckCircle />
+                </span>
+                <span className="font-semibold text-primary">
+                  Item Available
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+                <span className="text-xl text-primary">
+                  <FaCircleXmark />
+                </span>
+                <span className="font-semibold text-primary">Out of Stock</span>
+              </div>
+            )}
             <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
               <span className="text-xl text-primary">
                 <FaTruckFast />
               </span>
               <span className="font-semibold text-primary">Free Shipping</span>
             </div>
-            <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+            <div className="flex justify-center items-center xl:space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
               <span className="text-xl text-primary">
                 <MdAssignmentReturn />
               </span>
