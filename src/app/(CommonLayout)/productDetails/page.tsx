@@ -2,7 +2,10 @@
 "use client";
 
 import QuantitySelector from "@/src/components/ui/components/QuantitySelector";
-import { useGetSingleProductQuery } from "@/src/lib/redux/features/products/productApi";
+import {
+  useGetAllProductsQuery,
+  useGetSingleProductQuery,
+} from "@/src/lib/redux/features/products/productApi";
 import {
   addProduct,
   clearCart,
@@ -19,6 +22,15 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import Loading from "@/src/components/Loading/Loading";
 import SectionTitle from "@/src/components/HomeComponents/SectionTitle/SectionTitle";
 import WarningModal from "@/src/components/modal/WarningModal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
+import { IProduct } from "@/src/types/model";
+import HomeProductCard from "@/src/components/Cards/HomeProductCard";
+import { PiStarFourFill } from "react-icons/pi";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -41,6 +53,13 @@ const ProductDetails = () => {
   const { products } = useAppSelector((state) => state.products);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingProduct, setPendingProduct] = useState<any>(null);
+  const [category, setCategory] = useState<string | undefined>(undefined);
+
+  const {
+    data: allProductsResponse,
+    isLoading: allProductsLoading,
+    refetch,
+  } = useGetAllProductsQuery({ category });
 
   useEffect(() => {
     if (data?.image?.length) {
@@ -49,6 +68,10 @@ const ProductDetails = () => {
 
     if (data?.inventory) {
       setInStock(data?.inventory);
+    }
+
+    if (data?.category) {
+      setCategory(data?.category?.name);
     }
   }, [data]);
 
@@ -111,11 +134,29 @@ const ProductDetails = () => {
     setIsModalOpen(false);
   };
 
+  const getCardCount = () => {
+    if (window.innerWidth >= 1280) return 5; // xl
+    if (window.innerWidth >= 1024) return 4; // lg
+    if (window.innerWidth >= 768) return 3; // md
+    return 1; // sm and below
+  };
+
+  const renderLoadingCards = () => {
+    const cardCount = getCardCount();
+    return Array.from({ length: cardCount }).map((_, index) => (
+      <SwiperSlide key={index}>
+        <ProductLoading />
+      </SwiperSlide>
+    ));
+  };
+
   const discountPercentage = (data?.discount ?? 0) / 100;
   const discountAmount = data?.price * discountPercentage;
   const discountedPrice = data?.flashSale
     ? data?.price - discountAmount
     : data?.price;
+
+  // console.log(allProductsResponse);
 
   return (
     <div className="py-10">
@@ -123,8 +164,8 @@ const ProductDetails = () => {
         <Loading />
       ) : (
         <div>
-          <div className="flex flex-col lg:flex-row justify-center">
-            <div className="flex-1 flex flex-col-reverse xl:flex-row px-14 gap-8 justify-center items-center xl:items-start">
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex-1 flex flex-col-reverse xl:flex-row px-14 gap-8 justify-center items-center xl:items-start xl:justify-start">
               <div className="flex flex-row xl:flex-col gap-5 lg:pl-5 xl:pl-0">
                 {data?.image?.map((singleImage: string, index: number) => (
                   <div
@@ -139,9 +180,9 @@ const ProductDetails = () => {
                     <Image
                       src={singleImage}
                       alt="Product Image"
-                      height={100}
-                      width={100}
-                      className="rounded-lg"
+                      height={90}
+                      width={90}
+                      className="rounded-lg h-[120px] object-cover"
                     />
                     {singleImage === selectedImage && (
                       <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg" />
@@ -156,7 +197,7 @@ const ProductDetails = () => {
                   alt="Selected Product Image"
                   height={400}
                   width={400}
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-cover h-[450px]"
                 />
               )}
             </div>
@@ -280,11 +321,66 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <div className="w-11/12 mx-auto my-10">
-            <SectionTitle
-              sub="You might also like"
-              heading="Related Products"
-            />
+          <div className="my-14">
+            <div className="w-11/12 lg:w-11/12 xl:4/5 mx-auto">
+              <div className="flex justify-center items-center gap-2 uppercase">
+                <PiStarFourFill className="text-primary" />
+                <span className="font-medium text-primary">
+                  You might also like
+                </span>
+              </div>
+              <h1 className="mt-2 text-4xl font-bold text-white text-center">
+                Related Products
+              </h1>
+            </div>
+
+            <div className="w-full lg:w-11/12 xl:w-4/5 mx-auto my-8">
+              <Swiper
+                spaceBetween={30}
+                loop={true}
+                pagination={{
+                  clickable: true,
+                }}
+                navigation={true}
+                modules={[Navigation]}
+                className="mySwiper"
+                breakpoints={{
+                  640: { slidesPerView: 1 },
+                  768: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+              >
+                {allProductsLoading
+                  ? renderLoadingCards()
+                  : (() => {
+                      const filteredProducts =
+                        allProductsResponse?.data?.filter(
+                          (singleProduct: IProduct) =>
+                            singleProduct?.id !== data?.id
+                        );
+
+                      if (filteredProducts?.length === 0) {
+                        return (
+                          <div className="text-center text-white text-2xl font-bold mt-6">
+                            Sorry, no related products available.
+                          </div>
+                        );
+                      }
+
+                      // Render the filtered products
+                      return filteredProducts.map(
+                        (singleProduct: IProduct, index: number) => (
+                          <SwiperSlide
+                            key={index}
+                            className="px-10 md:px-5 lg:px-0"
+                          >
+                            <HomeProductCard singleProduct={singleProduct} />
+                          </SwiperSlide>
+                        )
+                      );
+                    })()}
+              </Swiper>
+            </div>
           </div>
 
           <WarningModal
