@@ -73,8 +73,8 @@ const ProductDetails = () => {
 
       console.log(productInfo);
 
-      // dispatch(addProduct(productInfo));
-      // toast.success("Product added to cart successfully.");
+      dispatch(addProduct(productInfo));
+      toast.success("Product added to cart successfully.");
     }
   };
 
