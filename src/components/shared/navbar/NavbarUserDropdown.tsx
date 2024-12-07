@@ -48,16 +48,8 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
           <DropdownItem key="profile" className="h-14 gap-2">
-            <p className="font-semibold">Signed in as</p>
-            <p className="font-semibold">{userData?.email}</p>
-          </DropdownItem>
-          <DropdownItem onClick={() => handleNavigation("/profile")}>
-            <span className="flex items-center gap-2">
-              <span>
-                <User size={16} />
-              </span>
-              <span>My Profile</span>
-            </span>
+            <p className="font-semibold text-white">Signed in as</p>
+            <p className="font-semibold text-white">{userData?.email}</p>
           </DropdownItem>
           <DropdownItem
             onClick={() =>
@@ -68,7 +60,7 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
               )
             }
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 text-white">
               <span>
                 <LayoutDashboard size={16} />
               </span>
@@ -76,7 +68,7 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
             </span>
           </DropdownItem>
           <DropdownItem onClick={handleLogout} key="logout" color="danger">
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 text-white">
               <span>
                 <LogOut size={16} />
               </span>

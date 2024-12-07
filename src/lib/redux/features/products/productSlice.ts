@@ -8,6 +8,7 @@ export type TProductRedux = {
   quantity?: number;
   image: string;
   inStock: number;
+  vendorId: string;
 };
 
 type TInitialState = {

@@ -55,12 +55,12 @@ const CartDrawer = () => {
               <div key={singleProduct.id} className="flex border-b py-3">
                 <img
                   src={singleProduct.image}
-                  className="w-20 h-20 object-contain rounded-lg"
+                  className="w-16 h-16 object-contain rounded-lg"
                   alt="Product name"
                 />
-                <div className="ml-1">
+                <div className="ml-1 w-11/12">
                   <div className="flex items-center justify-between">
-                    <h1 className="text-sm md:text-base font-bold text-white">
+                    <h1 className="text-sm font-bold text-white">
                       {singleProduct.name}
                     </h1>
                     <FaCircleXmark
