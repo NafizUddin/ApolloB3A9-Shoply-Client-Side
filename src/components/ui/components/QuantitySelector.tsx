@@ -17,10 +17,7 @@ const QuantitySelector = ({
 }: QuantitySelectorProps) => {
   return (
     <div className="w-full">
-      <p id="helper-text-explanation" className=" text-white text-lg">
-        Select the quantity of products:
-      </p>
-      <div className="relative flex items-center mt-3">
+      <div className="relative flex items-center">
         <button
           onClick={decrement}
           disabled={quantity <= 0}

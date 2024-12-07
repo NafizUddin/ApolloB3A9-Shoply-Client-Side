@@ -9,6 +9,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsCart3 } from "react-icons/bs";
+import { FaTruckFast } from "react-icons/fa6";
+import { MdAssignmentReturn } from "react-icons/md";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -82,6 +84,8 @@ const ProductDetails = () => {
     ? data?.price - discountAmount
     : data?.price;
 
+  console.log(data?.vendor?.shopName);
+
   return (
     <div className="py-10">
       <div className="flex flex-col lg:flex-row justify-center">
@@ -121,9 +125,11 @@ const ProductDetails = () => {
             />
           )}
         </div>
-        <div className="flex-1 space-y-3">
-          <h1 className="text-primary text-4xl">{data?.name}</h1>
-          <p className="text-gray-300 max-w-lg">{data?.description}</p>
+        <div className="flex-1 space-y-3 flex flex-col justify-center items-center lg:items-start my-8 lg:my-0">
+          <h1 className="text-primary text-3xl md:text-4xl">{data?.name}</h1>
+          <p className="text-gray-400 max-w-lg text-center lg:text-left">
+            {data?.description}
+          </p>
           <div className="flex text-white  gap-2 items-end">
             <p
               className={`text-${data?.flashSale ? "xl" : "3xl"} ${data?.flashSale && "line-through text-2xl"}`}
@@ -132,14 +138,19 @@ const ProductDetails = () => {
               {data?.price}
             </p>
             {data?.flashSale && (
-              <h2 className="font-medium md:text-3xl text-primary ml-3">
+              <h2 className="font-medium text-3xl text-primary ml-3">
                 <span>$</span>
                 {discountedPrice}
               </h2>
             )}
           </div>
-          <div className="flex gap-3 mt-5">
-            <div className="flex-1">
+
+          <p id="helper-text-explanation" className=" text-white text-2xl mt-5">
+            Select the quantity of products:
+          </p>
+
+          <div className="flex flex-col md:flex-row gap-6 md:gap-3 w-[70%] lg:w-full mx-auto">
+            <div className="flex-1 mt-4 lg:mt-0">
               <QuantitySelector
                 quantity={quantity}
                 increment={increment}
@@ -168,6 +179,31 @@ const ProductDetails = () => {
                   </span>
                 </label>
               )}
+            </div>
+          </div>
+
+          <h1 className="text-white my-3 text-2xl">
+            <span className="font-bold">Category:</span>{" "}
+            <span className="text-gray-400">{data?.category?.name}</span>
+          </h1>
+
+          <h1 className="text-white my-3 text-2xl">
+            <span className="font-bold">Shop Name:</span>{" "}
+            <span className="text-gray-400">{data?.vendor?.shopName}</span>
+          </h1>
+
+          <div className="flex space-x-4 mt-2">
+            <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+              <span className="text-xl text-primary">
+                <FaTruckFast />
+              </span>
+              <span className="font-semibold text-primary">Free Shipping</span>
+            </div>
+            <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+              <span className="text-xl text-primary">
+                <MdAssignmentReturn />
+              </span>
+              <span className="font-semibold text-primary">Easy Returns</span>
             </div>
           </div>
         </div>
