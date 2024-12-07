@@ -57,9 +57,9 @@ export interface IProduct {
   id: string;
   name: string;
   price: number;
-  inventoryCount: number;
+  inventory: number;
   description?: string;
-  image: string;
+  image: string[];
   flashSale?: boolean;
   discount?: number;
   categoryId: string;
