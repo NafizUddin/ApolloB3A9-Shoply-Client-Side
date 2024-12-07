@@ -33,7 +33,7 @@ const CartDrawer = () => {
 
   const handleRemoveFromCart = (id: string) => {
     dispatch(removeProduct(id));
-    toast.success("Product removed from cart successfully!");
+    toast.success("Product removed from Cart!");
   };
 
   return (

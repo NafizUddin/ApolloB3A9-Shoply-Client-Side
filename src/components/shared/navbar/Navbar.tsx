@@ -20,10 +20,13 @@ import NavbarUserDropdown from "./NavbarUserDropdown";
 import { IoSearch } from "react-icons/io5";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import CartDrawer from "../../CartDrawer/CartDrawer";
+import { useAppSelector } from "@/src/lib/redux/hooks";
+import { totalProductsCount } from "@/src/lib/redux/features/products/productSlice";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { userData, isLoading } = useUserDetails();
+  const totalProductInCart = useAppSelector(totalProductsCount);
 
   return (
     <>
@@ -113,11 +116,6 @@ export default function Navbar() {
         <NavbarContent justify="end">
           <NavbarItem className="flex gap-4 items-center">
             <IoSearch className="text-white text-2xl cursor-pointer" />
-            {/* Cart Button */}
-            {/* <MdOutlineShoppingCart
-              onClick={toggleDrawer}
-              className="text-white text-2xl cursor-pointer"
-            /> */}
 
             <div className="drawer-end">
               <input
@@ -125,10 +123,15 @@ export default function Navbar() {
                 type="checkbox"
                 className="drawer-toggle"
               />
-              <div className="drawer-content mr-3">
+              <div className="drawer-content mr-3 relative">
                 {/* Page content here */}
-                <label htmlFor="my-drawer-4" className="drawer-button">
+                <label htmlFor="my-drawer-4" className="drawer-button relative">
                   <MdOutlineShoppingCart className="text-white text-2xl cursor-pointer" />
+                  {totalProductInCart > 0 && (
+                    <span className="absolute top-0 right-0 mt-[-8px] mr-[-8px] flex items-center justify-center w-5 h-5 bg-primary text-white text-xs rounded-full">
+                      {totalProductInCart}
+                    </span>
+                  )}
                 </label>
               </div>
               <div className="drawer-side z-20">
@@ -140,6 +143,7 @@ export default function Navbar() {
                 <CartDrawer />
               </div>
             </div>
+
             {isLoading ? (
               <div className="animate-pulse w-10 h-10 rounded-full bg-gray-400" />
             ) : userData ? (

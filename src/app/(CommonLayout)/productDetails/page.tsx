@@ -12,6 +12,7 @@ import { BsCart3 } from "react-icons/bs";
 import { FaCircleXmark, FaTruckFast } from "react-icons/fa6";
 import { MdAssignmentReturn } from "react-icons/md";
 import { AiFillCheckCircle } from "react-icons/ai";
+import Loading from "@/src/components/Loading/Loading";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -89,143 +90,154 @@ const ProductDetails = () => {
 
   return (
     <div className="py-10">
-      <div className="flex flex-col lg:flex-row justify-center">
-        <div className="flex-1 flex flex-col-reverse xl:flex-row px-14 gap-8 justify-center items-center xl:items-start">
-          <div className="flex flex-row xl:flex-col gap-5 lg:pl-5 xl:pl-0">
-            {data?.image?.map((singleImage: string, index: number) => (
-              <div
-                key={index}
-                className={`relative rounded-lg border-2 cursor-pointer ${
-                  singleImage === selectedImage
-                    ? "border-primary"
-                    : "border-gray-300"
-                }`}
-                onClick={() => setSelectedImage(singleImage)}
-              >
-                <Image
-                  src={singleImage}
-                  alt="Product Image"
-                  height={100}
-                  width={100}
-                  className="rounded-lg"
-                />
-                {singleImage === selectedImage && (
-                  <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg" />
-                )}
-              </div>
-            ))}
-          </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-col lg:flex-row justify-center">
+          <div className="flex-1 flex flex-col-reverse xl:flex-row px-14 gap-8 justify-center items-center xl:items-start">
+            <div className="flex flex-row xl:flex-col gap-5 lg:pl-5 xl:pl-0">
+              {data?.image?.map((singleImage: string, index: number) => (
+                <div
+                  key={index}
+                  className={`relative rounded-lg border-2 cursor-pointer ${
+                    singleImage === selectedImage
+                      ? "border-primary"
+                      : "border-gray-300"
+                  }`}
+                  onClick={() => setSelectedImage(singleImage)}
+                >
+                  <Image
+                    src={singleImage}
+                    alt="Product Image"
+                    height={100}
+                    width={100}
+                    className="rounded-lg"
+                  />
+                  {singleImage === selectedImage && (
+                    <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg" />
+                  )}
+                </div>
+              ))}
+            </div>
 
-          {selectedImage && (
-            <Image
-              src={selectedImage}
-              alt="Selected Product Image"
-              height={400}
-              width={400}
-              className="rounded-lg object-cover"
-            />
-          )}
-        </div>
-        <div className="flex-1 space-y-3 flex flex-col justify-center items-center lg:items-start my-8 lg:my-0">
-          <h1 className="text-primary text-3xl md:text-4xl">{data?.name}</h1>
-          <p className="text-gray-400 max-w-lg text-center lg:text-left">
-            {data?.description}
-          </p>
-          <div className="flex text-white  gap-2 items-end">
-            <p
-              className={`text-${data?.flashSale ? "xl" : "3xl"} ${data?.flashSale && "line-through text-2xl"}`}
-            >
-              <span>$</span>
-              {data?.price}
-            </p>
-            {data?.flashSale && (
-              <h2 className="font-medium text-3xl text-primary ml-3">
-                <span>$</span>
-                {discountedPrice}
-              </h2>
+            {selectedImage && (
+              <Image
+                src={selectedImage}
+                alt="Selected Product Image"
+                height={400}
+                width={400}
+                className="rounded-lg object-cover"
+              />
             )}
           </div>
-
-          <p id="helper-text-explanation" className=" text-white text-2xl mt-5">
-            Select the quantity of products:
-          </p>
-
-          <div className="flex flex-col md:flex-row gap-6 md:gap-3 w-[70%] lg:w-11/12 mx-auto lg:mx-0">
-            <div className="flex-1 mt-4 lg:mt-0">
-              <QuantitySelector
-                quantity={quantity}
-                increment={increment}
-                decrement={decrement}
-                inStock={inStock}
-              />
-            </div>
-            <div className="flex-1 flex items-end justify-center">
-              {isDisabled ? (
-                <button
-                  disabled={isDisabled}
-                  className="flex items-center gap-2 px-6 py-[10px]  rounded-lg w-full justify-center disabled:bg-gray-700 disabled:opacity-50"
-                >
-                  <BsCart3 /> <span>Add to cart</span>
-                </button>
-              ) : (
-                <label
-                  htmlFor="my-drawer-4"
-                  className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
-                >
-                  <span
-                    onClick={handleAddToCart}
-                    className="flex items-center gap-2 px-6 py-3  rounded-lg w-full justify-center cursor-pointer relative h-12 w-30 origin-top transform border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold"
-                  >
-                    <BsCart3 className="font-bold" /> <span>Add to cart</span>
-                  </span>
-                </label>
+          <div className="flex-1 space-y-3 flex flex-col justify-center items-center lg:items-start my-8 lg:my-0">
+            <h1 className="text-primary text-3xl md:text-4xl">{data?.name}</h1>
+            <p className="text-gray-400 max-w-lg text-center lg:text-left">
+              {data?.description}
+            </p>
+            <div className="flex text-white  gap-2 items-end">
+              <p
+                className={`text-${data?.flashSale ? "xl" : "3xl"} ${data?.flashSale && "line-through text-2xl"}`}
+              >
+                <span>$</span>
+                {data?.price}
+              </p>
+              {data?.flashSale && (
+                <h2 className="font-medium text-3xl text-primary ml-3">
+                  <span>$</span>
+                  {discountedPrice}
+                </h2>
               )}
             </div>
-          </div>
 
-          <h1 className="text-white my-3 text-2xl">
-            <span className="font-bold">Category:</span>{" "}
-            <span className="text-gray-400">{data?.category?.name}</span>
-          </h1>
+            <p
+              id="helper-text-explanation"
+              className=" text-white text-2xl mt-5"
+            >
+              Select the quantity of products:
+            </p>
 
-          <h1 className="text-white my-3 text-2xl">
-            <span className="font-bold">Shop Name:</span>{" "}
-            <span className="text-gray-400">{data?.vendor?.shopName}</span>
-          </h1>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-3 w-[70%] lg:w-11/12 mx-auto lg:mx-0">
+              <div className="flex-1 mt-4 lg:mt-0">
+                <QuantitySelector
+                  quantity={quantity}
+                  increment={increment}
+                  decrement={decrement}
+                  inStock={inStock}
+                />
+              </div>
+              <div className="flex-1 flex items-end justify-center">
+                {isDisabled ? (
+                  <button
+                    disabled={isDisabled}
+                    className="flex items-center gap-2 px-6 py-[10px]  rounded-lg w-full justify-center disabled:bg-gray-700 disabled:opacity-50"
+                  >
+                    <BsCart3 /> <span>Add to cart</span>
+                  </button>
+                ) : (
+                  <label
+                    htmlFor="my-drawer-4"
+                    className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
+                  >
+                    <span
+                      onClick={handleAddToCart}
+                      className="flex items-center gap-2 px-6 py-3  rounded-lg w-full justify-center cursor-pointer relative h-12 w-30 origin-top transform border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold"
+                    >
+                      <BsCart3 className="font-bold" /> <span>Add to cart</span>
+                    </span>
+                  </label>
+                )}
+              </div>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mt-2">
-            {inStock ? (
+            <h1 className="text-white my-3 text-2xl">
+              <span className="font-bold">Category:</span>{" "}
+              <span className="text-gray-400">{data?.category?.name}</span>
+            </h1>
+
+            <h1 className="text-white my-3 text-2xl">
+              <span className="font-bold">Shop Name:</span>{" "}
+              <span className="text-gray-400">{data?.vendor?.shopName}</span>
+            </h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mt-2">
+              {inStock ? (
+                <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+                  <span className="text-xl text-primary">
+                    <AiFillCheckCircle />
+                  </span>
+                  <span className="font-semibold text-primary">
+                    Item Available
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+                  <span className="text-xl text-primary">
+                    <FaCircleXmark />
+                  </span>
+                  <span className="font-semibold text-primary">
+                    Out of Stock
+                  </span>
+                </div>
+              )}
               <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
                 <span className="text-xl text-primary">
-                  <AiFillCheckCircle />
+                  <FaTruckFast />
                 </span>
                 <span className="font-semibold text-primary">
-                  Item Available
+                  Free Shipping
                 </span>
               </div>
-            ) : (
-              <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
+              <div className="flex justify-center items-center xl:space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
                 <span className="text-xl text-primary">
-                  <FaCircleXmark />
+                  <MdAssignmentReturn />
                 </span>
-                <span className="font-semibold text-primary">Out of Stock</span>
+                <span className="font-semibold text-primary">Easy Returns</span>
               </div>
-            )}
-            <div className="flex items-center space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
-              <span className="text-xl text-primary">
-                <FaTruckFast />
-              </span>
-              <span className="font-semibold text-primary">Free Shipping</span>
-            </div>
-            <div className="flex justify-center items-center xl:space-x-2 border-2 border-primary text-black px-4 py-2 rounded-lg shadow-sm">
-              <span className="text-xl text-primary">
-                <MdAssignmentReturn />
-              </span>
-              <span className="font-semibold text-primary">Easy Returns</span>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

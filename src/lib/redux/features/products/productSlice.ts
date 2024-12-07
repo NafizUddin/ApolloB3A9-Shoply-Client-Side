@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
 export type TProductRedux = {
   id: string;
@@ -72,5 +73,8 @@ const productSlice = createSlice({
 
 export const { addProduct, removeProduct, updateQuantity, clearCart } =
   productSlice.actions;
+
+export const totalProductsCount = (state: RootState) =>
+  state.products.products.length;
 
 export default productSlice.reducer;
