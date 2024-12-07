@@ -2,9 +2,13 @@
 
 import QuantitySelector from "@/src/components/ui/components/QuantitySelector";
 import { useGetSingleProductQuery } from "@/src/lib/redux/features/products/productApi";
+import { addProduct } from "@/src/lib/redux/features/products/productSlice";
+import { useAppDispatch, useAppSelector } from "@/src/lib/redux/hooks";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { BsCart3 } from "react-icons/bs";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -20,12 +24,57 @@ const ProductDetails = () => {
   });
 
   const [selectedImage, setSelectedImage] = useState<string | undefined>();
+  const [quantity, setQuantity] = useState(0);
+  const [inStock, setInStock] = useState(data?.inventory || 0);
+  const isDisabled = !(inStock && quantity);
+  const dispatch = useAppDispatch();
+  const { products } = useAppSelector((state) => state.products);
 
   useEffect(() => {
     if (data?.image?.length) {
       setSelectedImage(data.image[0]);
     }
+
+    if (data?.inventory) {
+      setInStock(data?.inventory);
+    }
   }, [data]);
+
+  const increment = () => {
+    if (inStock > 1) {
+      setQuantity((prev) => prev + 1);
+      setInStock((prev: number) => prev - 1);
+    }
+  };
+
+  const decrement = () => {
+    if (quantity > 0) {
+      setQuantity((prev) => prev - 1);
+      setInStock((prev: number) => prev + 1);
+    }
+  };
+
+  const handleAddToCart = () => {
+    const existingProduct = products.find((p) => p.id === data?.id);
+
+    if (existingProduct) {
+      toast.error("This product is already in your cart.");
+    } else {
+      const productInfo = {
+        id: data.id,
+        name: data?.name,
+        price: data?.price,
+        quantity,
+        image: data?.image[0],
+        inStock,
+      };
+
+      console.log(productInfo);
+
+      // dispatch(addProduct(productInfo));
+      // toast.success("Product added to cart successfully.");
+    }
+  };
 
   const discountPercentage = (data?.discount ?? 0) / 100;
   const discountAmount = data?.price * discountPercentage;
@@ -91,10 +140,34 @@ const ProductDetails = () => {
           </div>
           <div className="flex gap-3 mt-5">
             <div className="flex-1">
-              <QuantitySelector />
+              <QuantitySelector
+                quantity={quantity}
+                increment={increment}
+                decrement={decrement}
+                inStock={inStock}
+              />
             </div>
-            <div className="flex-1">
-              <h1>Hello</h1>
+            <div className="flex-1 flex items-end justify-center">
+              {isDisabled ? (
+                <button
+                  disabled={isDisabled}
+                  className="flex items-center gap-2 px-6 py-[10px]  rounded-lg w-full justify-center disabled:bg-gray-700 disabled:opacity-50"
+                >
+                  <BsCart3 /> <span>Add to cart</span>
+                </button>
+              ) : (
+                <label
+                  htmlFor="my-drawer-4"
+                  className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
+                >
+                  <span
+                    onClick={handleAddToCart}
+                    className="flex items-center gap-2 px-6 py-3  rounded-lg w-full justify-center cursor-pointer relative h-12 w-30 origin-top transform border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold"
+                  >
+                    <BsCart3 className="font-bold" /> <span>Add to cart</span>
+                  </span>
+                </label>
+              )}
             </div>
           </div>
         </div>
