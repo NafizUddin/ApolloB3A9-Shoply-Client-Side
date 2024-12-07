@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import QuantitySelector from "@/src/components/ui/components/QuantitySelector";
@@ -82,8 +83,6 @@ const ProductDetails = () => {
 
   const handleAddToCart = () => {
     const existingVendorId = products[0]?.vendorId;
-
-    console.log(existingVendorId, data?.vendor?.id);
 
     if (existingVendorId && existingVendorId !== data?.vendor?.id) {
       setPendingProduct({

@@ -1,10 +1,70 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  addProduct,
+  clearCart,
+} from "@/src/lib/redux/features/products/productSlice";
+import { useAppDispatch, useAppSelector } from "@/src/lib/redux/hooks";
 import { IProduct } from "@/src/types/model";
 import Link from "next/link";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { IoMdCart } from "react-icons/io";
+import WarningModal from "../modal/WarningModal";
 
 const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
   const params = new URLSearchParams();
   params.set("product", singleProduct.id);
+  const dispatch = useAppDispatch();
+  const { products } = useAppSelector((state) => state.products);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingProduct, setPendingProduct] = useState<any>(null);
+
+  const addProductToCart = () => {
+    const productInfo = {
+      id: singleProduct.id,
+      name: singleProduct?.name,
+      price: singleProduct?.price,
+      quantity: 1,
+      image: singleProduct?.image[0],
+      inStock: singleProduct.inventory - 1,
+      vendorId: singleProduct?.vendor?.id,
+    };
+
+    dispatch(addProduct(productInfo));
+    toast.success("Product added to cart successfully!");
+  };
+
+  const handleAddToCart = () => {
+    const existingVendorId = products[0]?.vendorId;
+
+    console.log(existingVendorId, singleProduct?.vendor?.id);
+
+    if (existingVendorId && existingVendorId !== singleProduct?.vendor?.id) {
+      setPendingProduct({
+        id: singleProduct.id,
+        name: singleProduct?.name,
+        price: singleProduct?.price,
+        quantity: 1,
+        image: singleProduct?.image[0],
+        inStock: singleProduct.inventory - 1,
+        vendorId: singleProduct?.vendor?.id,
+      });
+      setIsModalOpen(true);
+    } else {
+      addProductToCart();
+    }
+  };
+
+  const handleConfirmReplace = () => {
+    dispatch(clearCart());
+    addProductToCart();
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setPendingProduct(null);
+    setIsModalOpen(false);
+  };
 
   const discountPercentage = (singleProduct?.discount ?? 0) / 100;
   const discountAmount = singleProduct.price * discountPercentage;
@@ -28,12 +88,28 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
           </button>
         )}
 
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white">
-          <span>
-            <IoMdCart className="text-xl" />
-          </span>
-          <span className="text-lg">Add to Cart</span>
-        </div>
+        {singleProduct.inventory > 0 && (
+          // <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white">
+          //   <span>
+          //     <IoMdCart className="text-xl" />
+          //   </span>
+          //   <span className="text-lg">Add to Cart</span>
+          // </div>
+          <label
+            htmlFor="my-drawer-4"
+            className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
+          >
+            <span
+              onClick={handleAddToCart}
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white"
+            >
+              <span>
+                <IoMdCart className="text-xl" />
+              </span>
+              <span className="text-lg">Add to Cart</span>
+            </span>
+          </label>
+        )}
       </div>
 
       {/* Details Section */}
@@ -60,6 +136,12 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
             View Details
           </Link>
         </button>
+
+        <WarningModal
+          isOpen={isModalOpen}
+          onConfirm={handleConfirmReplace}
+          onCancel={handleCancel}
+        />
       </div>
     </div>
   );
