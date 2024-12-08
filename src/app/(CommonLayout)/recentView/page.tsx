@@ -73,13 +73,16 @@ const RecentViewProducts = () => {
                       return (
                         <div
                           key={singleProduct.id}
-                          className="card card-side bg-base-100 shadow-xl"
+                          className="card card-side bg-base-100 shadow-xl relative"
                         >
+                          <span className="absolute right-3 top-2 w-9 h-9 border-2 border-primary rounded-full text-center p-1 font-bold text-primary cursor-pointer">
+                            X
+                          </span>
                           <figure>
                             <img
                               src={singleProduct.product.image[0]}
                               alt="Product"
-                              className="w-52 h-[290px] md:h-[260px] lg:h-[280px] xl:h-[260px] object-cover"
+                              className="w-32 md:w-52 h-[340px] md:h-[260px] lg:h-[320px] lg:w-44 xl:w-48 xl:h-[260px] object-cover rounded-l-lg"
                             />
                           </figure>
                           <div className="card-body">
@@ -87,15 +90,15 @@ const RecentViewProducts = () => {
                               {singleProduct.product.name}
                             </h2>
                             <p className="max-w-md text-sm">
-                              {singleProduct.product.description?.slice(0, 100)}
+                              {singleProduct.product.description?.slice(0, 90)}
                               ...
                             </p>
                             <div className="flex gap-2 items-center">
-                              <span className="font-medium md:text-xl text-white">
+                              <span className="font-medium md:text-xl lg:text-lg xl:text-xl text-white">
                                 Price:
                               </span>
                               <h2
-                                className={`font-medium md:text-xl text-white ${
+                                className={`font-medium md:text-xl lg:text-lg xl:text-xl text-white ${
                                   singleProduct?.product.flashSale &&
                                   "line-through"
                                 }`}
@@ -104,17 +107,30 @@ const RecentViewProducts = () => {
                                 {singleProduct.product.price}
                               </h2>
                               {singleProduct?.product.flashSale && (
-                                <h2 className="font-medium md:text-xl text-primary">
+                                <h2 className="font-medium md:text-xl lg:text-lg xl:text-xl text-primary">
                                   <span>$</span>
                                   {discountedPrice}
                                 </h2>
                               )}
+
+                              {singleProduct.product.flashSale && (
+                                <div className="md:inline-block lg:hidden xl:inline-block px-3 py-1 text-sm font-medium text-white bg-primary rounded-full animate-blink hidden">
+                                  Flash Sale On!
+                                </div>
+                              )}
                             </div>
-                            <div className="card-actions justify-end">
+                            <div>
+                              {singleProduct.product.flashSale && (
+                                <div className="inline-block px-3 py-1 text-sm font-medium text-white bg-primary rounded-full animate-blink md:hidden lg:inline-block xl:hidden">
+                                  Flash Sale On!
+                                </div>
+                              )}
+                            </div>
+                            <div className="card-actions justify-start md:justify-end mt-2">
                               <Link
                                 href={`/productDetails?${params.toString()}`}
                               >
-                                <button className="relative h-10 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
+                                <button className="relative h-10 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-sm">
                                   View Details
                                 </button>
                               </Link>

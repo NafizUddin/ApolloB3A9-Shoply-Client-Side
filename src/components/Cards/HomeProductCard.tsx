@@ -89,12 +89,6 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
         )}
 
         {singleProduct.inventory > 0 && (
-          // <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white">
-          //   <span>
-          //     <IoMdCart className="text-xl" />
-          //   </span>
-          //   <span className="text-lg">Add to Cart</span>
-          // </div>
           <label
             htmlFor="my-drawer-4"
             className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
