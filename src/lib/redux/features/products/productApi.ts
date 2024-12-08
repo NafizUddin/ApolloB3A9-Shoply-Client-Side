@@ -14,6 +14,7 @@ const productApi = baseApi.injectEndpoints({
           maxPrice,
           category,
           sort,
+          vendorId,
         } = queryObj || {};
 
         let url = "/products";
@@ -25,6 +26,10 @@ const productApi = baseApi.injectEndpoints({
 
         if (category) {
           params.append("category", category);
+        }
+
+        if (vendorId) {
+          params.append("vendorId", vendorId);
         }
 
         if (flashSale !== undefined) {

@@ -72,6 +72,18 @@ const authApi = baseApi.injectEndpoints({
       },
       providesTags: ["users"],
     }),
+    getSingleVendor: builder.query({
+      query: (id: string) => {
+        return {
+          url: `/users/get-vendor/${id}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response.data;
+      },
+      providesTags: ["users"],
+    }),
   }),
 });
 
@@ -81,4 +93,5 @@ export const {
   useGetAllUsersQuery,
   useUpdateUserMutation,
   useGetMyProfileQuery,
+  useGetSingleVendorQuery,
 } = authApi;

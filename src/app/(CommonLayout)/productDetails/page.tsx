@@ -20,7 +20,6 @@ import { FaCircleXmark, FaTruckFast } from "react-icons/fa6";
 import { MdAssignmentReturn } from "react-icons/md";
 import { AiFillCheckCircle } from "react-icons/ai";
 import Loading from "@/src/components/Loading/Loading";
-import SectionTitle from "@/src/components/HomeComponents/SectionTitle/SectionTitle";
 import WarningModal from "@/src/components/modal/WarningModal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -31,6 +30,7 @@ import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import { IProduct } from "@/src/types/model";
 import HomeProductCard from "@/src/components/Cards/HomeProductCard";
 import { PiStarFourFill } from "react-icons/pi";
+import Link from "next/link";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -54,12 +54,11 @@ const ProductDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingProduct, setPendingProduct] = useState<any>(null);
   const [category, setCategory] = useState<string | undefined>(undefined);
+  const params = new URLSearchParams();
+  params.set("shop", data?.vendor?.id);
 
-  const {
-    data: allProductsResponse,
-    isLoading: allProductsLoading,
-    refetch,
-  } = useGetAllProductsQuery({ category });
+  const { data: allProductsResponse, isLoading: allProductsLoading } =
+    useGetAllProductsQuery({ category });
 
   useEffect(() => {
     if (data?.image?.length) {
@@ -277,7 +276,9 @@ const ProductDetails = () => {
                    after:bg-primary after:w-full after:scale-x-0 hover:after:scale-x-100
                    after:transition-transform after:duration-300 after:ease-out after:origin-left cursor-pointer"
                 >
-                  {data?.vendor?.shopName}
+                  <Link href={`/shop?${params.toString()}`}>
+                    {data?.vendor?.shopName}
+                  </Link>
                 </span>
               </h1>
 
