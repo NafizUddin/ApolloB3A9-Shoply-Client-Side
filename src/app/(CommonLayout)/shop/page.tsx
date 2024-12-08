@@ -12,6 +12,7 @@ import { IProduct } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaUserFriends } from "react-icons/fa";
 
 const ShopPage = () => {
   const searchParams = useSearchParams();
@@ -52,6 +53,8 @@ const ShopPage = () => {
   const totalProducts = singleVendor?.products?.length || 0;
   const totalPages = Math.ceil(totalProducts / dataPerPage);
 
+  console.log(singleCustomer?.follows?.includes(vendorId));
+
   return (
     <div>
       {isLoading ? (
@@ -76,12 +79,20 @@ const ShopPage = () => {
                 <p className="text-white/80 text-lg max-w-lg mx-auto text-center">
                   {singleVendor?.description || "No description available."}
                 </p>
-                <p className="text-white/70 text-lg">
-                  {singleVendor?.followers?.length || 0} Followers
+                <p className="text-white/70 text-lg flex gap-2 items-center">
+                  <span>
+                    <FaUserFriends className="text-xl" />
+                  </span>{" "}
+                  <span> {singleVendor?.followers?.length || 0} Followers</span>
                 </p>
-                {userData?.userData?.role === "USER" && (
+                {userData?.userData?.role === "CUSTOMER" &&
+                !singleCustomer?.follows?.includes(vendorId) ? (
                   <button className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
                     Follow
+                  </button>
+                ) : (
+                  <button className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
+                    Unfollow
                   </button>
                 )}
               </div>
