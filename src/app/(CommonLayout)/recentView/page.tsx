@@ -56,7 +56,7 @@ const RecentViewProducts = () => {
               </div>
             ) : (
               <>
-                <div className="my-14 grid grid-cols-1 md:grid-cols-2 gap-5 w-[95%] mx-auto">
+                <div className="my-14 grid grid-cols-1 lg:grid-cols-2 gap-5 w-[95%] mx-auto">
                   {paginatedProducts.map(
                     (singleProduct: IRecentProductView) => {
                       const discountPercentage =
@@ -79,7 +79,7 @@ const RecentViewProducts = () => {
                             <img
                               src={singleProduct.product.image[0]}
                               alt="Product"
-                              className="w-52 h-[260px] object-cover"
+                              className="w-52 h-[290px] md:h-[260px] lg:h-[280px] xl:h-[260px] object-cover"
                             />
                           </figure>
                           <div className="card-body">
