@@ -17,17 +17,11 @@ import { useAppDispatch } from "@/src/lib/redux/hooks";
 import {
   useLoginMutation,
   useSignUpMutation,
-} from "@/src/lib/redux/features/auth/authApi";
+} from "@/src/lib/redux/features/category/authApi";
 import { setUser, TUser } from "@/src/lib/redux/features/auth/authSlice";
 import { verifyToken } from "@/src/utils/verifyToken";
 import toast from "react-hot-toast";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/dropdown";
 
 export type TLogin = {
   email: string;

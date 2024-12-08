@@ -17,6 +17,10 @@ export const siteConfig = {
       label: "Flash Sale",
       href: "/flashSale",
     },
+    {
+      label: "Recent Views",
+      href: "/recentView",
+    },
   ],
   navMenuItems: [
     {
@@ -30,6 +34,10 @@ export const siteConfig = {
     {
       label: "Flash Sale",
       href: "/flashSale",
+    },
+    {
+      label: "Recent Views",
+      href: "/recentView",
     },
     {
       label: "Login",

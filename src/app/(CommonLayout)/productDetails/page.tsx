@@ -3,6 +3,7 @@
 
 import QuantitySelector from "@/src/components/ui/components/QuantitySelector";
 import {
+  useAddRecentProductMutation,
   useGetAllProductsQuery,
   useGetSingleProductQuery,
 } from "@/src/lib/redux/features/products/productApi";
@@ -56,11 +57,24 @@ const ProductDetails = () => {
   const [category, setCategory] = useState<string | undefined>(undefined);
   const params = new URLSearchParams();
   params.set("shop", data?.vendor?.id);
+  const [addRecentProduct] = useAddRecentProductMutation();
 
   const { data: allProductsResponse, isLoading: allProductsLoading } =
     useGetAllProductsQuery({ category });
 
   useEffect(() => {
+    const addProduct = async () => {
+      if (data) {
+        try {
+          const productInfo = { productId: data.id };
+          const result = await addRecentProduct(productInfo).unwrap();
+          console.log(result);
+        } catch (error) {
+          console.error("Failed to add recent product:", error);
+        }
+      }
+    };
+
     if (data?.image?.length) {
       setSelectedImage(data.image[0]);
     }
@@ -72,7 +86,9 @@ const ProductDetails = () => {
     if (data?.category) {
       setCategory(data?.category?.name);
     }
-  }, [data]);
+
+    addProduct();
+  }, [data, addRecentProduct]);
 
   const increment = () => {
     if (inStock > 1) {
