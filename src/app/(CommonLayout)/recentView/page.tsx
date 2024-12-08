@@ -103,7 +103,7 @@ const RecentViewProducts = () => {
                             <img
                               src={singleProduct.product.image[0]}
                               alt="Product"
-                              className="w-32 md:w-52 h-[340px] md:h-[260px] lg:h-[320px] lg:w-44 xl:w-48 xl:h-[260px] object-cover rounded-l-lg"
+                              className="w-32 md:w-52 h-[340px] md:h-[260px] lg:h-[320px] lg:w-44 xl:w-48 xl:h-[275px] object-cover rounded-l-lg"
                             />
                           </figure>
                           <div className="card-body">
@@ -133,16 +133,10 @@ const RecentViewProducts = () => {
                                   {discountedPrice}
                                 </h2>
                               )}
-
-                              {singleProduct.product.flashSale && (
-                                <div className="md:inline-block lg:hidden xl:inline-block px-3 py-1 text-sm font-medium text-white bg-primary rounded-full animate-blink hidden">
-                                  Flash Sale On!
-                                </div>
-                              )}
                             </div>
                             <div>
                               {singleProduct.product.flashSale && (
-                                <div className="inline-block px-3 py-1 text-sm font-medium text-white bg-primary rounded-full animate-blink md:hidden lg:inline-block xl:hidden">
+                                <div className="inline-block px-3 py-1 text-sm font-medium text-white bg-primary rounded-full animate-blink">
                                   Flash Sale On!
                                 </div>
                               )}
