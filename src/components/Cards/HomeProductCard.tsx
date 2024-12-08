@@ -122,11 +122,13 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
           <h2
             className={`font-medium md:text-lg text-white ${singleProduct?.flashSale && "line-through"}`}
           >
-            <span>$</span> {singleProduct.price}
+            <span>$</span>
+            {singleProduct.price}
           </h2>
           {singleProduct?.flashSale && (
             <h2 className="font-medium md:text-lg text-primary">
-              <span>$</span> {discountedPrice}
+              <span>$</span>
+              {discountedPrice}
             </h2>
           )}
         </div>
