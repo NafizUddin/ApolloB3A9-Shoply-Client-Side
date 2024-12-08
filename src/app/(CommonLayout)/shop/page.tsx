@@ -1,8 +1,12 @@
 "use client";
 
+import HomeProductCard from "@/src/components/Cards/HomeProductCard";
 import Loading from "@/src/components/Loading/Loading";
+import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import { useGetSingleVendorQuery } from "@/src/lib/redux/features/auth/authApi";
+import { IProduct } from "@/src/types/model";
+import { Pagination } from "@nextui-org/pagination";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -10,6 +14,8 @@ const ShopPage = () => {
   const searchParams = useSearchParams();
   const [vendorId, setVendorId] = useState<string | null>(null);
   const { userData } = useUserDetails();
+  const [currentPage, setCurrentPage] = useState(1);
+  const dataPerPage = 8;
 
   useEffect(() => {
     const id = searchParams.get("shop");
@@ -23,12 +29,24 @@ const ShopPage = () => {
     }
   );
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * dataPerPage;
+  const endIndex = startIndex + dataPerPage;
+  const paginatedProducts =
+    singleVendor?.products?.slice(startIndex, endIndex) || [];
+  const totalProducts = singleVendor?.products?.length || 0;
+  const totalPages = Math.ceil(totalProducts / dataPerPage);
+
   return (
     <div>
       {isLoading ? (
         <Loading />
       ) : (
-        <div>
+        <div className="pb-14">
+          {/* Shop Details part */}
           <div className="p-6 flex flex-col justify-center items-center">
             <div className="mb-4 space-y-2">
               <div className="flex justify-center items-center">
@@ -56,6 +74,35 @@ const ShopPage = () => {
                 )}
               </div>
             </div>
+          </div>
+
+          {/* Shop product part */}
+          <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-3">
+            {isLoading
+              ? Array.from({ length: dataPerPage }).map((_, index) => (
+                  <div key={index}>
+                    <ProductLoading />
+                  </div>
+                ))
+              : paginatedProducts.map((singleProduct: IProduct) => (
+                  <div key={singleProduct.id}>
+                    <HomeProductCard singleProduct={singleProduct} />
+                  </div>
+                ))}
+          </div>
+
+          <div className="pt-7">
+            {totalProducts > 0 && (
+              <div className="flex justify-center items-center mt-4">
+                <Pagination
+                  total={totalPages}
+                  initialPage={1}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  showControls
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
