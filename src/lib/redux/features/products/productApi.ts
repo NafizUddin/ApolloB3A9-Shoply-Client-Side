@@ -106,6 +106,19 @@ const productApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["recent-products"],
     }),
+    deleteRecentProduct: builder.mutation({
+      query: (productInfo) => {
+        return {
+          url: "/recent-products",
+          method: "DELETE",
+          body: productInfo,
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response.data;
+      },
+      invalidatesTags: ["recent-products"],
+    }),
   }),
 });
 
@@ -114,4 +127,5 @@ export const {
   useGetSingleProductQuery,
   useGetRecentViewProductsQuery,
   useAddRecentProductMutation,
+  useDeleteRecentProductMutation,
 } = productApi;

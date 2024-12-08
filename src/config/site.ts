@@ -18,7 +18,7 @@ export const siteConfig = {
       href: "/flashSale",
     },
     {
-      label: "Recent Views",
+      label: "Recent Viewed",
       href: "/recentView",
     },
   ],
@@ -36,7 +36,7 @@ export const siteConfig = {
       href: "/flashSale",
     },
     {
-      label: "Recent Views",
+      label: "Recent Viewed",
       href: "/recentView",
     },
     {

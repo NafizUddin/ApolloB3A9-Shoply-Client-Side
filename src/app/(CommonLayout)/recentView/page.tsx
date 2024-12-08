@@ -2,17 +2,23 @@
 
 import { useState } from "react";
 import Loading from "@/src/components/Loading/Loading";
-import { useGetRecentViewProductsQuery } from "@/src/lib/redux/features/products/productApi";
+import {
+  useDeleteRecentProductMutation,
+  useGetRecentViewProductsQuery,
+} from "@/src/lib/redux/features/products/productApi";
 import Image from "next/image";
 import { PiStarFourFill } from "react-icons/pi";
 import brand from "@/src/assets/brand.png";
 import { IRecentProductView } from "@/src/types/model";
 import Link from "next/link";
 import { Pagination } from "@nextui-org/pagination";
+import toast from "react-hot-toast";
 
 const RecentViewProducts = () => {
   const { data: recentViewedProducts, isLoading } =
     useGetRecentViewProductsQuery(undefined);
+
+  const [deleteRecentProduct] = useDeleteRecentProductMutation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 8;
@@ -26,6 +32,14 @@ const RecentViewProducts = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleDeletRecentViewedProduct = async (id: string) => {
+    await toast.promise(deleteRecentProduct({ productId: id }).unwrap(), {
+      loading: "Removing...",
+      success: "Removed from Recent Viewed!",
+      error: "Failed to remove product",
+    });
   };
 
   return (
@@ -75,7 +89,14 @@ const RecentViewProducts = () => {
                           key={singleProduct.id}
                           className="card card-side bg-base-100 shadow-xl relative"
                         >
-                          <span className="absolute right-3 top-2 w-9 h-9 border-2 border-primary rounded-full text-center p-1 font-bold text-primary cursor-pointer">
+                          <span
+                            onClick={() =>
+                              handleDeletRecentViewedProduct(
+                                singleProduct.product.id
+                              )
+                            }
+                            className="absolute right-3 top-2 w-9 h-9 border-2 border-primary rounded-full text-center p-1 font-bold text-primary cursor-pointer hover:bg-primary hover:text-white"
+                          >
                             X
                           </span>
                           <figure>
