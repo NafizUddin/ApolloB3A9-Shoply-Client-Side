@@ -4,7 +4,10 @@ import HomeProductCard from "@/src/components/Cards/HomeProductCard";
 import Loading from "@/src/components/Loading/Loading";
 import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
-import { useGetSingleVendorQuery } from "@/src/lib/redux/features/auth/authApi";
+import {
+  useGetSingleCustomerQuery,
+  useGetSingleVendorQuery,
+} from "@/src/lib/redux/features/auth/authApi";
 import { IProduct } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
 import { useSearchParams } from "next/navigation";
@@ -15,12 +18,17 @@ const ShopPage = () => {
   const [vendorId, setVendorId] = useState<string | null>(null);
   const { userData } = useUserDetails();
   const [currentPage, setCurrentPage] = useState(1);
+  const [email, setEmail] = useState("");
   const dataPerPage = 8;
 
   useEffect(() => {
     const id = searchParams.get("shop");
     setVendorId(id);
-  }, [searchParams]);
+
+    if (userData?.userData?.email) {
+      setEmail(userData?.userData?.email);
+    }
+  }, [searchParams, userData?.userData]);
 
   const { data: singleVendor, isLoading } = useGetSingleVendorQuery(
     vendorId ?? "",
@@ -28,6 +36,10 @@ const ShopPage = () => {
       skip: !vendorId,
     }
   );
+
+  const { data: singleCustomer } = useGetSingleCustomerQuery(email ?? "", {
+    skip: !email,
+  });
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
