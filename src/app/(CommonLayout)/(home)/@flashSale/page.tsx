@@ -21,8 +21,6 @@ const FlashSale = () => {
     refetch,
   } = useGetAllProductsQuery(queryObj);
 
-  console.log(allProductsResponse);
-
   const updateDataPerPage = () => {
     const width = window.innerWidth;
 

@@ -50,6 +50,14 @@ export default function Login() {
         toast.dismiss();
         const user = verifyToken(res.data.accessToken) as TUser;
         dispatch(setUser({ user: user, token: res.data.accessToken }));
+
+        // set cookies
+        document.cookie = `auth-token=${res.data.accessToken}; path=/; ${
+          process.env.NODE_ENV === "production"
+            ? "Secure; SameSite=Strict;"
+            : ""
+        }`;
+
         toast.success("Logged in successfully", { duration: 3000 });
         if (redirect) {
           router.push(redirect);
@@ -77,6 +85,14 @@ export default function Login() {
         toast.dismiss();
         const user = verifyToken(res.token) as TUser;
         dispatch(setUser({ user: user, token: res.token }));
+
+        // set cookies
+        document.cookie = `auth-token=${res.data.accessToken}; path=/; ${
+          process.env.NODE_ENV === "production"
+            ? "Secure; SameSite=Strict;"
+            : ""
+        }`;
+
         toast.success("Account created successfully!", { duration: 3000 });
         if (redirect) {
           router.push(redirect);

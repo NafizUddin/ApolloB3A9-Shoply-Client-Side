@@ -1,5 +1,6 @@
 "use client";
 
+import { protectedRoutes } from "@/src/constant";
 import { logout } from "@/src/lib/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/src/lib/redux/hooks";
 import { Avatar } from "@nextui-org/avatar";
@@ -21,14 +22,17 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
 
   const handleLogout = () => {
     dispatch(logout());
+
+    // Remove the cookie
+    document.cookie = `auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${
+      process.env.NODE_ENV === "production" ? "Secure; SameSite=Strict;" : ""
+    }`;
+
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
+
     toast.success("Logged out successfully", { duration: 3000 });
-    // logout();
-    // setUser(null);
-    // userLoading(true);
-    // if (protectedRoutes.some((route) => pathname.match(route))) {
-    //   router.push("/");
-    // }
-    // toast.success("Logged out successfully");
   };
 
   const handleNavigation = (pathname: string) => {
