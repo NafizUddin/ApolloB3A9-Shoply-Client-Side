@@ -59,32 +59,32 @@ export const registerUser = async (userInfo: Record<string, any>) => {
       }
 
       return data;
-    }
+    } else {
+      const response = await fetch(
+        "http://localhost:5000/api/users/create-customer",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(remaining),
+        }
+      );
 
-    const response = await fetch(
-      "http://localhost:5000/api/users/create-customer",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(remaining),
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to log in");
       }
-    );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to log in");
+      const data = await response.json();
+
+      if (data.success) {
+        cookies().set("accessToken", data?.token);
+        // cookies().set("refreshToken", data?.data?.refreshToken);
+      }
+
+      return data;
     }
-
-    const data = await response.json();
-
-    if (data.success) {
-      cookies().set("accessToken", data?.token);
-      // cookies().set("refreshToken", data?.data?.refreshToken);
-    }
-
-    return data;
   } catch (error: any) {
     throw new Error(error.message || "An unexpected error occurred");
   }

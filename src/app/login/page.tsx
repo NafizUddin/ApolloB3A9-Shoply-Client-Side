@@ -14,15 +14,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import loginValidationSchema from "@/src/schemas/login.schema";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { useAppDispatch } from "@/src/lib/redux/hooks";
-import {
-  useLoginMutation,
-  useSignUpMutation,
-} from "@/src/lib/redux/features/category/authApi";
 import { setUser, TUser } from "@/src/lib/redux/features/auth/authSlice";
 import { verifyToken } from "@/src/utils/verifyToken";
 import toast from "react-hot-toast";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
-import { loginUser } from "@/src/utils/loginService";
+import { loginUser, registerUser } from "@/src/utils/loginService";
 
 export type TLogin = {
   email: string;
@@ -34,8 +30,6 @@ export default function Login() {
   const redirect = searchParams.get("redirect");
   const router = useRouter();
   const [isActive, setIsActive] = useState(false);
-  const [signUp] = useSignUpMutation();
-  const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
   const [selectedRole, setSelectedRole] = useState<string>("User");
   const [isOpen, setIsOpen] = useState(false);
@@ -59,13 +53,6 @@ export default function Login() {
         const user = verifyToken(res.data.accessToken) as TUser;
         dispatch(setUser({ user: user, token: res.data.accessToken }));
 
-        // // set cookies
-        // document.cookie = `auth-token=${res.data.accessToken}; path=/; ${
-        //   process.env.NODE_ENV === "production"
-        //     ? "Secure; SameSite=Strict;"
-        //     : ""
-        // }`;
-
         setIsLogInSuccess(true);
         toast.success("Logged in successfully", { duration: 3000 });
       }
@@ -78,18 +65,18 @@ export default function Login() {
 
   const handleSignUp: SubmitHandler<FieldValues> = async (data) => {
     toast.loading("Loading...");
-    console.log(data);
 
     const signUpData = { ...data, role: selectedRole };
 
     try {
-      const res = await signUp(signUpData).unwrap();
+      const res = await registerUser(signUpData);
       console.log(res);
       if (res.success) {
         toast.dismiss();
         const user = verifyToken(res.token) as TUser;
         dispatch(setUser({ user: user, token: res.token }));
 
+        setIsLogInSuccess(true);
         toast.success("Account created successfully!", { duration: 3000 });
       }
     } catch (error: any) {
