@@ -21,15 +21,24 @@ const persistConfig = {
   storage,
 };
 
+const productsPersistConfig = {
+  key: "products",
+  storage,
+};
+
 // Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedProductReducer = persistReducer(
+  productsPersistConfig,
+  productReducer
+);
 
 // Function to make the store
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedReducer,
-    products: productReducer,
+    products: persistedProductReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

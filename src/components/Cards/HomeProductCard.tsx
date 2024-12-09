@@ -10,6 +10,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdCart } from "react-icons/io";
 import WarningModal from "../modal/WarningModal";
+import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
+import { useRouter } from "next/navigation";
 
 const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
   const params = new URLSearchParams();
@@ -18,8 +20,15 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
   const { products } = useAppSelector((state) => state.products);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingProduct, setPendingProduct] = useState<any>(null);
+  const { userData } = useUserDetails();
+  const router = useRouter();
 
   const addProductToCart = () => {
+    if (!userData?.userData) {
+      router.push("/login");
+      return;
+    }
+
     const productInfo = {
       id: singleProduct.id,
       name: singleProduct?.name,
@@ -88,21 +97,35 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
           </button>
         )}
 
-        {singleProduct.inventory > 0 && (
-          <label
-            htmlFor="my-drawer-4"
-            className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
+        {userData?.userData ? (
+          <div>
+            {singleProduct.inventory > 0 && (
+              <label
+                htmlFor="my-drawer-4"
+                className="drawer-button w-[280px] mx-auto lg:w-full lg:mx-auto"
+              >
+                <span
+                  onClick={handleAddToCart}
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white"
+                >
+                  <span>
+                    <IoMdCart className="text-xl" />
+                  </span>
+                  <span className="text-lg">Add to Cart</span>
+                </span>
+              </label>
+            )}
+          </div>
+        ) : (
+          <span
+            onClick={handleAddToCart}
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white"
           >
-            <span
-              onClick={handleAddToCart}
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white"
-            >
-              <span>
-                <IoMdCart className="text-xl" />
-              </span>
-              <span className="text-lg">Add to Cart</span>
+            <span>
+              <IoMdCart className="text-xl" />
             </span>
-          </label>
+            <span className="text-lg">Add to Cart</span>
+          </span>
         )}
       </div>
 

@@ -46,7 +46,8 @@ export async function middleware(request: NextRequest) {
   if (
     pathname === "/productDetails" ||
     pathname === "/shop" ||
-    pathname === "/recentView"
+    pathname === "/recentView" ||
+    pathname === "/checkout"
   ) {
     const redirectUrl = request.nextUrl.searchParams.get("redirect");
     if (redirectUrl) {
@@ -71,6 +72,7 @@ export const config = {
     "/productDetails",
     "/recentView",
     "/shop",
+    "/checkout",
     "/customer-dashboard",
     "/vendor-dashboard",
     "/admin-dashboard",

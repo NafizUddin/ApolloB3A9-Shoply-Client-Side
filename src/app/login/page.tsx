@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaGoogle, FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import logo from "@/src/assets/logo.png";
 import Image from "next/image";

@@ -1,21 +1,21 @@
 import { useGetMyProfileQuery } from "@/src/lib/redux/features/category/authApi";
 import {
-  selectCurrentToken,
+  // selectCurrentToken,
   selectCurrentUser,
 } from "@/src/lib/redux/features/auth/authSlice";
 import { useAppSelector } from "@/src/lib/redux/hooks";
 
 const useUserDetails = () => {
   const user = useAppSelector(selectCurrentUser);
-  const token = useAppSelector(selectCurrentToken);
+  // const token = useAppSelector(selectCurrentToken);
 
-  console.log("from hook", token);
+  // console.log("from hook", token);
 
   const { data, isLoading } = useGetMyProfileQuery(undefined, {
     skip: !user,
   });
 
-  console.log("from hook", data?.userData);
+  // console.log("from hook", data?.userData);
 
   if (!user) {
     return { isLoading: false, userData: undefined };
