@@ -22,6 +22,7 @@ import { setUser, TUser } from "@/src/lib/redux/features/auth/authSlice";
 import { verifyToken } from "@/src/utils/verifyToken";
 import toast from "react-hot-toast";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import { loginUser } from "@/src/utils/loginService";
 
 export type TLogin = {
   email: string;
@@ -39,31 +40,34 @@ export default function Login() {
   const [selectedRole, setSelectedRole] = useState<string>("User");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [isLogInSuccess, setIsLogInSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isLogInSuccess) {
+      const target = redirect || "/";
+      router.push(target);
+    }
+  }, [isLogInSuccess, redirect, router]);
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
     toast.loading("Loading...");
 
     try {
-      const res = await login(data).unwrap();
-      console.log(res);
+      const res = await loginUser(data);
       if (res.success) {
         toast.dismiss();
         const user = verifyToken(res.data.accessToken) as TUser;
         dispatch(setUser({ user: user, token: res.data.accessToken }));
 
-        // set cookies
-        document.cookie = `auth-token=${res.data.accessToken}; path=/; ${
-          process.env.NODE_ENV === "production"
-            ? "Secure; SameSite=Strict;"
-            : ""
-        }`;
+        // // set cookies
+        // document.cookie = `auth-token=${res.data.accessToken}; path=/; ${
+        //   process.env.NODE_ENV === "production"
+        //     ? "Secure; SameSite=Strict;"
+        //     : ""
+        // }`;
 
+        setIsLogInSuccess(true);
         toast.success("Logged in successfully", { duration: 3000 });
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
       }
     } catch (error: any) {
       console.log(error);
@@ -86,19 +90,7 @@ export default function Login() {
         const user = verifyToken(res.token) as TUser;
         dispatch(setUser({ user: user, token: res.token }));
 
-        // set cookies
-        document.cookie = `auth-token=${res.data.accessToken}; path=/; ${
-          process.env.NODE_ENV === "production"
-            ? "Secure; SameSite=Strict;"
-            : ""
-        }`;
-
         toast.success("Account created successfully!", { duration: 3000 });
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
       }
     } catch (error: any) {
       console.log(error);
@@ -169,10 +161,10 @@ export default function Login() {
             </span>
 
             <SHForm
-              // defaultValues={{
-              //   email: "nafizuddin.ctg@gmail.com",
-              //   password: "nafiz123",
-              // }}
+              defaultValues={{
+                email: "nafizuddin.okc@gmail.com",
+                password: "villa123",
+              }}
               onSubmit={handleLogin}
               resolver={zodResolver(loginValidationSchema)}
             >

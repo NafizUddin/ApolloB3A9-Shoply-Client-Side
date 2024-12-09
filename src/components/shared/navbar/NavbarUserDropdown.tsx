@@ -3,6 +3,7 @@
 import { protectedRoutes } from "@/src/constant";
 import { logout } from "@/src/lib/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/src/lib/redux/hooks";
+import { logoutService } from "@/src/utils/loginService";
 import { Avatar } from "@nextui-org/avatar";
 import {
   Dropdown,
@@ -10,7 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/dropdown";
-import { LayoutDashboard, LogOut, User } from "lucide-react";
+import { LayoutDashboard, LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -23,11 +24,11 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
   const handleLogout = () => {
     dispatch(logout());
 
-    // Remove the cookie
-    document.cookie = `auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${
-      process.env.NODE_ENV === "production" ? "Secure; SameSite=Strict;" : ""
-    }`;
-
+    // // Remove the cookie
+    // document.cookie = `auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${
+    //   process.env.NODE_ENV === "production" ? "Secure; SameSite=Strict;" : ""
+    // }`;
+    logoutService();
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
     }

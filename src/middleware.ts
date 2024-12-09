@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./utils/verifyToken";
+import { getAccessToken } from "./utils/loginService";
 
 const authRoutes = ["/login"];
 
@@ -15,10 +16,10 @@ type Role = keyof typeof roleBasedRoutes;
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  const token = request.cookies.get("auth-token")?.value;
+  const token = await getAccessToken();
   let user: { role?: Role; [key: string]: any } | null = null;
 
-  //   console.log("token", token);
+  console.log("token", token);
 
   if (token) {
     try {
@@ -28,14 +29,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  //   console.log("user", user);
+  console.log("user", user);
 
   if (!user) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
     } else {
+      const redirectUrl =
+        request.nextUrl.searchParams.get("redirect") || pathname;
       return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}${search}`, request.url)
+        new URL(`/login?redirect=${redirectUrl}${search}`, request.url)
       );
     }
   }
@@ -45,6 +48,10 @@ export async function middleware(request: NextRequest) {
     pathname === "/shop" ||
     pathname === "/recentView"
   ) {
+    const redirectUrl = request.nextUrl.searchParams.get("redirect");
+    if (redirectUrl) {
+      return NextResponse.redirect(new URL(redirectUrl, request.url));
+    }
     return NextResponse.next();
   }
 
