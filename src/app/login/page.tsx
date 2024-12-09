@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { FaGoogle, FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import logo from "@/src/assets/logo.png";
 import Image from "next/image";
@@ -48,6 +48,7 @@ export default function Login() {
 
     try {
       const res = await loginUser(data);
+
       if (res.success) {
         toast.dismiss();
         const user = verifyToken(res.data.accessToken) as TUser;
@@ -148,10 +149,10 @@ export default function Login() {
             </span>
 
             <SHForm
-              defaultValues={{
-                email: "nafizuddin.okc@gmail.com",
-                password: "villa123",
-              }}
+              // defaultValues={{
+              //   email: "nafizuddin.okc@gmail.com",
+              //   password: "villa123",
+              // }}
               onSubmit={handleLogin}
               resolver={zodResolver(loginValidationSchema)}
             >

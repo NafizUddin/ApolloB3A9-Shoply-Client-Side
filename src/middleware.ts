@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   const token = await getAccessToken();
   let user: { role?: Role; [key: string]: any } | null = null;
 
-  console.log("token", token);
+  // console.log("token", token);
 
   if (token) {
     try {
@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  console.log("user", user);
+  // console.log("user", user);
 
   if (!user) {
     if (authRoutes.includes(pathname)) {
