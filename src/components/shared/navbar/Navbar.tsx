@@ -97,20 +97,24 @@ export default function Navbar() {
             </NavbarItem>
           ))}
         </div> */}
-          <Image
-            src={logo}
-            alt="logo"
-            height={80}
-            width={80}
-            className="hidden lg:flex py-1 mt-2"
-          />
-          <Image
-            src={logo}
-            alt="logo"
-            height={80}
-            width={70}
-            className="flex lg:hidden mt-5"
-          />
+          <Link href={"/"}>
+            <Image
+              src={logo}
+              alt="logo"
+              height={80}
+              width={80}
+              className="hidden lg:flex py-1 mt-2"
+            />
+          </Link>
+          <Link href={"/"}>
+            <Image
+              src={logo}
+              alt="logo"
+              height={80}
+              width={70}
+              className="flex lg:hidden mt-5"
+            />
+          </Link>
         </NavbarContent>
 
         <NavbarContent justify="end">

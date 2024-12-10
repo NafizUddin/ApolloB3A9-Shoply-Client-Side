@@ -5,6 +5,7 @@ import {
 } from "@/src/lib/redux/features/products/productSlice";
 import { useAppDispatch, useAppSelector } from "@/src/lib/redux/hooks";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaCircleXmark } from "react-icons/fa6";
 
@@ -13,6 +14,11 @@ const CartDrawer = () => {
     (state) => state.products
   );
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
 
   const increment = (id: string) => {
     const selectedProduct = products.find((item) => item.id === id);
@@ -114,12 +120,12 @@ const CartDrawer = () => {
           </div>
 
           <label htmlFor="my-drawer-4" className="drawer-button">
-            <Link href={"/checkout"}>
-              {" "}
-              <button className="w-11/12 block text-center cursor-pointer  relative h-12 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold">
-                Checkout
-              </button>
-            </Link>
+            <span
+              onClick={handleCheckout}
+              className="w-11/12 flex text-center cursor-pointer  relative h-12 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold items-center justify-center"
+            >
+              Checkout
+            </span>
           </label>
         </div>
       )}

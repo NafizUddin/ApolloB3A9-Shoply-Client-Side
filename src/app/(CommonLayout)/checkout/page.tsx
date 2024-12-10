@@ -58,8 +58,8 @@ const CheckOut = () => {
     toast.success("Product removed successfully!");
   };
 
-  const shipping = subtotal * 0.1;
-  const taxes = subtotal * 0.05;
+  const shipping = subtotal * 0.05;
+  const taxes = subtotal * 0.02;
   const total = subtotal + shipping + taxes;
 
   const handlePlaceOrder = async (formData: any) => {};
@@ -223,7 +223,7 @@ const CheckOut = () => {
                           </span>
                           <span
                             id="delivery-method-1-description-0"
-                            className="mt-1 flex items-center text-sm text-gray-500"
+                            className="mt-1 flex items-center text-sm text-gray-400"
                           >
                             {" "}
                             Currently Unavailable{" "}
@@ -232,25 +232,15 @@ const CheckOut = () => {
                             id="delivery-method-0-description-1"
                             className="mt-6 text-sm font-medium text-white"
                           >
-                            {" "}
-                            ${shipping.toFixed(2)}{" "}
+                            <span className="line-through">
+                              <span>$</span>
+                              <span>250.00</span>
+                            </span>
                           </span>
                         </div>
                       </div>
 
-                      <svg
-                        className="h-5 w-5 text-[#e08534]"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                      <FaCircleXmark className="text-lg text-[#e08534]" />
 
                       <div
                         className="absolute -inset-px rounded-lg border-2 border-primary pointer-events-none"
@@ -275,7 +265,7 @@ const CheckOut = () => {
                           </span>
                           <span
                             id="delivery-method-0-description-0"
-                            className="mt-1 flex items-center text-sm text-gray-500"
+                            className="mt-1 flex items-center text-sm text-gray-400"
                           >
                             {" "}
                             4–10 business days{" "}
@@ -285,12 +275,27 @@ const CheckOut = () => {
                             className="mt-6 text-sm font-medium text-white"
                           >
                             {" "}
-                            <span className="line-through">$16.00</span>
+                            <span>
+                              <span>$</span>
+                              <span>{shipping.toFixed(2)}</span>
+                            </span>
                           </span>
                         </div>
                       </div>
 
-                      <FaCircleXmark className="text-lg text-[#e08534]" />
+                      <svg
+                        className={`h-5 w-5 text-[#e08534] ${togglePayment && "text-white"}`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
 
                       <div
                         className="absolute -inset-px rounded-lg border-2 border-primary pointer-events-none"
