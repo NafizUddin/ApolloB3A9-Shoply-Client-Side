@@ -12,6 +12,10 @@ import toast from "react-hot-toast";
 import { FaCircleXmark } from "react-icons/fa6";
 import { PiStarFourFill } from "react-icons/pi";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { RiCoupon2Fill } from "react-icons/ri";
+import { useDisclosure } from "@nextui-org/modal";
+import MainModal from "@/src/components/modal/ReusableModal/MainModal";
+import CouponModal from "@/src/components/modal/ReusableModal/CouponModal";
 
 const CheckOut = () => {
   const { handleSubmit, formState, register, reset } = useForm<FieldValues>({
@@ -26,6 +30,7 @@ const CheckOut = () => {
   const dispatch = useAppDispatch();
   const [togglePayment, setTogglePayment] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   //   const [updateProduct] = useUpdateProductMutation();
   //   const [addOrder] = useAddOrderMutation();
 
@@ -194,7 +199,7 @@ const CheckOut = () => {
 
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <fieldset>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 flex-col md:flex-row">
                     <legend className="text-lg font-medium text-white">
                       Delivery method
                     </legend>
@@ -362,9 +367,19 @@ const CheckOut = () => {
                         </ul>
                       </div>
                     ))}
-                  <div
-                    className={` ${stateProducts?.length > 0 && "border-t border-[#f5840c]"}  py-6 px-4 space-y-6 sm:px-6 `}
-                  >
+                  {stateProducts?.length > 0 && (
+                    <div
+                      onClick={onOpen}
+                      className={`flex gap-2 items-center text-primary font-bold ${stateProducts?.length > 0 && "border-t border-[#f5840c]"} px-4 sm:px-6 pt-4 cursor-pointer hover:underline`}
+                    >
+                      <span>
+                        <RiCoupon2Fill className="text-primary" />
+                      </span>
+                      <span>Want to save? Apply a coupon.</span>
+                    </div>
+                  )}
+
+                  <div className={`py-6 px-4 space-y-6 sm:px-6 `}>
                     <div className="flex items-center justify-between">
                       <dt className="text-sm text-white">Subtotal</dt>
                       <dd className="text-sm font-medium text-white">
@@ -410,6 +425,10 @@ const CheckOut = () => {
             </div>
           </div>
         </form>
+
+        <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <CouponModal />{" "}
+        </MainModal>
       </main>
     </div>
   );
