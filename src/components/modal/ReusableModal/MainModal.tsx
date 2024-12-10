@@ -46,6 +46,7 @@ const MainModal = ({
       className="bg-[#18181B]"
       isDismissable={false}
       isKeyboardDismissDisabled={true}
+      scrollBehavior={"inside"}
     >
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
@@ -55,7 +56,7 @@ const MainModal = ({
             <>
               <Button
                 variant="light"
-                color="danger"
+                color="primary"
                 onPress={() => onOpenChange(false)}
               >
                 Close

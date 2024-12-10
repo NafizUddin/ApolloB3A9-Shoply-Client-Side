@@ -427,7 +427,7 @@ const CheckOut = () => {
         </form>
 
         <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <CouponModal />{" "}
+          <CouponModal />
         </MainModal>
       </main>
     </div>
