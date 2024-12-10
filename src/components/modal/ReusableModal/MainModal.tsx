@@ -6,7 +6,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 

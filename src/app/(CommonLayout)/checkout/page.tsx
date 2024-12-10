@@ -34,11 +34,7 @@ const CheckOut = () => {
   //   const [updateProduct] = useUpdateProductMutation();
   //   const [addOrder] = useAddOrderMutation();
 
-  const {
-    data: allProductsResponse,
-    isLoading,
-    refetch,
-  } = useGetAllProductsQuery({});
+  const { data: allProductsResponse, isLoading } = useGetAllProductsQuery({});
 
   const allProducts = allProductsResponse?.data;
 

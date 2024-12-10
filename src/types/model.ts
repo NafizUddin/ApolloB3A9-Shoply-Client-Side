@@ -145,3 +145,16 @@ export enum PaymentStatus {
   PAID = "PAID",
   UNPAID = "UNPAID",
 }
+
+export interface ICoupon {
+  id: string;
+  code: string;
+  discountType: DiscountType;
+  discountValue: number;
+  startDate: string;
+  endDate: string;
+  usedCount: number;
+  isActive: boolean;
+}
+
+type DiscountType = "PERCENTAGE" | "FIXED";
