@@ -2,6 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../redux/features/auth/authSlice";
 import productReducer from "@/src/lib/redux/features/products/productSlice";
+import couponReducer from "@/src/lib/redux/features/coupon/couponSlice";
 import {
   persistStore,
   persistReducer,
@@ -26,11 +27,20 @@ const productsPersistConfig = {
   storage,
 };
 
+const couponPersistConfig = {
+  key: "coupon",
+  storage,
+};
+
 // Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, authReducer);
 const persistedProductReducer = persistReducer(
   productsPersistConfig,
   productReducer
+);
+const persistedCouponReducer = persistReducer(
+  couponPersistConfig,
+  couponReducer
 );
 
 // Function to make the store
@@ -39,6 +49,7 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedReducer,
     products: persistedProductReducer,
+    coupon: persistedCouponReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
