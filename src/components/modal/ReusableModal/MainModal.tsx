@@ -49,7 +49,12 @@ const MainModal = ({
     >
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
-        <ModalBody>{children}</ModalBody>
+        {/* React.cloneElement is used to add an onClose prop to the children, allowing it to use the onOpenChange function for closing the modal. */}
+        <ModalBody>
+          {React.cloneElement(children as React.ReactElement, {
+            onClose: () => onOpenChange(false),
+          })}
+        </ModalBody>
         <ModalFooter>
           {footerContent || (
             <>

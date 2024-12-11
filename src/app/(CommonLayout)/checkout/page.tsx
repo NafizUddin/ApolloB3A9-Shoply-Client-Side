@@ -16,6 +16,7 @@ import { RiCoupon2Fill } from "react-icons/ri";
 import { useDisclosure } from "@nextui-org/modal";
 import MainModal from "@/src/components/modal/ReusableModal/MainModal";
 import CouponModal from "@/src/components/modal/ReusableModal/CouponModal";
+import { selectAppliedCoupon } from "@/src/lib/redux/features/coupon/couponSlice";
 
 const CheckOut = () => {
   const { handleSubmit, formState, register, reset } = useForm<FieldValues>({
@@ -44,6 +45,8 @@ const CheckOut = () => {
     subtotal,
   } = useAppSelector((state) => state.products);
 
+  const appliedCoupon = useAppSelector(selectAppliedCoupon);
+
   useEffect(() => {
     if (!isLoading) {
       const stateProductIds = stateProducts.map((product) => product.id);
@@ -64,6 +67,8 @@ const CheckOut = () => {
   const total = subtotal + shipping + taxes;
 
   const handlePlaceOrder = async (formData: any) => {};
+
+  console.log(appliedCoupon);
 
   return (
     <div>
@@ -363,7 +368,7 @@ const CheckOut = () => {
                         </ul>
                       </div>
                     ))}
-                  {stateProducts?.length > 0 && (
+                  {stateProducts?.length > 0 && !appliedCoupon && (
                     <div
                       onClick={onOpen}
                       className={`flex gap-2 items-center text-primary font-bold ${stateProducts?.length > 0 && "border-t border-[#f5840c]"} px-4 sm:px-6 pt-4 cursor-pointer hover:underline`}
@@ -375,7 +380,9 @@ const CheckOut = () => {
                     </div>
                   )}
 
-                  <div className={`py-6 px-4 space-y-6 sm:px-6 `}>
+                  <div
+                    className={`${stateProducts?.length > 0 && appliedCoupon && "border-t border-[#f5840c]"}  py-6 px-4 space-y-6 sm:px-6 `}
+                  >
                     <div className="flex items-center justify-between">
                       <dt className="text-sm text-white">Subtotal</dt>
                       <dd className="text-sm font-medium text-white">

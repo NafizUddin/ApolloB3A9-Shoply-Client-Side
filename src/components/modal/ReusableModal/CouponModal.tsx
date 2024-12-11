@@ -1,25 +1,57 @@
 "use client";
 
-import { useGetAllCouponsQuery } from "@/src/lib/redux/features/coupon/couponApi";
+import {
+  useApplyCouponMutation,
+  useGetAllCouponsQuery,
+} from "@/src/lib/redux/features/coupon/couponApi";
 import { ICoupon } from "@/src/types/model";
 import { useState } from "react";
 import { RiCoupon2Fill } from "react-icons/ri";
 import { format } from "date-fns";
 import CouponLoading from "../../LoadingCards/CouponLoading";
+import { useAppDispatch } from "@/src/lib/redux/hooks";
+import { setCoupon } from "@/src/lib/redux/features/coupon/couponSlice";
+import toast from "react-hot-toast";
 
-const CouponModal = () => {
-  const [coupon, setCoupon] = useState<string>("");
+interface CouponModalProps {
+  onClose?: () => void;
+}
+
+const CouponModal = ({ onClose }: CouponModalProps) => {
+  const [inputCoupon, setInputCoupon] = useState<string>("");
   const { data: allCoupons, isLoading } = useGetAllCouponsQuery(undefined);
   const [copiedCouponCode, setCopiedCouponCode] = useState<string | null>(null);
   const [isCouponVerified, setIsCouponVerified] = useState(false);
+  const [applyCoupon] = useApplyCouponMutation();
+  const dispatch = useAppDispatch();
 
-  const handleInput = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleInput = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(coupon);
+    toast.loading("Applying Coupon...");
+
+    const res = await applyCoupon({ coupon: inputCoupon }).unwrap();
+    toast.dismiss();
+    if (res.coupon) {
+      const couponInfo = {
+        code: res.coupon.code,
+        discountType: res.coupon.discountType,
+        discountValue: res.coupon.discountValue,
+      };
+
+      console.log("coupon info", couponInfo);
+
+      dispatch(setCoupon({ couponInfo }));
+
+      setIsCouponVerified(true);
+      toast.success("Coupon applied successfully", {
+        duration: 3000,
+      });
+      onClose && onClose();
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCoupon(event.target.value);
+    setInputCoupon(event.target.value);
   };
 
   const handleCopy = async (couponCode: string) => {
@@ -61,7 +93,7 @@ const CouponModal = () => {
                 name="coupon"
                 className="w-full px-4 py-2 border border-primary rounded-lg focus:ring focus:ring-primary outline-none text-white"
                 placeholder="Enter your coupon code"
-                value={coupon}
+                value={inputCoupon}
                 onChange={handleChange}
               />
             </div>
@@ -69,7 +101,7 @@ const CouponModal = () => {
             <div className="text-center">
               <button
                 type="submit"
-                className="relative h-12 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3"
+                className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3"
               >
                 Apply Coupon
               </button>

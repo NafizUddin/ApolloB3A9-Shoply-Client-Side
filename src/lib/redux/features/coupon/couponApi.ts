@@ -15,7 +15,20 @@ const couponApi = baseApi.injectEndpoints({
       },
       providesTags: ["coupon"],
     }),
+    applyCoupon: builder.mutation({
+      query: (couponInfo) => {
+        return {
+          url: "/coupons/apply-coupon",
+          method: "POST",
+          body: couponInfo,
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response.data;
+      },
+      invalidatesTags: ["coupon"],
+    }),
   }),
 });
 
-export const { useGetAllCouponsQuery } = couponApi;
+export const { useGetAllCouponsQuery, useApplyCouponMutation } = couponApi;
