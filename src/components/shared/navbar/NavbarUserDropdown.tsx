@@ -2,6 +2,7 @@
 
 import { protectedRoutes } from "@/src/constant";
 import { logout } from "@/src/lib/redux/features/auth/authSlice";
+import { clearCoupon } from "@/src/lib/redux/features/coupon/couponSlice";
 import { clearCart } from "@/src/lib/redux/features/products/productSlice";
 import { useAppDispatch } from "@/src/lib/redux/hooks";
 import { logoutService } from "@/src/utils/loginService";
@@ -25,7 +26,9 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(clearCart());
+    dispatch(clearCoupon());
     logoutService();
+
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
     }

@@ -64,7 +64,12 @@ const CheckOut = () => {
 
   const shipping = subtotal * 0.05;
   const taxes = subtotal * 0.02;
-  const total = subtotal + shipping + taxes;
+  const primaryTotal = subtotal + shipping + taxes;
+  const discount =
+    appliedCoupon && appliedCoupon?.discountType === "PERCENTAGE"
+      ? primaryTotal * (appliedCoupon?.discountValue / 100)
+      : (appliedCoupon?.discountValue ?? 0);
+  const total = primaryTotal - discount;
 
   const handlePlaceOrder = async (formData: any) => {};
 
@@ -404,6 +409,21 @@ const CheckOut = () => {
                         {taxes.toFixed(2)}
                       </dd>
                     </div>
+                    {appliedCoupon && (
+                      <div className="flex items-center justify-between">
+                        <dt className="text-sm text-white">
+                          Coupon Discount{" "}
+                          <span className="text-primary ml-3 font-semibold">
+                            {`(${appliedCoupon?.code})`}
+                          </span>
+                        </dt>{" "}
+                        <dd className="text-sm font-medium text-white">
+                          <span>$</span>
+                          {discount.toFixed(2)}
+                        </dd>
+                      </div>
+                    )}
+
                     <div className="flex items-center justify-between border-t border-[#f5840c] pt-6">
                       <dt className="text-base font-medium  text-white">
                         Total

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useApplyCouponMutation,
-  useGetAllCouponsQuery,
-} from "@/src/lib/redux/features/coupon/couponApi";
+import { useGetAllCouponsQuery } from "@/src/lib/redux/features/coupon/couponApi";
 import { ICoupon } from "@/src/types/model";
 import { useState } from "react";
 import { RiCoupon2Fill } from "react-icons/ri";
@@ -22,31 +19,38 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
   const { data: allCoupons, isLoading } = useGetAllCouponsQuery(undefined);
   const [copiedCouponCode, setCopiedCouponCode] = useState<string | null>(null);
   const [isCouponVerified, setIsCouponVerified] = useState(false);
-  const [applyCoupon] = useApplyCouponMutation();
   const dispatch = useAppDispatch();
 
   const handleInput = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     toast.loading("Applying Coupon...");
 
-    const res = await applyCoupon({ coupon: inputCoupon }).unwrap();
+    // Check if the coupon exists in allCoupons
+    const validCoupon = allCoupons?.find(
+      (coupon: ICoupon) =>
+        coupon.code.toLowerCase() === inputCoupon.toLowerCase()
+    );
+
     toast.dismiss();
-    if (res.coupon) {
+
+    if (validCoupon) {
       const couponInfo = {
-        code: res.coupon.code,
-        discountType: res.coupon.discountType,
-        discountValue: res.coupon.discountValue,
+        code: validCoupon.code,
+        discountType: validCoupon.discountType,
+        discountValue: validCoupon.discountValue,
       };
 
-      console.log("coupon info", couponInfo);
+      console.log("Valid coupon info:", couponInfo);
 
       dispatch(setCoupon({ couponInfo }));
-
       setIsCouponVerified(true);
-      toast.success("Coupon applied successfully", {
+      toast.success("Coupon applied successfully", { duration: 3000 });
+      onClose && onClose();
+    } else {
+      setIsCouponVerified(false);
+      toast.error("Invalid coupon code. Please check and try again.", {
         duration: 3000,
       });
-      onClose && onClose();
     }
   };
 
