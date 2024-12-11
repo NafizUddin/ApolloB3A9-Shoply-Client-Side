@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-redundant-roles */
 "use client";
@@ -16,9 +17,14 @@ import { RiCoupon2Fill } from "react-icons/ri";
 import { useDisclosure } from "@nextui-org/modal";
 import MainModal from "@/src/components/modal/ReusableModal/MainModal";
 import CouponModal from "@/src/components/modal/ReusableModal/CouponModal";
-import { selectAppliedCoupon } from "@/src/lib/redux/features/coupon/couponSlice";
+import {
+  clearCoupon,
+  selectAppliedCoupon,
+} from "@/src/lib/redux/features/coupon/couponSlice";
+import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 
 const CheckOut = () => {
+  const { userData } = useUserDetails();
   const { handleSubmit, formState, register, reset } = useForm<FieldValues>({
     defaultValues: {
       name: "",
@@ -32,6 +38,7 @@ const CheckOut = () => {
   const [togglePayment, setTogglePayment] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   //   const [updateProduct] = useUpdateProductMutation();
   //   const [addOrder] = useAddOrderMutation();
 
@@ -59,6 +66,7 @@ const CheckOut = () => {
 
   const handleRemoveFromCart = (id: string) => {
     dispatch(removeProduct(id));
+    dispatch(clearCoupon());
     toast.success("Product removed successfully!");
   };
 
@@ -71,9 +79,50 @@ const CheckOut = () => {
       : (appliedCoupon?.discountValue ?? 0);
   const total = primaryTotal - discount;
 
-  const handlePlaceOrder = async (formData: any) => {};
+  const handlePlaceOrder = async (formData: any) => {
+    if (!togglePayment) {
+      return toast.error("Please select delivery method");
+    }
 
-  console.log(appliedCoupon);
+    // export type TOrder = {
+    //   vendorId: string;
+    //   transactionId: string;
+    //   totalPrice: number;
+    //   coupon: string;
+    //   orderDetails: {
+    //     productId: string;
+    //     quantity: number;
+    //     pricePerUnit: number;
+    //   }[];
+    // };
+
+    const transactionId = `TXN-${Date.now()}`;
+
+    const orderInfo = {
+      vendorId: stateProducts[0].vendorId,
+      transactionId,
+      totalPrice: total,
+      orderDetails: stateProducts?.map((singleProduct) => ({
+        productId: singleProduct.id,
+        quantity: singleProduct.quantity,
+        pricePerUnit: singleProduct.price,
+      })),
+      ...(appliedCoupon?.code && { coupon: appliedCoupon.code }),
+    };
+
+    console.log("order info", orderInfo);
+  };
+
+  useEffect(() => {
+    if (userData?.userData) {
+      reset({
+        name: userData.userData.name || "",
+        email: userData.userData.email || "",
+        address: userData.userData.address || "",
+        phone: userData.userData.phone || "",
+      });
+    }
+  }, [userData, reset]);
 
   return (
     <div>
@@ -117,7 +166,8 @@ const CheckOut = () => {
                           message: "User Email is required",
                         },
                       })}
-                      className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary"
+                      readOnly
+                      className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary text-white"
                     />
                     <p className="text-sm text-red-600 font-medium  mt-2">
                       {errors?.email?.message as ReactNode}
@@ -148,7 +198,8 @@ const CheckOut = () => {
                             message: "Name is required",
                           },
                         })}
-                        className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary"
+                        readOnly
+                        className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary text-white"
                       />
                       <p className="text-sm text-red-600 font-medium  mt-2">
                         {errors?.name?.message as ReactNode}
@@ -172,7 +223,8 @@ const CheckOut = () => {
                             message: "Address is required",
                           },
                         })}
-                        className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary"
+                        readOnly
+                        className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary text-white"
                       />
                       <p className="text-sm text-red-600 font-medium  mt-2">
                         {errors?.address?.message as ReactNode}
@@ -196,7 +248,8 @@ const CheckOut = () => {
                             message: "Phone Number is required",
                           },
                         })}
-                        className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary"
+                        readOnly
+                        className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary text-white"
                       />
                     </div>
                   </div>

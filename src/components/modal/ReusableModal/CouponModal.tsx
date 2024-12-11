@@ -148,7 +148,7 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
                   ) : (
                     <p>
                       Get{" "}
-                      <span className="text-yellow-400 font-bold">
+                      <span className="text-primary font-bold">
                         <span>$</span>
                         {singleCoupon.discountValue} OFF
                       </span>{" "}
