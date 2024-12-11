@@ -3,10 +3,11 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 "use client";
 
-import { useGetAllProductsQuery } from "@/src/lib/redux/features/products/productApi";
-import { removeProduct } from "@/src/lib/redux/features/products/productSlice";
+import {
+  clearCart,
+  removeProduct,
+} from "@/src/lib/redux/features/products/productSlice";
 import { useAppDispatch, useAppSelector } from "@/src/lib/redux/hooks";
-import { IProduct } from "@/src/types/model";
 import { ReactNode, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -22,6 +23,7 @@ import {
   selectAppliedCoupon,
 } from "@/src/lib/redux/features/coupon/couponSlice";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
+import { usePlaceOrderMutation } from "@/src/lib/redux/features/orders/orderApi";
 
 const CheckOut = () => {
   const { userData } = useUserDetails();
@@ -36,15 +38,8 @@ const CheckOut = () => {
   const { errors } = formState;
   const dispatch = useAppDispatch();
   const [togglePayment, setTogglePayment] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  //   const [updateProduct] = useUpdateProductMutation();
-  //   const [addOrder] = useAddOrderMutation();
-
-  const { data: allProductsResponse, isLoading } = useGetAllProductsQuery({});
-
-  const allProducts = allProductsResponse?.data;
+  const [placeOrder] = usePlaceOrderMutation();
 
   const {
     products: stateProducts,
@@ -53,16 +48,6 @@ const CheckOut = () => {
   } = useAppSelector((state) => state.products);
 
   const appliedCoupon = useAppSelector(selectAppliedCoupon);
-
-  useEffect(() => {
-    if (!isLoading) {
-      const stateProductIds = stateProducts.map((product) => product.id);
-      const filtered = allProducts.filter((product: IProduct) =>
-        stateProductIds.includes(product?.id)
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [allProducts, stateProducts, isLoading]);
 
   const handleRemoveFromCart = (id: string) => {
     dispatch(removeProduct(id));
@@ -79,22 +64,12 @@ const CheckOut = () => {
       : (appliedCoupon?.discountValue ?? 0);
   const total = primaryTotal - discount;
 
-  const handlePlaceOrder = async (formData: any) => {
+  const handlePlaceOrder = async () => {
     if (!togglePayment) {
       return toast.error("Please select delivery method");
     }
 
-    // export type TOrder = {
-    //   vendorId: string;
-    //   transactionId: string;
-    //   totalPrice: number;
-    //   coupon: string;
-    //   orderDetails: {
-    //     productId: string;
-    //     quantity: number;
-    //     pricePerUnit: number;
-    //   }[];
-    // };
+    toast.loading("Placing order...");
 
     const transactionId = `TXN-${Date.now()}`;
 
@@ -110,7 +85,22 @@ const CheckOut = () => {
       ...(appliedCoupon?.code && { coupon: appliedCoupon.code }),
     };
 
-    console.log("order info", orderInfo);
+    try {
+      const response = await placeOrder(orderInfo);
+      console.log(response.data);
+
+      if (response?.data?.paymentSession?.result) {
+        toast.dismiss();
+        dispatch(clearCart());
+        dispatch(clearCoupon());
+        window.location.href = response.data.paymentSession.payment_url;
+      } else {
+        toast.error("Failed to process the payment!");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("An unexpected error occurred.");
+    }
   };
 
   useEffect(() => {
