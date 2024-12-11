@@ -9,6 +9,7 @@ import CouponLoading from "../../LoadingCards/CouponLoading";
 import { useAppDispatch } from "@/src/lib/redux/hooks";
 import { setCoupon } from "@/src/lib/redux/features/coupon/couponSlice";
 import toast from "react-hot-toast";
+import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 
 interface CouponModalProps {
   onClose?: () => void;
@@ -20,6 +21,7 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
   const [copiedCouponCode, setCopiedCouponCode] = useState<string | null>(null);
   const [isCouponVerified, setIsCouponVerified] = useState(false);
   const dispatch = useAppDispatch();
+  const { userData } = useUserDetails();
 
   const handleInput = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,6 +71,8 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
       console.error("Failed to copy:", error);
     }
   };
+
+  console.log(userData?.userData?.customerCoupons);
 
   return (
     <div>
@@ -131,54 +135,69 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {allCoupons?.map((singleCoupon: ICoupon) => (
-              <div
-                key={singleCoupon?.id}
-                className="container border border-primary text-white p-5 rounded-lg shadow-lg max-w-md mx-auto"
-              >
-                <div className="text-lg mb-4">
-                  {singleCoupon?.discountType === "PERCENTAGE" ? (
-                    <p>
-                      Get{" "}
-                      <span className="text-primary font-bold">
-                        <span>{singleCoupon.discountValue}</span>% OFF
-                      </span>{" "}
-                      your next purchase!
-                    </p>
-                  ) : (
-                    <p>
-                      Get{" "}
-                      <span className="text-primary font-bold">
-                        <span>$</span>
-                        {singleCoupon.discountValue} OFF
-                      </span>{" "}
-                      your next purchase!
-                    </p>
-                  )}
-                </div>
-                <div className="text-base mb-4">Use coupon code:</div>
-                <div className="bg-white text-gray-800 rounded-lg px-4 py-2">
-                  <span className="text-2xl font-semibold">
-                    {singleCoupon.code}
-                  </span>
-                </div>
-                <button
-                  onClick={() => handleCopy(singleCoupon.code)}
-                  className="bg-primary text-white px-3 py-1 rounded hover:bg-[#c4650a] focus:outline-none focus:ring-2 focus:ring-orange-600 mt-3"
-                >
-                  {copiedCouponCode === singleCoupon.code ? "Copied!" : "Copy"}
-                </button>
-                <div className="text-sm mt-3">
-                  <p>
-                    Valid until{" "}
-                    <span className="font-semibold">
-                      {format(new Date(singleCoupon.endDate), "MMMM dd, yyyy")}
-                    </span>
-                  </p>
-                  <p>*Terms and conditions apply.</p>
-                </div>
-              </div>
-            ))}
+            {allCoupons
+              ?.filter(
+                (singleCoupon: ICoupon) =>
+                  !userData?.userData?.customerCoupons?.some(
+                    (customerCoupon: any) =>
+                      customerCoupon.couponId === singleCoupon.id
+                  )
+              )
+              .map((singleCoupon: ICoupon) => {
+                return (
+                  <div
+                    key={singleCoupon?.id}
+                    className="container border border-primary text-white p-5 rounded-lg shadow-lg max-w-md mx-auto"
+                  >
+                    <div className="text-lg mb-4">
+                      {singleCoupon?.discountType === "PERCENTAGE" ? (
+                        <p>
+                          Get{" "}
+                          <span className="text-primary font-bold">
+                            <span>{singleCoupon.discountValue}</span>% OFF
+                          </span>{" "}
+                          your next purchase!
+                        </p>
+                      ) : (
+                        <p>
+                          Get{" "}
+                          <span className="text-primary font-bold">
+                            <span>$</span>
+                            {singleCoupon.discountValue} OFF
+                          </span>{" "}
+                          your next purchase!
+                        </p>
+                      )}
+                    </div>
+                    <div className="text-base mb-4">Use coupon code:</div>
+                    <div className="bg-white text-gray-800 rounded-lg px-4 py-2">
+                      <span className="text-2xl font-semibold">
+                        {singleCoupon.code}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => handleCopy(singleCoupon.code)}
+                      className="bg-primary text-white px-3 py-1 rounded hover:bg-[#c4650a] focus:outline-none focus:ring-2 focus:ring-orange-600 mt-3"
+                    >
+                      {copiedCouponCode === singleCoupon.code
+                        ? "Copied!"
+                        : "Copy"}
+                    </button>
+                    <div className="text-sm mt-3">
+                      <p>
+                        Valid until{" "}
+                        <span className="font-semibold">
+                          {format(
+                            new Date(singleCoupon.endDate),
+                            "MMMM dd, yyyy"
+                          )}
+                        </span>
+                      </p>
+                      <p>*Terms and conditions apply.</p>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         )}
       </div>
