@@ -26,6 +26,15 @@ interface ModalComponentProps {
     | "4xl"
     | "5xl"
     | "full";
+  isDismissable?: boolean;
+  isKeyboardDismissDisabled?: boolean;
+  placement?:
+    | "auto"
+    | "top"
+    | "bottom"
+    | "center"
+    | "top-center"
+    | "bottom-center";
 }
 
 const MainModal = ({
@@ -35,6 +44,9 @@ const MainModal = ({
   children,
   footerContent,
   size = "2xl",
+  isDismissable = true,
+  isKeyboardDismissDisabled = false,
+  placement,
 }: ModalComponentProps) => {
   return (
     <Modal
@@ -43,9 +55,30 @@ const MainModal = ({
       size={size}
       backdrop={"blur"}
       className="bg-[#18181B]"
-      isDismissable={false}
-      isKeyboardDismissDisabled={true}
+      isDismissable={isDismissable}
+      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
       scrollBehavior={"inside"}
+      placement={placement}
+      motionProps={{
+        variants: {
+          enter: {
+            y: 0,
+            opacity: 1,
+            transition: {
+              duration: 0.4,
+              ease: "easeOut",
+            },
+          },
+          exit: {
+            y: -20,
+            opacity: 0,
+            transition: {
+              duration: 0.3,
+              ease: "easeIn",
+            },
+          },
+        },
+      }}
     >
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>

@@ -492,7 +492,12 @@ const CheckOut = () => {
           </div>
         </form>
 
-        <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <MainModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          isDismissable={false}
+          isKeyboardDismissDisabled={true}
+        >
           <CouponModal />
         </MainModal>
       </main>

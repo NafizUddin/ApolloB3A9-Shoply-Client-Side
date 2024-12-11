@@ -22,11 +22,15 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import CartDrawer from "../../CartDrawer/CartDrawer";
 import { useAppSelector } from "@/src/lib/redux/hooks";
 import { totalProductsCount } from "@/src/lib/redux/features/products/productSlice";
+import { useDisclosure } from "@nextui-org/modal";
+import MainModal from "../../modal/ReusableModal/MainModal";
+import NavSearchModal from "../../modal/ReusableModal/NavSearchModal";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { userData, isLoading } = useUserDetails();
   const totalProductInCart = useAppSelector(totalProductsCount);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
@@ -112,14 +116,17 @@ export default function Navbar() {
               alt="logo"
               height={80}
               width={70}
-              className="flex lg:hidden mt-5"
+              className="flex lg:hidden mt-5 mr-3"
             />
           </Link>
         </NavbarContent>
 
         <NavbarContent justify="end">
           <NavbarItem className="flex gap-4 items-center">
-            <IoSearch className="text-white text-2xl cursor-pointer" />
+            <IoSearch
+              onClick={onOpen}
+              className="text-white text-2xl cursor-pointer"
+            />
 
             <div className="drawer-end">
               <input
@@ -165,21 +172,29 @@ export default function Navbar() {
         </NavbarContent>
 
         <NavbarMenu>
-          <div className="mx-4 mt-2 flex flex-col gap-2">
-            {siteConfig.navMenuItems.map((item, index) => (
-              <NavbarMenuItem key={`${item.label}-${index}`}>
-                <NextUILink
-                  color="primary"
-                  href={item.href}
-                  size="lg"
-                  className="font-bold"
-                >
-                  {item.label}
-                </NextUILink>
-              </NavbarMenuItem>
-            ))}
+          <div className="mx-4 mt-6 flex flex-col justify-center items-center gap-3">
+            {siteConfig.navMenuItems
+              .filter((item) => !(item.label === "Login" && userData?.userData))
+              .map((item, index) => (
+                <NavbarMenuItem key={`${item.label}-${index}`}>
+                  <NextUILink
+                    color="primary"
+                    href={item.href}
+                    size="lg"
+                    className="font-bold"
+                  >
+                    <span className="py-2 border-2 border-primary text-center w-96 md:w-[600px] rounded-2xl">
+                      {item.label}
+                    </span>
+                  </NextUILink>
+                </NavbarMenuItem>
+              ))}
           </div>
         </NavbarMenu>
+
+        <MainModal isOpen={isOpen} onOpenChange={onOpenChange} placement="top">
+          <NavSearchModal />
+        </MainModal>
       </NextUINavbar>
     </>
   );
