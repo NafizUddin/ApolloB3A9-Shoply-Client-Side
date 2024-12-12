@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   addProduct,
@@ -13,7 +15,15 @@ import WarningModal from "../modal/WarningModal";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import { useRouter } from "next/navigation";
 
-const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
+interface ProductCardProps {
+  singleProduct: IProduct;
+  isCompareActive?: boolean;
+}
+
+const HomeProductCard = ({
+  singleProduct,
+  isCompareActive,
+}: ProductCardProps) => {
   const params = new URLSearchParams();
   params.set("product", singleProduct.id);
   const dispatch = useAppDispatch();
@@ -83,6 +93,33 @@ const HomeProductCard = ({ singleProduct }: { singleProduct: IProduct }) => {
 
   return (
     <div className="relative max-w-[350px] space-y-4 rounded-lg p-4 shadow-lg md:w-[312px] bg-[#18181B] group">
+      {/* Comparison checkbox */}
+      {isCompareActive && (
+        <div className="flex gap-3 items-center">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" className="hidden" checked={} onChange={} />
+            <div
+              className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors ${
+                isCompareActive ? "bg-[#f5840c]" : "bg-gray-300"
+              }`}
+            >
+              {isCompareActive && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 text-white"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M9 16.2l-3.5-3.5L4 14l5 5L20 8.6 18.5 7l-9.5 9.2z" />
+                </svg>
+              )}
+            </div>
+          </label>
+
+          <p className="text-white font-medium">Select to Compare</p>
+        </div>
+      )}
+
       {/* Image Section */}
       <div className="relative overflow-hidden rounded-lg">
         <img

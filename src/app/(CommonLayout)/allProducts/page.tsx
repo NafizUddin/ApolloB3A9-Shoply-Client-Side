@@ -32,6 +32,7 @@ const AllProducts = () => {
   const [dataPerPage, setDataPerPage] = useState(12);
   const [minPrice, setMinPrice] = useState(500);
   const [maxPrice, setMaxPrice] = useState(7000);
+  const [isCompareActive, setIsCompareActive] = useState(false);
   const [queryObj, setQueryObj] = useState({
     page: currentPage,
     limit: dataPerPage,
@@ -147,6 +148,10 @@ const AllProducts = () => {
     selectedCategory,
   ]);
 
+  const handleCompareButton = async () => {
+    setIsCompareActive(!isCompareActive);
+  };
+
   return (
     <div className="pb-16">
       {/* Filter part */}
@@ -219,7 +224,10 @@ const AllProducts = () => {
         </div>
         <div className="flex-1 w-full flex flex-col lg:flex-row gap-5 items-center">
           <div className=" flex lg:justify-start items-center w-full lg:w-96 xl:w-80">
-            <button className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-white py-2 px-3 font-medium w-full xl:w-auto">
+            <button
+              onClick={handleCompareButton}
+              className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-white py-2 px-3 font-medium w-full xl:w-auto"
+            >
               <span>
                 <GrCompare className="text-xl text-white" />
               </span>
@@ -350,7 +358,10 @@ const AllProducts = () => {
             ))
           : allProductsResponse?.data?.map((singleProduct: IProduct) => (
               <div key={singleProduct.id}>
-                <HomeProductCard singleProduct={singleProduct} />
+                <HomeProductCard
+                  singleProduct={singleProduct}
+                  isCompareActive={isCompareActive}
+                />
               </div>
             ))}
       </div>

@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../redux/features/auth/authSlice";
 import productReducer from "@/src/lib/redux/features/products/productSlice";
 import couponReducer from "@/src/lib/redux/features/coupon/couponSlice";
+import compareProductReducer from "@/src/lib/redux/features/compareProducts/compareSlice";
 import {
   persistStore,
   persistReducer,
@@ -50,6 +51,7 @@ export const store = configureStore({
     auth: persistedReducer,
     products: persistedProductReducer,
     coupon: persistedCouponReducer,
+    compareProducts: compareProductReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
