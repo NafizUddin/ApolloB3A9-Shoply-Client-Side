@@ -18,11 +18,15 @@ import { useRouter } from "next/navigation";
 interface ProductCardProps {
   singleProduct: IProduct;
   isCompareActive?: boolean;
+  compareProducts: IProduct[];
+  onCompareCheckbox: (checked: boolean, product: IProduct) => void;
 }
 
 const HomeProductCard = ({
   singleProduct,
   isCompareActive,
+  compareProducts,
+  onCompareCheckbox,
 }: ProductCardProps) => {
   const params = new URLSearchParams();
   params.set("product", singleProduct.id);
@@ -32,6 +36,11 @@ const HomeProductCard = ({
   const [pendingProduct, setPendingProduct] = useState<any>(null);
   const { userData } = useUserDetails();
   const router = useRouter();
+  const isChecked = compareProducts.some((p) => p.id === singleProduct.id);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onCompareCheckbox(e.target.checked, singleProduct);
+  };
 
   const addProductToCart = () => {
     if (!userData?.userData) {
@@ -97,13 +106,18 @@ const HomeProductCard = ({
       {isCompareActive && (
         <div className="flex gap-3 items-center">
           <label className="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" className="hidden" checked={} onChange={} />
+            <input
+              type="checkbox"
+              className="hidden"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
             <div
               className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors ${
-                isCompareActive ? "bg-[#f5840c]" : "bg-gray-300"
+                isChecked ? "bg-[#f5840c]" : "bg-gray-300"
               }`}
             >
-              {isCompareActive && (
+              {isChecked && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-4 h-4 text-white"
@@ -186,6 +200,7 @@ const HomeProductCard = ({
             </h2>
           )}
         </div>
+        <p>{singleProduct.category.name}</p>
 
         <Link href={`/productDetails?${params.toString()}`}>
           <button className="relative h-10 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">

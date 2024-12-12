@@ -19,6 +19,13 @@ import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import HomeProductCard from "@/src/components/Cards/HomeProductCard";
 import { Pagination } from "@nextui-org/pagination";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/src/lib/redux/hooks";
+import {
+  removeCompareProducts,
+  selectCompareProducts,
+  setCompareProducts,
+} from "@/src/lib/redux/features/compareProducts/compareSlice";
 
 const AllProducts = () => {
   const searchParams = useSearchParams();
@@ -33,6 +40,9 @@ const AllProducts = () => {
   const [minPrice, setMinPrice] = useState(500);
   const [maxPrice, setMaxPrice] = useState(7000);
   const [isCompareActive, setIsCompareActive] = useState(false);
+  const dispatch = useAppDispatch();
+  const productsForComparison = useAppSelector(selectCompareProducts);
+
   const [queryObj, setQueryObj] = useState({
     page: currentPage,
     limit: dataPerPage,
@@ -110,14 +120,10 @@ const AllProducts = () => {
 
   const handleCategorySelect = (key: Key) => {
     setCategory(String(key));
-    // setPage(1);
-    // setPosts([]);
   };
 
   const handleSortSelect = (key: Key) => {
     setSort(String(key));
-    // setPage(1);
-    // setPosts([]);
   };
 
   const handleSliderChange = (values: number[]) => {
@@ -151,6 +157,36 @@ const AllProducts = () => {
   const handleCompareButton = async () => {
     setIsCompareActive(!isCompareActive);
   };
+
+  const handleCompareCheckbox = (checked: boolean, singleProduct: IProduct) => {
+    if (checked) {
+      if (productsForComparison.length >= 3) {
+        toast.error("You can only compare up to 3 products.");
+        return;
+      }
+
+      // Check if category matches
+      if (
+        productsForComparison.length === 0 ||
+        productsForComparison[0]?.category?.name === singleProduct.category.name
+      ) {
+        dispatch(
+          setCompareProducts({
+            products: [...productsForComparison, singleProduct],
+          })
+        );
+        toast.success(`${singleProduct.name} added for comparison.`);
+      } else {
+        toast.error("Products must be from the same category to compare.");
+      }
+    } else {
+      // Remove product from comparison
+      dispatch(removeCompareProducts(singleProduct.id));
+      toast.success(`${singleProduct.name} removed from comparison.`);
+    }
+  };
+
+  console.log("from redux", productsForComparison);
 
   return (
     <div className="pb-16">
@@ -231,7 +267,13 @@ const AllProducts = () => {
               <span>
                 <GrCompare className="text-xl text-white" />
               </span>
-              <span>Compare Products</span>
+              <span>
+                {productsForComparison?.length >= 2 ? (
+                  <span>Compare Selected</span>
+                ) : (
+                  <span>Compare Products</span>
+                )}
+              </span>
             </button>
           </div>
           <div className=" space-y-3 mt-3 w-full">
@@ -361,6 +403,8 @@ const AllProducts = () => {
                 <HomeProductCard
                   singleProduct={singleProduct}
                   isCompareActive={isCompareActive}
+                  compareProducts={productsForComparison}
+                  onCompareCheckbox={handleCompareCheckbox}
                 />
               </div>
             ))}

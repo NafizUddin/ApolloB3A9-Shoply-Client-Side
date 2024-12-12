@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 type TProductComparison = {
-  products: IProduct[];
+  comparisonProducts: IProduct[];
 };
 
 const initialState: TProductComparison = {
-  products: [],
+  comparisonProducts: [],
 };
 
 const productComparisonSlice = createSlice({
@@ -15,17 +15,17 @@ const productComparisonSlice = createSlice({
   initialState,
   reducers: {
     setCompareProducts: (state, action) => {
-      console.log(action.payload);
-      state.products = action.payload;
+      const { products } = action.payload;
+      state.comparisonProducts = products;
     },
     removeCompareProducts: (state, action) => {
       const productId = action.payload;
-      state.products = state.products.filter(
+      state.comparisonProducts = state.comparisonProducts.filter(
         (product) => product.id !== productId
       );
     },
     clearCompareProducts: (state) => {
-      state.products = [];
+      state.comparisonProducts = [];
     },
   },
 });
@@ -39,4 +39,4 @@ export const {
 export default productComparisonSlice.reducer;
 
 export const selectCompareProducts = (state: RootState) =>
-  state.compareProducts.products;
+  state.compareProducts.comparisonProducts;
