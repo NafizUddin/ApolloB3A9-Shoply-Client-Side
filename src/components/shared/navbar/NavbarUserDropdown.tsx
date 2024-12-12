@@ -59,9 +59,11 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
           <DropdownItem
             onClick={() =>
               handleNavigation(
-                userData?.role === "USER"
-                  ? "/user-dashboard"
-                  : "/admin-dashboard"
+                userData?.role === "CUSTOMER"
+                  ? "/customer-dashboard"
+                  : userData?.role === "VENDOR"
+                    ? "/vendor-dashboard"
+                    : "/admin-dashboard"
               )
             }
           >

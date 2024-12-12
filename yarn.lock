@@ -331,6 +331,16 @@
     "@nextui-org/system-rsc" "2.1.6"
     "@react-types/shared" "3.23.1"
 
+"@nextui-org/divider@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@nextui-org/divider/-/divider-2.2.4.tgz#b50f941edc8c1a77c9fd3c30e443d2d18f3d191f"
+  integrity sha512-fjFeHS9x4I1TgMBKS3uuBP9XXTV+I71+Wj5jJzTf5c0bqqvTQpL3WsrfuxIT0Tfmi5gpPRafSeTBt5vOPCkdgA==
+  dependencies:
+    "@nextui-org/react-rsc-utils" "2.1.1"
+    "@nextui-org/shared-utils" "2.1.1"
+    "@nextui-org/system-rsc" "2.3.4"
+    "@react-types/shared" "3.26.0"
+
 "@nextui-org/dom-animation@2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@nextui-org/dom-animation/-/dom-animation-2.1.1.tgz#42611dc7aff1a6ca11ff3d7683ea754a35ec8577"
