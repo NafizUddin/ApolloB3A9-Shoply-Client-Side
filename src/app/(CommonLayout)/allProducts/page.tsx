@@ -434,7 +434,11 @@ const AllProducts = () => {
         )}
       </div>
 
-      <ComparisonModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <ComparisonModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        setIsCompareActive={setIsCompareActive}
+      />
     </div>
   );
 };

@@ -36,7 +36,8 @@ const HomeProductCard = ({
   const [pendingProduct, setPendingProduct] = useState<any>(null);
   const { userData } = useUserDetails();
   const router = useRouter();
-  const isChecked = compareProducts.some((p) => p.id === singleProduct.id);
+  const isChecked =
+    compareProducts && compareProducts?.some((p) => p.id === singleProduct.id);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onCompareCheckbox(e.target.checked, singleProduct);
@@ -183,7 +184,7 @@ const HomeProductCard = ({
       {/* Details Section */}
       <div className="gap-2 flex flex-col">
         <h1 className="text-xl font-semibold text-white flex-grow">
-          {singleProduct.name}
+          {singleProduct?.name}
         </h1>
         <div className="flex gap-2 items-center mt-3 mb-1">
           <span className="font-medium md:text-lg text-white">Price:</span>
@@ -191,7 +192,7 @@ const HomeProductCard = ({
             className={`font-medium md:text-lg text-white ${singleProduct?.flashSale && "line-through"}`}
           >
             <span>$</span>
-            {singleProduct.price}
+            {singleProduct?.price}
           </h2>
           {singleProduct?.flashSale && (
             <h2 className="font-medium md:text-lg text-primary">
@@ -200,7 +201,7 @@ const HomeProductCard = ({
             </h2>
           )}
         </div>
-        <p>{singleProduct.category.name}</p>
+        <p>{singleProduct?.category?.name}</p>
 
         <Link href={`/productDetails?${params.toString()}`}>
           <button className="relative h-10 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
