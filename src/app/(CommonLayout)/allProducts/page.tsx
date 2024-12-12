@@ -26,6 +26,8 @@ import {
   selectCompareProducts,
   setCompareProducts,
 } from "@/src/lib/redux/features/compareProducts/compareSlice";
+import { useDisclosure } from "@nextui-org/modal";
+import ComparisonModal from "@/src/components/modal/ComparisonModal";
 
 const AllProducts = () => {
   const searchParams = useSearchParams();
@@ -42,6 +44,7 @@ const AllProducts = () => {
   const [isCompareActive, setIsCompareActive] = useState(false);
   const dispatch = useAppDispatch();
   const productsForComparison = useAppSelector(selectCompareProducts);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [queryObj, setQueryObj] = useState({
     page: currentPage,
@@ -260,21 +263,27 @@ const AllProducts = () => {
         </div>
         <div className="flex-1 w-full flex flex-col lg:flex-row gap-5 items-center">
           <div className=" flex lg:justify-start items-center w-full lg:w-96 xl:w-80">
-            <button
-              onClick={handleCompareButton}
-              className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-white py-2 px-3 font-medium w-full xl:w-auto"
-            >
-              <span>
-                <GrCompare className="text-xl text-white" />
-              </span>
-              <span>
-                {productsForComparison?.length >= 2 ? (
-                  <span>Compare Selected</span>
-                ) : (
-                  <span>Compare Products</span>
-                )}
-              </span>
-            </button>
+            {productsForComparison?.length >= 2 ? (
+              <button
+                onClick={onOpen}
+                className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-white py-2 px-3 font-medium w-full xl:w-auto"
+              >
+                <span>
+                  <GrCompare className="text-xl text-white" />
+                </span>
+                <span>Compare Selected</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleCompareButton}
+                className="flex gap-2 justify-center items-center rounded-2xl border-2 border-primary text-white py-2 px-3 font-medium w-full xl:w-auto"
+              >
+                <span>
+                  <GrCompare className="text-xl text-white" />
+                </span>
+                <span>Compare Products</span>
+              </button>
+            )}
           </div>
           <div className=" space-y-3 mt-3 w-full">
             <Slider
@@ -424,6 +433,8 @@ const AllProducts = () => {
           </div>
         )}
       </div>
+
+      <ComparisonModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </div>
   );
 };
