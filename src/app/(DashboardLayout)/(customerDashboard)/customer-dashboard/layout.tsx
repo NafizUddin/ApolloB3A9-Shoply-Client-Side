@@ -68,7 +68,7 @@ export default function CustomerDashboardLayout({
       <Sidebar links={customerLinks} commonLinks={commonLinks} />
 
       {/* Dashboard Content */}
-      <main className="flex-1 px-10 mt-6">{children}</main>
+      <main className="flex-1 md:px-10 mt-6">{children}</main>
     </div>
   );
 }

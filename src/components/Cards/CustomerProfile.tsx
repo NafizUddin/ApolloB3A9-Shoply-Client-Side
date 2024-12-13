@@ -22,11 +22,11 @@ const CustomerProfile = () => {
       {isLoading ? (
         <CustomerProfileLoading />
       ) : (
-        <div className="max-w-4xl flex items-center h-auto flex-wrap mx-auto my-20 lg:my-0">
+        <div className="w-80 md:w-auto flex items-center h-auto flex-wrap mx-auto my-20 lg:my-0 mr-10 md:mr-0">
           {/* <!--Main Col--> */}
           <div
             id="profile"
-            className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-gray-900 mx-6 lg:mx-0"
+            className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-gray-900 px-5 lg:mx-0"
           >
             <div className="p-4 md:p-12 text-center lg:text-left">
               {/* <!-- Image for mobile view--> */}
@@ -34,14 +34,14 @@ const CustomerProfile = () => {
                 src={userData?.userData?.profilePhoto}
                 alt="Customer"
                 loading="lazy"
-                className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center"
+                className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 object-cover"
               />
 
               <h1 className="text-3xl font-bold pt-8 lg:pt-0 text-white">
                 {userData?.userData?.name}
               </h1>
               <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-primary opacity-25" />
-              <p className="pt-4 text-sm font-medium flex items-center justify-start uppercase text-white ml-6 md:ml-44 lg:ml-0">
+              <p className="pt-4 text-sm font-medium flex items-center justify-start uppercase text-white ml-6 md:ml-14 lg:ml-0">
                 <svg
                   className="h-4 fill-current text-primary pr-4"
                   xmlns="http://www.w3.org/2000/svg"
@@ -51,16 +51,16 @@ const CustomerProfile = () => {
                 </svg>{" "}
                 <span className="">{userData?.userData?.role}</span>
               </p>
-              <p className="pt-3 text-white font-medium text-sm flex items-center justify-start ml-6 md:ml-44 lg:ml-0">
+              <p className="pt-3 text-white font-medium text-sm flex items-center justify-start ml-6 md:ml-14 lg:ml-0">
                 <MdEmail className="text-primary mr-4 text-lg" />
                 <span className="">Email: {userData?.userData?.email}</span>
               </p>
-              <p className="pt-3 text-white font-medium text-sm flex items-start md:items-center lg:items-start xl:items-center justify-start ml-6 md:ml-44 lg:ml-0 text-left">
-                <MdOutlineLocationOn className="text-primary mr-3 text-2xl md:text-xl" />
+              <p className="pt-3 text-white font-medium text-sm flex items-start md:items-center lg:items-start xl:items-center justify-start ml-6 md:ml-14 lg:ml-0 text-left">
+                <MdOutlineLocationOn className="text-primary mr-3 text-4xl md:text-xl" />
                 <span className="">Address: {userData?.userData?.address}</span>
               </p>
-              <p className="pt-3 text-white font-medium text-sm flex items-center justify-start ml-6 md:ml-44 lg:ml-0">
-                <BsPhone className="text-primary mr-4 text-lg" />
+              <p className="pt-3 text-white font-medium text-sm flex items-center justify-start ml-6 md:ml-14 lg:ml-0">
+                <BsPhone className="text-primary mr-4 text-lg lg:text-xl xl:text-lg" />
                 <span className="">Phone: {userData?.userData?.phone}</span>
               </p>
 
