@@ -22,6 +22,7 @@ interface IProps {
     | "danger"
     | undefined;
   pathname?: string;
+  readonly?: boolean;
 }
 
 export default function SHInput({
@@ -33,6 +34,7 @@ export default function SHInput({
   name,
   color = "primary",
   pathname,
+  readonly = false,
 }: IProps) {
   const {
     register,
@@ -55,7 +57,8 @@ export default function SHInput({
       label={label}
       color={color}
       readOnly={
-        name === "email" && pathname !== "/login" && pathname !== "/register"
+        readonly ||
+        (name === "email" && pathname !== "/login" && pathname !== "/register")
       }
       className="focus:border-primary-500 border-red-300"
       endContent={

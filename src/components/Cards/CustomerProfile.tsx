@@ -7,11 +7,13 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import { motion } from "framer-motion";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import CustomerProfileLoading from "../LoadingCards/CustomerProfileLoading";
+import { useDisclosure } from "@nextui-org/modal";
+import MainModal from "../modal/ReusableModal/MainModal";
+import UpdateProfileModal from "../modal/ReusableModal/UpdateProfileModal";
 
 const CustomerProfile = () => {
   const { userData, isLoading } = useUserDetails();
-
-  console.log(userData?.userData);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <motion.div
@@ -64,9 +66,12 @@ const CustomerProfile = () => {
                 <span className="">Phone: {userData?.userData?.phone}</span>
               </p>
 
-              <div className="pt-12 pb-8">
-                <button className="bg-primary btn-custom text-white font-bold py-2 px-4 rounded-full">
-                  <label htmlFor="updateProfile-modal">Update Profile</label>
+              <div className="pt-12 pb-8 cursor-pointer">
+                <button
+                  onClick={onOpen}
+                  className="bg-primary btn-custom text-white font-bold py-2 px-4 rounded-full hover:bg-[#c4650a]"
+                >
+                  <span>Update Profile</span>
                 </button>
               </div>
 
@@ -196,12 +201,9 @@ const CustomerProfile = () => {
         </div>
       )}
 
-      {/* {modalType === "add" && (
-        <UpdateProfileModal
-          userData={loadedUser[0]}
-          setModalType={setModalType}
-        />
-      )} */}
+      <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <UpdateProfileModal />
+      </MainModal>
     </motion.div>
   );
 };

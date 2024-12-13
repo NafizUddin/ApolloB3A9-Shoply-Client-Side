@@ -54,7 +54,7 @@ const MainModal = ({
       onOpenChange={onOpenChange}
       size={size}
       backdrop={"blur"}
-      className="bg-[#18181B]"
+      className="bg-[#18181B] md:h-[400px] lg:h-[500px] xl:h-[600px]"
       isDismissable={isDismissable}
       isKeyboardDismissDisabled={isKeyboardDismissDisabled}
       scrollBehavior={"inside"}
@@ -88,7 +88,7 @@ const MainModal = ({
             onClose: () => onOpenChange(false),
           })}
         </ModalBody>
-        <ModalFooter>
+        {/* <ModalFooter>
           {footerContent || (
             <>
               <Button
@@ -100,7 +100,7 @@ const MainModal = ({
               </Button>
             </>
           )}
-        </ModalFooter>
+        </ModalFooter> */}
       </ModalContent>
     </Modal>
   );
