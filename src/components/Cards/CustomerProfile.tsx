@@ -59,11 +59,21 @@ const CustomerProfile = () => {
               </p>
               <p className="pt-3 text-white font-medium text-sm flex items-start md:items-center lg:items-start xl:items-center justify-start ml-6 md:ml-14 lg:ml-0 text-left">
                 <MdOutlineLocationOn className="text-primary mr-3 text-4xl md:text-xl" />
-                <span className="">Address: {userData?.userData?.address}</span>
+                <span className="">
+                  Address:{" "}
+                  {userData?.userData?.address
+                    ? userData?.userData?.address
+                    : "N/A"}
+                </span>
               </p>
               <p className="pt-3 text-white font-medium text-sm flex items-center justify-start ml-6 md:ml-14 lg:ml-0">
                 <BsPhone className="text-primary mr-4 text-lg lg:text-xl xl:text-lg" />
-                <span className="">Phone: {userData?.userData?.phone}</span>
+                <span className="">
+                  Phone:{" "}
+                  {userData?.userData?.phone
+                    ? userData?.userData?.phone
+                    : "N/A"}
+                </span>
               </p>
 
               <div className="pt-12 pb-8 cursor-pointer">

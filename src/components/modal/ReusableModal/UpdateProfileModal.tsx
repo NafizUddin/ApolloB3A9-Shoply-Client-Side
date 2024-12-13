@@ -3,12 +3,58 @@ import SHFileInput from "../../form/SHFileInput";
 import SHForm from "../../form/SHForm";
 import SHInput from "../../form/SHInput";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
+import toast from "react-hot-toast";
+import envConfig from "@/src/config/envConfig";
+import axios from "axios";
 
 const UpdateProfileModal = () => {
   const { userData } = useUserDetails();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    const hasImage = !!data.profilePhoto && data.profilePhoto instanceof File;
+
+    console.log(hasImage);
+
+    toast.loading("Updating Profile...");
+
+    console.log(envConfig.cloudinary_url, envConfig.cloudinary_upload_preset);
+
+    let imageUrl = userData?.userData?.profilePhoto;
+
+    if (hasImage) {
+      const formData = new FormData();
+      formData.append("file", data.profilePhoto);
+      formData.append(
+        "upload_preset",
+        envConfig.cloudinary_upload_preset as string
+      );
+
+      try {
+        const response = await axios.post(
+          envConfig.cloudinary_url as string,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        imageUrl = response.data.secure_url;
+      } catch (error: any) {
+        console.error(error.message);
+        toast.error("Failed to upload image");
+        return;
+      }
+    }
+
+    const updateUserInfo = {
+      name: data.name ? data.name : userData?.userData?.name,
+      profilePhoto: imageUrl,
+      address: data.address ? data.address : userData?.userData?.address,
+      phone: data.phone ? data.phone : userData?.userData?.phone,
+    };
+    toast.dismiss();
+    console.log(updateUserInfo);
   };
 
   return (
