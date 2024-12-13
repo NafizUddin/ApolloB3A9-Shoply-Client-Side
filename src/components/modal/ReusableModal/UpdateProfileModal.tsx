@@ -6,9 +6,15 @@ import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import toast from "react-hot-toast";
 import envConfig from "@/src/config/envConfig";
 import axios from "axios";
+import { useUpdateCustomerMutation } from "@/src/lib/redux/features/users/userApi";
 
-const UpdateProfileModal = () => {
+interface UpdateProfileModalProps {
+  onClose?: () => void;
+}
+
+const UpdateProfileModal = ({ onClose }: UpdateProfileModalProps) => {
   const { userData } = useUserDetails();
+  const [updateCustomer] = useUpdateCustomerMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const hasImage = !!data.profilePhoto && data.profilePhoto instanceof File;
@@ -55,6 +61,16 @@ const UpdateProfileModal = () => {
     };
     toast.dismiss();
     console.log(updateUserInfo);
+
+    try {
+      const res = await updateCustomer(updateUserInfo).unwrap();
+      if (res.success) {
+        toast.success("Profile Updated successfully", { duration: 3000 });
+        onClose && onClose();
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   return (
