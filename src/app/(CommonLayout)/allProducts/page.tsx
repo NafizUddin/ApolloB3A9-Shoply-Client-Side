@@ -189,8 +189,6 @@ const AllProducts = () => {
     }
   };
 
-  console.log("from redux", productsForComparison);
-
   return (
     <div className="pb-16">
       {/* Filter part */}
