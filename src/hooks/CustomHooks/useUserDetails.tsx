@@ -1,27 +1,30 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { useGetMyProfileQuery } from "@/src/lib/redux/features/category/authApi";
-import {
-  // selectCurrentToken,
-  selectCurrentUser,
-} from "@/src/lib/redux/features/auth/authSlice";
+import { selectCurrentToken } from "@/src/lib/redux/features/auth/authSlice";
 import { useAppSelector } from "@/src/lib/redux/hooks";
 
 const useUserDetails = () => {
-  const user = useAppSelector(selectCurrentUser);
-  // const token = useAppSelector(selectCurrentToken);
+  const token = useAppSelector(selectCurrentToken);
+  const [isRefetching, setIsRefetching] = useState(false);
 
-  // console.log("from hook", token);
-
-  const { data, isLoading } = useGetMyProfileQuery(undefined, {
-    skip: !user,
+  const { data, isLoading, refetch } = useGetMyProfileQuery(undefined, {
+    skip: !token,
   });
 
-  // console.log("from hook", data?.userData);
+  useEffect(() => {
+    if (token) {
+      setIsRefetching(true);
+      refetch().finally(() => {
+        setIsRefetching(false);
+      });
+    }
+  }, [token, refetch]);
 
-  if (!user) {
-    return { isLoading: false, userData: undefined };
-  }
+  const effectiveLoading = isLoading || isRefetching;
 
-  return { userData: data, isLoading };
+  return { userData: data || null, isLoading: effectiveLoading };
 };
 
 export default useUserDetails;

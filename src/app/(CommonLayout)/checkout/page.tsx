@@ -64,7 +64,7 @@ const CheckOut = () => {
       : (appliedCoupon?.discountValue ?? 0);
   const total = primaryTotal - discount;
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async (formData: any) => {
     if (!togglePayment) {
       return toast.error("Please select delivery method");
     }
@@ -77,6 +77,7 @@ const CheckOut = () => {
       vendorId: stateProducts[0].vendorId,
       transactionId,
       totalPrice: total,
+      deliveryAddress: formData.address || userData?.userData?.address,
       orderDetails: stateProducts?.map((singleProduct) => ({
         productId: singleProduct.id,
         quantity: singleProduct.quantity,
@@ -84,6 +85,8 @@ const CheckOut = () => {
       })),
       ...(appliedCoupon?.code && { coupon: appliedCoupon.code }),
     };
+
+    console.log(orderInfo);
 
     try {
       const response = await placeOrder(orderInfo);
@@ -202,7 +205,7 @@ const CheckOut = () => {
                       htmlFor="address"
                       className="block text-sm font-medium text-white"
                     >
-                      Address
+                      Delivery Address
                     </label>
                     <div className="mt-1">
                       <input
@@ -213,7 +216,6 @@ const CheckOut = () => {
                             message: "Address is required",
                           },
                         })}
-                        readOnly
                         className="block w-full bg-transparent p-2 border border-primary outline-none invalid:border-orange-500 transition placeholder-slate-400 focus:ring-2 focus:border-orange-500 rounded-lg focus:ring-primary text-white"
                       />
                       <p className="text-sm text-red-600 font-medium  mt-2">

@@ -48,7 +48,11 @@ export default function NavbarUserDropdown({ user }: { user: any }) {
             isBordered
             as="button"
             className="transition-transform"
-            src={userData?.profilePhoto}
+            src={
+              userData?.role === "VENDOR"
+                ? userData?.logo
+                : userData?.profilePhoto
+            }
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">

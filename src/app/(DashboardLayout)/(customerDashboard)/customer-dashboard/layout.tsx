@@ -29,12 +29,12 @@ export default function CustomerDashboardLayout({
     },
     {
       label: "My Orders",
-      href: "/customer-dashboard/orders",
+      href: "/customer-dashboard/myOrders",
       icon: <ShoppingBag size={20} />,
     },
     {
-      label: "Following",
-      href: "/customer-dashboard/follow",
+      label: "Favorite Shops",
+      href: "/customer-dashboard/favoriteShops",
       icon: <Store size={20} />,
     },
   ];
