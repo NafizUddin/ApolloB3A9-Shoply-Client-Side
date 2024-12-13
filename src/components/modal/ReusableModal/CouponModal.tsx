@@ -72,8 +72,6 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
     }
   };
 
-  console.log(userData?.userData?.customerCoupons);
-
   return (
     <div>
       <div
