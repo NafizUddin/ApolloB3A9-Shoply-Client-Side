@@ -5,6 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import { motion, useInView } from "framer-motion";
 import ReactStars from "react-stars";
 import { IOrder } from "@/src/types/model";
+import toast from "react-hot-toast";
+import { useCreateReviewMutation } from "@/src/lib/redux/features/reviews/reviewApi";
 
 interface ReviewModalProps {
   onClose?: () => void;
@@ -32,11 +34,26 @@ const ProductReviewModal = ({ onClose, singleOrder }: ReviewModalProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref);
 
-  const onSubmit = async (data: FeedbackFormValues) => {
-    console.log(data);
-  };
+  const [createReview] = useCreateReviewMutation();
 
-  console.log("Selected Product:", singleOrder);
+  const onSubmit = async (data: FeedbackFormValues) => {
+    const reviewData = {
+      comment: data.feedback,
+      rating: data.rating,
+      productId: singleOrder?.orderDetails[0]?.productId,
+    };
+
+    console.log(reviewData);
+
+    await toast.promise(createReview(reviewData).unwrap(), {
+      loading: "Submitting review...",
+      success: "Review added successfully!",
+      error: "Failed to submit review",
+    });
+
+    reset();
+    onClose && onClose();
+  };
 
   return (
     <div>

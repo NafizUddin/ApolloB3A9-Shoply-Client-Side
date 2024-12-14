@@ -102,7 +102,7 @@ const MyOrders = () => {
                                 className="w-12 h-12 rounded-xl object-cover"
                               />
                             </td>
-                            <td className="text-white">
+                            <td className="text-white font-semibold">
                               {singleOrder?.orderDetails[0]?.product?.name}
                             </td>
                             <td className="font-semibold text-center text-white">
