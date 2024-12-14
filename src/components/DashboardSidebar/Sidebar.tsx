@@ -30,7 +30,7 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const { userData } = useUserDetails();
+  const { userData, isLoading } = useUserDetails();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -109,13 +109,22 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
 
               {/* User Image */}
               <div className="flex justify-center items-center pt-2">
-                {userData?.userData?.profilePhoto ? (
-                  <Avatar
-                    src={userData?.userData?.profilePhoto}
-                    className="w-16 h-16 text-large"
-                  />
-                ) : (
+                {isLoading ? (
                   <div className="animate-pulse rounded-full bg-gray-400 w-20 h-20" />
+                ) : (
+                  <>
+                    {userData?.userData?.role === "VENDOR" ? (
+                      <Avatar
+                        src={userData?.userData?.logo}
+                        className="w-16 h-16 text-large"
+                      />
+                    ) : (
+                      <Avatar
+                        src={userData?.userData?.profilePhoto}
+                        className="w-16 h-16 text-large"
+                      />
+                    )}
+                  </>
                 )}
               </div>
 
