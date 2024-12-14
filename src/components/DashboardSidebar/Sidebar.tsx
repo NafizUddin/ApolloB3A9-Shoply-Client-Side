@@ -114,9 +114,12 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
                 ) : (
                   <>
                     {userData?.userData?.role === "VENDOR" ? (
-                      <Avatar
+                      <Image
                         src={userData?.userData?.logo}
-                        className="w-16 h-16 text-large"
+                        alt="logo"
+                        height={90}
+                        width={160}
+                        className="h-16 text-large"
                       />
                     ) : (
                       <Avatar
@@ -138,7 +141,7 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
                   <a
                     key={index}
                     href={link.href}
-                    className="flex items-start md:items-center space-x-2 py-1 px-2 hover:bg-primary hover:text-white rounded font-bold"
+                    className="flex items-start md:items-center space-x-2 py-2 px-2 hover:bg-primary hover:text-white rounded font-bold"
                   >
                     {link.icon}
                     <span>{link.label}</span>
@@ -153,7 +156,7 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
                   <a
                     key={index}
                     href={link.href}
-                    className="flex items-center space-x-2 py-1 px-2 hover:bg-primary hover:text-white rounded font-bold"
+                    className="flex items-center space-x-2 py-2 px-2 hover:bg-primary hover:text-white rounded font-bold"
                   >
                     {link.icon}
                     <span>{link.label}</span>

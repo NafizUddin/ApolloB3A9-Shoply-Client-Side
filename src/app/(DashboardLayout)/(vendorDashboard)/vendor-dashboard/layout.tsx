@@ -34,8 +34,8 @@ export default function VendorDashboardLayout({
       icon: <ShoppingBag size={20} />,
     },
     {
-      label: "Orders",
-      href: "/vendor-dashboard/orders",
+      label: "Order List",
+      href: "/vendor-dashboard/orderList",
       icon: <BookOpenText size={20} />,
     },
     {

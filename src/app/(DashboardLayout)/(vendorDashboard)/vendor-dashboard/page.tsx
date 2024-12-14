@@ -1,7 +1,14 @@
+"use client";
+
+import VendorProfileCard from "@/src/components/Cards/VendorProfileCard";
+import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
+
 const VendorHome = () => {
   return (
     <div>
-      <h1>Hello, VendorHome </h1>
+      <DashboardSectionTitle heading="Vendor Profile" />
+
+      <VendorProfileCard />
     </div>
   );
 };
