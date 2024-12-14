@@ -4,7 +4,6 @@ import {
   updateQuantity,
 } from "@/src/lib/redux/features/products/productSlice";
 import { useAppDispatch, useAppSelector } from "@/src/lib/redux/hooks";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaCircleXmark } from "react-icons/fa6";

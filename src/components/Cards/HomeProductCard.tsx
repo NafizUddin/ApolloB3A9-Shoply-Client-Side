@@ -18,8 +18,8 @@ import { useRouter } from "next/navigation";
 interface ProductCardProps {
   singleProduct: IProduct;
   isCompareActive?: boolean;
-  compareProducts: IProduct[];
-  onCompareCheckbox: (checked: boolean, product: IProduct) => void;
+  compareProducts?: IProduct[];
+  onCompareCheckbox?: (checked: boolean, product: IProduct) => void;
 }
 
 const HomeProductCard = ({
@@ -40,7 +40,9 @@ const HomeProductCard = ({
     compareProducts && compareProducts?.some((p) => p.id === singleProduct.id);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onCompareCheckbox(e.target.checked, singleProduct);
+    if (onCompareCheckbox) {
+      onCompareCheckbox(e.target.checked, singleProduct);
+    }
   };
 
   const addProductToCart = () => {

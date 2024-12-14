@@ -1,13 +1,6 @@
 // components/ModalComponent.tsx
 import React, { ReactNode } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
+import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/modal";
 
 interface ModalComponentProps {
   isOpen: boolean;
@@ -42,7 +35,6 @@ const MainModal = ({
   onOpenChange,
   title,
   children,
-  footerContent,
   size = "2xl",
   isDismissable = true,
   isKeyboardDismissDisabled = false,

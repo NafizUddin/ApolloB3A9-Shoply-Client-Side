@@ -8,11 +8,16 @@ import { motion } from "framer-motion";
 import { IOrder } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
 import TableLoadingSkeleton from "@/src/components/LoadingCards/TableLoading";
+import { useDisclosure } from "@nextui-org/modal";
+import MainModal from "@/src/components/modal/ReusableModal/MainModal";
+import ProductReviewModal from "@/src/components/modal/ReusableModal/ProductReviewModal";
 
 const MyOrders = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { userData } = useUserDetails();
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 5;
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
   const [queryObj, setQueryObj] = useState({
     page: currentPage,
     limit: dataPerPage,
@@ -29,6 +34,11 @@ const MyOrders = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleAddReviewClick = (order: IOrder) => {
+    setSelectedOrder(order);
+    onOpen();
   };
 
   useEffect(() => {
@@ -66,6 +76,7 @@ const MyOrders = () => {
                   <tr>
                     <th className="text-gray-300">No.</th>
                     <th className="text-gray-300">Product Image</th>
+                    <th className="text-gray-300">Product Name</th>
                     <th className="text-gray-300">Quantity</th>
                     <th className="text-gray-300">Shop Name</th>
                     <th className="text-gray-300">Total Price</th>
@@ -78,7 +89,7 @@ const MyOrders = () => {
                       (singleOrder: IOrder, index: number) => {
                         return (
                           <tr key={index} className="rounded-lg">
-                            <th className="text-lg text-white">
+                            <th className="text-white">
                               {index + 1 + (currentPage - 1) * dataPerPage}
                             </th>
                             <td className="flex justify-center items-center">
@@ -88,21 +99,29 @@ const MyOrders = () => {
                                     ?.image[0]
                                 }
                                 alt="product"
-                                className="w-14 h-14 rounded-xl object-cover"
+                                className="w-12 h-12 rounded-xl object-cover"
                               />
                             </td>
-                            <td className="text-lg font-semibold text-center text-white">
+                            <td className="text-white">
+                              {singleOrder?.orderDetails[0]?.product?.name}
+                            </td>
+                            <td className="font-semibold text-center text-white">
                               {singleOrder?.orderDetails[0]?.quantity}
                             </td>
-                            <td className="text-lg font-semibold text-white">
+                            <td className="font-semibold text-white">
                               {singleOrder?.vendor?.shopName}
                             </td>
-                            <td className="font-semibold text-lg text-white">
+                            <td className="font-semibold text-white">
                               <span>$</span>
                               {(singleOrder?.totalPrice).toFixed(2)}
                             </td>
                             <td className="">
-                              <button className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
+                              <button
+                                onClick={() =>
+                                  handleAddReviewClick(singleOrder)
+                                }
+                                className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
+                              >
                                 Add Review
                               </button>
                             </td>
@@ -130,6 +149,10 @@ const MyOrders = () => {
           </div>
         )}
       </div>
+
+      <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ProductReviewModal singleOrder={selectedOrder} />
+      </MainModal>
     </div>
   );
 };
