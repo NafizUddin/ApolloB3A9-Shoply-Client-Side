@@ -30,7 +30,6 @@ import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
 import { IProduct, IReview } from "@/src/types/model";
 import HomeProductCard from "@/src/components/Cards/HomeProductCard";
-import { PiStarFourFill } from "react-icons/pi";
 import Link from "next/link";
 import { useGetReviewsByIdQuery } from "@/src/lib/redux/features/reviews/reviewApi";
 import { motion, useInView } from "framer-motion";
@@ -384,18 +383,6 @@ const ProductDetails = () => {
               {activeTab === "Related Products" && (
                 <div>
                   {/* Your Code Tab Content */}
-                  <div className="w-11/12 lg:w-11/12 xl:4/5 mx-auto">
-                    <div className="flex justify-center items-center gap-2 uppercase">
-                      <PiStarFourFill className="text-primary" />
-                      <span className="font-medium text-primary">
-                        You might also like
-                      </span>
-                    </div>
-                    <h1 className="mt-2 text-4xl font-bold text-white text-center">
-                      Related Products
-                    </h1>
-                  </div>
-
                   <div className="w-full lg:w-11/12 xl:w-4/5 mx-auto my-8">
                     <Swiper
                       spaceBetween={30}
@@ -449,100 +436,120 @@ const ProductDetails = () => {
               )}
 
               {activeTab === "Reviews" && (
-                <div className="text-center text-gray-500">
-                  <motion.div
-                    ref={swiperRef}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={isInView || data ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                  >
-                    <div>
-                      <Swiper
-                        spaceBetween={30}
-                        slidesPerView={productReview?.length % 2 === 0 ? 2 : 1}
-                        slidesPerGroup={productReview?.length % 2 === 0 ? 2 : 1}
-                        autoplay={{
-                          delay: 6000,
-                          disableOnInteraction: false,
-                        }}
-                        pagination={true}
-                        modules={[Autoplay, Pagination, Navigation]}
-                        className="mySwiper"
-                        breakpoints={{
-                          350: {
-                            slidesPerView:
-                              productReview?.length % 2 === 0 ? 2 : 1, // For small devices
-                            slidesPerGroup: 1,
-                          },
-                          800: {
-                            slidesPerView: 2, // For medium devices
-                            slidesPerGroup: 2,
-                          },
+                <div>
+                  {productReview?.length === 0 ? (
+                    <div className="text-center text-white text-2xl font-bold mt-6">
+                      Sorry, no product review available.
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-500">
+                      <motion.div
+                        ref={swiperRef}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={isInView || data ? { opacity: 1, y: 0 } : {}}
+                        transition={{
+                          duration: 0.8,
+                          delay: 0.4,
+                          ease: "easeOut",
                         }}
                       >
-                        {productReview?.map(
-                          (singleReview: IReview, index: number) => (
-                            <SwiperSlide key={index}>
-                              <div className="mt-12 px-10 pb-24 border-2 border-primary">
-                                <div className="flex items-center gap-10 pt-8">
-                                  <div className="flex">
-                                    <img
-                                      src={singleReview?.customer?.profilePhoto}
-                                      alt="profile"
-                                      className="rounded-full w-20 h-20 object-cover object-top"
-                                    />
-                                    <svg
-                                      viewBox="-1 0 19 19"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      className="cf-icon-svg w-10 -ml-5"
-                                    >
-                                      <g
-                                        id="SVGRepo_bgCarrier"
-                                        strokeWidth="0"
-                                      />
-                                      <g
-                                        id="SVGRepo_tracerCarrier"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <g id="SVGRepo_iconCarrier">
-                                        <path
-                                          d="M16.417 9.583A7.917 7.917 0 1 1 8.5 1.666a7.917 7.917 0 0 1 7.917 7.917z"
-                                          fill="#f5840c"
-                                        ></path>
+                        <div>
+                          <Swiper
+                            spaceBetween={30}
+                            slidesPerView={
+                              productReview?.length % 2 === 0 ? 2 : 1
+                            }
+                            slidesPerGroup={
+                              productReview?.length % 2 === 0 ? 2 : 1
+                            }
+                            autoplay={{
+                              delay: 6000,
+                              disableOnInteraction: false,
+                            }}
+                            pagination={{
+                              clickable: true,
+                            }}
+                            modules={[Autoplay, Pagination, Navigation]}
+                            className="mySwiper"
+                            breakpoints={{
+                              350: {
+                                slidesPerView:
+                                  productReview?.length % 2 === 0 ? 2 : 1, // For small devices
+                                slidesPerGroup: 1,
+                              },
+                              800: {
+                                slidesPerView: 2, // For medium devices
+                                slidesPerGroup: 2,
+                              },
+                            }}
+                          >
+                            {productReview?.map(
+                              (singleReview: IReview, index: number) => (
+                                <SwiperSlide key={index}>
+                                  <div className="mt-8 px-10 pb-12 border-2 border-primary rounded-lg">
+                                    <div className="flex items-center gap-10 pt-8">
+                                      <div className="flex">
+                                        <img
+                                          src={
+                                            singleReview?.customer?.profilePhoto
+                                          }
+                                          alt="profile"
+                                          className="rounded-full w-20 h-20 object-cover object-top"
+                                        />
+                                        <svg
+                                          viewBox="-1 0 19 19"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="cf-icon-svg w-10 -ml-5"
+                                        >
+                                          <g
+                                            id="SVGRepo_bgCarrier"
+                                            strokeWidth="0"
+                                          />
+                                          <g
+                                            id="SVGRepo_tracerCarrier"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                          <g id="SVGRepo_iconCarrier">
+                                            <path
+                                              d="M16.417 9.583A7.917 7.917 0 1 1 8.5 1.666a7.917 7.917 0 0 1 7.917 7.917z"
+                                              fill="#f5840c"
+                                            />
 
-                                        <path
-                                          d="M7.659 9.733a3.333 3.333 0 0 0-.362-2.507 2.543 2.543 0 0 0-.908-.851 2.504 2.504 0 0 0-1.364-.278 2.259 2.259 0 0 0-1.297 3.99 2.23 2.23 0 0 0 2.515.211 3.335 3.335 0 0 1-1.655 1.403 3.942 3.942 0 0 1-.485.164 1.84 1.84 0 0 0-.445.128.567.567 0 0 0 .32 1.059 2.496 2.496 0 0 0 .5-.113 5.2 5.2 0 0 0 .475-.161A4.37 4.37 0 0 0 7.57 10.07q.053-.167.09-.337zm6.34 0a3.331 3.331 0 0 0-.362-2.507 2.54 2.54 0 0 0-.908-.851 2.502 2.502 0 0 0-1.364-.278 2.259 2.259 0 0 0-1.297 3.99 2.229 2.229 0 0 0 2.515.211 3.334 3.334 0 0 1-1.654 1.403 3.96 3.96 0 0 1-.486.164 1.847 1.847 0 0 0-.445.128.568.568 0 0 0 .32 1.059 2.496 2.496 0 0 0 .5-.113q.241-.07.475-.161a4.37 4.37 0 0 0 2.617-2.708q.052-.167.089-.337z"
-                                          fill="#ffffff"
-                                        ></path>
-                                      </g>
-                                    </svg>
+                                            <path
+                                              d="M7.659 9.733a3.333 3.333 0 0 0-.362-2.507 2.543 2.543 0 0 0-.908-.851 2.504 2.504 0 0 0-1.364-.278 2.259 2.259 0 0 0-1.297 3.99 2.23 2.23 0 0 0 2.515.211 3.335 3.335 0 0 1-1.655 1.403 3.942 3.942 0 0 1-.485.164 1.84 1.84 0 0 0-.445.128.567.567 0 0 0 .32 1.059 2.496 2.496 0 0 0 .5-.113 5.2 5.2 0 0 0 .475-.161A4.37 4.37 0 0 0 7.57 10.07q.053-.167.09-.337zm6.34 0a3.331 3.331 0 0 0-.362-2.507 2.54 2.54 0 0 0-.908-.851 2.502 2.502 0 0 0-1.364-.278 2.259 2.259 0 0 0-1.297 3.99 2.229 2.229 0 0 0 2.515.211 3.334 3.334 0 0 1-1.654 1.403 3.96 3.96 0 0 1-.486.164 1.847 1.847 0 0 0-.445.128.568.568 0 0 0 .32 1.059 2.496 2.496 0 0 0 .5-.113q.241-.07.475-.161a4.37 4.37 0 0 0 2.617-2.708q.052-.167.089-.337z"
+                                              fill="#ffffff"
+                                            />
+                                          </g>
+                                        </svg>
+                                      </div>
+                                      <div>
+                                        <h1 className="text-2xl font-semibold text-white">
+                                          {singleReview?.customer?.name}
+                                        </h1>
+                                        <ReactStars
+                                          count={5}
+                                          value={singleReview?.rating}
+                                          size={24}
+                                          color2={"#f5840c"}
+                                          edit={false}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="mt-8">
+                                      <p className="md:text-lg text-left text-gray-300">
+                                        &quot;{singleReview?.comment}&quot;
+                                      </p>
+                                    </div>
                                   </div>
-                                  <div>
-                                    <h1 className="text-2xl font-semibold text-white">
-                                      {singleReview?.customer?.name}
-                                    </h1>
-                                    <ReactStars
-                                      count={5}
-                                      value={singleReview?.rating}
-                                      size={24}
-                                      color2={"#f5840c"}
-                                      edit={false}
-                                    />
-                                  </div>
-                                </div>
-                                <div className="mt-8">
-                                  <p className="md:text-lg text-left text-gray-300">
-                                    &quot;{singleReview?.comment}&quot;
-                                  </p>
-                                </div>
-                              </div>
-                            </SwiperSlide>
-                          )
-                        )}
-                      </Swiper>
+                                </SwiperSlide>
+                              )
+                            )}
+                          </Swiper>
+                        </div>
+                      </motion.div>
                     </div>
-                  </motion.div>
+                  )}
                 </div>
               )}
             </div>
