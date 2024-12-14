@@ -5,14 +5,28 @@ import SHInput from "@/src/components/form/SHInput";
 import PasswordChangeLoading from "@/src/components/LoadingCards/PasswordChangeLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
+import { useChangePasswordMutation } from "@/src/lib/redux/features/category/authApi";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 const Security = () => {
   const { userData, isLoading } = useUserDetails();
+  const [changePassword] = useChangePasswordMutation();
 
   const handlePasswordChange: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
+
+    const passwordInfo = {
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
+    };
+
+    await toast.promise(changePassword(passwordInfo).unwrap(), {
+      loading: "Changing Password...",
+      success: "You changed your password successfully!",
+      error: "Failed to change password",
+    });
   };
 
   return (
