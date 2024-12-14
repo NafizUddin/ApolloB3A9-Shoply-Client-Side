@@ -24,7 +24,10 @@ const Security = () => {
 
     await toast.promise(changePassword(passwordInfo).unwrap(), {
       loading: "Changing Password...",
-      success: "You changed your password successfully!",
+      success: () => {
+        setTimeout(() => window.location.reload(), 1000);
+        return "You changed your password successfully!";
+      },
       error: "Failed to change password",
     });
   };
