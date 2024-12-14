@@ -55,14 +55,14 @@ body {
 }
 
 .swiper-pagination-bullet-active {
-    background-color: #dc232e !important;
+    background-color: #f5840c !important;
     /* Orange color for the active bullet */
     width: 8px !important;
     height: 8px !important;
     border-radius: 50%;
-    box-shadow: 0 0 0 4px transparent, 0 0 0 6px #dc232e !important;
+    box-shadow: 0 0 0 4px transparent, 0 0 0 6px #f5840c !important;
     /* Creates an orange circle around the bullet */
     outline: none;
-    box-shadow: 0 0 0 4px #fff, 0 0 0 6px #dc232e !important;
+    box-shadow: 0 0 0 4px #fff, 0 0 0 6px #f5840c !important;
     /* Creates an orange circle around the bullet */
 }
