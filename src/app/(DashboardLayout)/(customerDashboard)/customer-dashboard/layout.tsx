@@ -7,6 +7,7 @@ import {
   Package2,
   Eye,
   TicketPercent,
+  KeyRound,
 } from "lucide-react";
 import Sidebar from "@/src/components/DashboardSidebar/Sidebar";
 
@@ -36,6 +37,11 @@ export default function CustomerDashboardLayout({
       label: "Favorite Shops",
       href: "/customer-dashboard/favoriteShops",
       icon: <Store size={20} />,
+    },
+    {
+      label: "Security",
+      href: "/customer-dashboard/security",
+      icon: <KeyRound size={20} />,
     },
   ];
 

@@ -283,6 +283,20 @@
     "@react-types/overlays" "3.8.7"
     "@react-types/shared" "3.23.1"
 
+"@nextui-org/aria-utils@2.2.5":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/@nextui-org/aria-utils/-/aria-utils-2.2.5.tgz#ba23e90e7b909094878c4df7ff2a6b7b676ae760"
+  integrity sha512-qSGp4butMjO4HhTuoHun33DEV7d5+rayJzKo9IOeDWdA7o65QQ7Gcjoz0pVgw8SQe5CBMURoUIHQA66NHB7v2Q==
+  dependencies:
+    "@nextui-org/react-rsc-utils" "2.1.1"
+    "@nextui-org/shared-utils" "2.1.1"
+    "@nextui-org/system" "2.4.4"
+    "@react-aria/utils" "3.26.0"
+    "@react-stately/collections" "3.12.0"
+    "@react-stately/overlays" "3.6.12"
+    "@react-types/overlays" "3.8.11"
+    "@react-types/shared" "3.26.0"
+
 "@nextui-org/avatar@^2.0.33":
   version "2.0.33"
   resolved "https://registry.yarnpkg.com/@nextui-org/avatar/-/avatar-2.0.33.tgz#1fe5d199bdc7967a0e19b4a422caf4a832e88740"
@@ -707,6 +721,26 @@
     "@react-stately/utils" "3.10.5"
     "@react-types/datepicker" "3.9.0"
 
+"@nextui-org/tabs@^2.2.5":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/@nextui-org/tabs/-/tabs-2.2.5.tgz#d0f872fba4629574e4a4fd3483b5597b23078edc"
+  integrity sha512-lEQVO1iwnYv75+tIwwVVyUZlg2FyA9RPdXJXZWIJkCYP8xMUzPe3KFKvZkaT4UFny+typIW0pMpRrP8gJSubWg==
+  dependencies:
+    "@nextui-org/aria-utils" "2.2.5"
+    "@nextui-org/framer-utils" "2.1.4"
+    "@nextui-org/react-utils" "2.1.1"
+    "@nextui-org/shared-utils" "2.1.1"
+    "@nextui-org/use-is-mounted" "2.1.1"
+    "@nextui-org/use-update-effect" "2.1.1"
+    "@react-aria/focus" "3.19.0"
+    "@react-aria/interactions" "3.22.5"
+    "@react-aria/tabs" "3.9.8"
+    "@react-aria/utils" "3.26.0"
+    "@react-stately/tabs" "3.7.0"
+    "@react-types/shared" "3.26.0"
+    "@react-types/tabs" "3.3.11"
+    scroll-into-view-if-needed "3.0.10"
+
 "@nextui-org/theme@2.2.11":
   version "2.2.11"
   resolved "https://registry.yarnpkg.com/@nextui-org/theme/-/theme-2.2.11.tgz#e56bd6568326819c8bd22ae58fb9d75ac6c7cb39"
@@ -868,6 +902,11 @@
   dependencies:
     "@react-aria/ssr" "3.9.4"
 
+"@nextui-org/use-is-mounted@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@nextui-org/use-is-mounted/-/use-is-mounted-2.1.1.tgz#c880a27f7221f7a7d7f3a6b4616f71e23c784cbb"
+  integrity sha512-osJB3E/DCu4Le0f+pb21ia9/TaSHwme4r0fHjO5/nUBYk/RCvGlRUUCJClf/wi9WfH8QyjuJ27+zBcUSm6AMMg==
+
 "@nextui-org/use-measure@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@nextui-org/use-measure/-/use-measure-2.0.2.tgz#94f998c0e59819c0632b43ca8ddc4877e12a47bb"
@@ -900,6 +939,11 @@
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/@nextui-org/use-scroll-position/-/use-scroll-position-2.0.9.tgz#7b946947cb041c9eaf225e2316828caef9dd01fa"
   integrity sha512-tXbpb2bkKIjOp2I1uZ1T4T9Lxp0+Ta/TKu+5qvqsXkHRPbcoukdsquagYUDWK/fcumg72UPR8QP+na8KMn2gCg==
+
+"@nextui-org/use-update-effect@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@nextui-org/use-update-effect/-/use-update-effect-2.1.1.tgz#9102f57737876a6447b06531de870bb7c3538833"
+  integrity sha512-fKODihHLWcvDk1Sm8xDua9zjdbstxTOw9shB7k/mPkeR3E7SouSpN0+LW67Bczh1EmbRg1pIrFpEOLnbpgMFzA==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1242,6 +1286,19 @@
     "@react-types/shared" "^3.25.0"
     "@swc/helpers" "^0.5.0"
 
+"@react-aria/selection@^3.21.0":
+  version "3.21.0"
+  resolved "https://registry.yarnpkg.com/@react-aria/selection/-/selection-3.21.0.tgz#c5660e73a38db5e3e1cdc722e408b4489f5f589a"
+  integrity sha512-52JJ6hlPcM+gt0VV3DBmz6Kj1YAJr13TfutrKfGWcK36LvNCBm1j0N+TDqbdnlp8Nue6w0+5FIwZq44XPYiBGg==
+  dependencies:
+    "@react-aria/focus" "^3.19.0"
+    "@react-aria/i18n" "^3.12.4"
+    "@react-aria/interactions" "^3.22.5"
+    "@react-aria/utils" "^3.26.0"
+    "@react-stately/selection" "^3.18.0"
+    "@react-types/shared" "^3.26.0"
+    "@swc/helpers" "^0.5.0"
+
 "@react-aria/ssr@3.9.4":
   version "3.9.4"
   resolved "https://registry.yarnpkg.com/@react-aria/ssr/-/ssr-3.9.4.tgz#9da8b10342c156e816dbfa4c9e713b21f274d7ab"
@@ -1271,6 +1328,20 @@
     "@react-aria/toggle" "^3.10.4"
     "@react-stately/toggle" "^3.7.4"
     "@react-types/switch" "^3.5.3"
+    "@swc/helpers" "^0.5.0"
+
+"@react-aria/tabs@3.9.8":
+  version "3.9.8"
+  resolved "https://registry.yarnpkg.com/@react-aria/tabs/-/tabs-3.9.8.tgz#a0a647a4e2d1783125779473536419fd8caa9cfa"
+  integrity sha512-Nur/qRFBe+Zrt4xcCJV/ULXCS3Mlae+B89bp1Gl20vSDqk6uaPtGk+cS5k03eugOvas7AQapqNJsJgKd66TChw==
+  dependencies:
+    "@react-aria/focus" "^3.19.0"
+    "@react-aria/i18n" "^3.12.4"
+    "@react-aria/selection" "^3.21.0"
+    "@react-aria/utils" "^3.26.0"
+    "@react-stately/tabs" "^3.7.0"
+    "@react-types/shared" "^3.26.0"
+    "@react-types/tabs" "^3.3.11"
     "@swc/helpers" "^0.5.0"
 
 "@react-aria/textfield@3.14.5":
@@ -1409,20 +1480,20 @@
     "@react-types/shared" "^3.23.1"
     "@swc/helpers" "^0.5.0"
 
+"@react-stately/collections@3.12.0", "@react-stately/collections@^3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@react-stately/collections/-/collections-3.12.0.tgz#6240d3517d0d86f7d9eb4997108fb432d569e8d7"
+  integrity sha512-MfR9hwCxe5oXv4qrLUnjidwM50U35EFmInUeFf8i9mskYwWlRYS0O1/9PZ0oF1M0cKambaRHKEy98jczgb9ycA==
+  dependencies:
+    "@react-types/shared" "^3.26.0"
+    "@swc/helpers" "^0.5.0"
+
 "@react-stately/collections@^3.10.7", "@react-stately/collections@^3.11.0":
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/@react-stately/collections/-/collections-3.11.0.tgz#d04dd728ce4f5036a4e2830b1bbbba36aafd2ef0"
   integrity sha512-TiJeJjHMPSbbeAhmCXLJNSCk0fa5XnCvEuYw6HtQzDnYiq1AD7KAwkpjC5NfKkjqF3FLXs/v9RDm/P69q6rYzw==
   dependencies:
     "@react-types/shared" "^3.25.0"
-    "@swc/helpers" "^0.5.0"
-
-"@react-stately/collections@^3.12.0":
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/@react-stately/collections/-/collections-3.12.0.tgz#6240d3517d0d86f7d9eb4997108fb432d569e8d7"
-  integrity sha512-MfR9hwCxe5oXv4qrLUnjidwM50U35EFmInUeFf8i9mskYwWlRYS0O1/9PZ0oF1M0cKambaRHKEy98jczgb9ycA==
-  dependencies:
-    "@react-types/shared" "^3.26.0"
     "@swc/helpers" "^0.5.0"
 
 "@react-stately/form@3.1.0", "@react-stately/form@^3.1.0":
@@ -1461,6 +1532,17 @@
     "@react-stately/selection" "^3.17.0"
     "@react-stately/utils" "^3.10.4"
     "@react-types/shared" "^3.25.0"
+    "@swc/helpers" "^0.5.0"
+
+"@react-stately/list@^3.11.1":
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/@react-stately/list/-/list-3.11.1.tgz#d1493e5b9c5cac6cafb3cb3a6edb852bf3cb208f"
+  integrity sha512-UCOpIvqBOjwLtk7zVTYWuKU1m1Oe61Q5lNar/GwHaV1nAiSQ8/yYlhr40NkBEs9X3plEfsV28UIpzOrYnu1tPg==
+  dependencies:
+    "@react-stately/collections" "^3.12.0"
+    "@react-stately/selection" "^3.18.0"
+    "@react-stately/utils" "^3.10.5"
+    "@react-types/shared" "^3.26.0"
     "@swc/helpers" "^0.5.0"
 
 "@react-stately/menu@3.7.1":
@@ -1528,6 +1610,16 @@
     "@react-stately/collections" "^3.12.0"
     "@react-stately/utils" "^3.10.5"
     "@react-types/shared" "^3.26.0"
+    "@swc/helpers" "^0.5.0"
+
+"@react-stately/tabs@3.7.0", "@react-stately/tabs@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@react-stately/tabs/-/tabs-3.7.0.tgz#f849b334c5e7d39a37c2e9ffa3114531bf8ce6e4"
+  integrity sha512-ox4hTkfZCoR4Oyr3Op3rBlWNq2Wxie04vhEYpTZQ2hobR3l4fYaOkd7CPClILktJ3TC104j8wcb0knWxIBRx9w==
+  dependencies:
+    "@react-stately/list" "^3.11.1"
+    "@react-types/shared" "^3.26.0"
+    "@react-types/tabs" "^3.3.11"
     "@swc/helpers" "^0.5.0"
 
 "@react-stately/toggle@3.7.4":
@@ -1766,6 +1858,13 @@
   integrity sha512-gJ8t2yTCgcitz4ON4ELcLLmtlDkn2MUjjfu3ez/cwA1X/NUluPYkhXj5Z6H+KOlnveqrKCZDRoTgK74cQ6Cvfg==
   dependencies:
     "@react-types/shared" "^3.25.0"
+
+"@react-types/tabs@3.3.11", "@react-types/tabs@^3.3.11":
+  version "3.3.11"
+  resolved "https://registry.yarnpkg.com/@react-types/tabs/-/tabs-3.3.11.tgz#b7db710ce2ca42a4e72cd2a581070212d2b07793"
+  integrity sha512-BjF2TqBhZaIcC4lc82R5pDJd1F7kstj1K0Nokhz99AGYn8C0ITdp6lR+DPVY9JZRxKgP9R2EKfWGI90Lo7NQdA==
+  dependencies:
+    "@react-types/shared" "^3.26.0"
 
 "@react-types/textfield@3.9.3":
   version "3.9.3"
