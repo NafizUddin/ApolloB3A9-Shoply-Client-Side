@@ -1,4 +1,5 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+"use client";
+
 import SHFileInput from "../../form/SHFileInput";
 import SHForm from "../../form/SHForm";
 import SHInput from "../../form/SHInput";
@@ -6,15 +7,15 @@ import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import toast from "react-hot-toast";
 import envConfig from "@/src/config/envConfig";
 import axios from "axios";
-import { useUpdateCustomerMutation } from "@/src/lib/redux/features/users/userApi";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import SHTextarea from "../../form/SHTextArea";
 
 interface UpdateProfileModalProps {
   onClose?: () => void;
 }
 
-const UpdateProfileModal = ({ onClose }: UpdateProfileModalProps) => {
+const UpdateVendorModal = ({ onClose }: UpdateProfileModalProps) => {
   const { userData } = useUserDetails();
-  const [updateCustomer] = useUpdateCustomerMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const hasImage = !!data.profilePhoto && data.profilePhoto instanceof File;
@@ -22,8 +23,6 @@ const UpdateProfileModal = ({ onClose }: UpdateProfileModalProps) => {
     console.log(hasImage);
 
     toast.loading("Updating Profile...");
-
-    console.log(envConfig.cloudinary_url, envConfig.cloudinary_upload_preset);
 
     let imageUrl = userData?.userData?.profilePhoto;
 
@@ -62,37 +61,35 @@ const UpdateProfileModal = ({ onClose }: UpdateProfileModalProps) => {
     toast.dismiss();
     console.log(updateUserInfo);
 
-    try {
-      const res = await updateCustomer(updateUserInfo).unwrap();
-      if (res.success) {
-        toast.success("Profile Updated successfully", { duration: 3000 });
-        onClose && onClose();
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    // try {
+    //   const res = await updateCustomer(updateUserInfo).unwrap();
+    //   if (res.success) {
+    //     toast.success("Profile Updated successfully", { duration: 3000 });
+    //     onClose && onClose();
+    //   }
+    // } catch (error: any) {
+    //   toast.error(error.message);
+    // }
   };
-
   return (
     <div>
       <h1 className="text-center text-3xl font-bold text-primary">
-        Update Profile
+        Update Vendor
       </h1>
 
       <div>
-        <h1 className="text-white mt-5 mb-2">Update Profile Photo:</h1>
+        <h1 className="text-white mt-5 mb-2">Update Shop Logo:</h1>
 
         <SHForm
           defaultValues={{
-            email: userData?.userData?.email,
-            name: userData?.userData?.name,
-            address: userData?.userData?.address,
-            phone: userData?.userData?.phone,
+            name: userData?.userData?.name || "",
+            shopName: userData?.userData?.shopName || "",
+            description: userData?.userData?.description || "",
           }}
           onSubmit={onSubmit}
         >
           <SHFileInput
-            name="profilePhoto"
+            name="logo"
             label="Click to upload or drag
                 and drop"
           />
@@ -100,43 +97,32 @@ const UpdateProfileModal = ({ onClose }: UpdateProfileModalProps) => {
           <div className="flex flex-col md:flex-row my-3 gap-3">
             <div className="flex-1">
               <SHInput
-                name="email"
-                label="Email"
-                type="email"
-                pathname="/login"
+                name="name"
+                label="Vendor Name"
+                type="text"
                 variant="bordered"
-                readonly
               />
             </div>
             <div className="flex-1">
               {" "}
               <SHInput
-                name="name"
-                label="Full Name"
+                name="shopName"
+                label="Shop Name"
                 type="text"
                 variant="bordered"
               />
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row my-3 gap-3">
-            <div className="flex-1">
-              <SHInput
-                name="address"
-                label="Address"
-                type="text"
-                variant="bordered"
-              />
-            </div>
-            <div className="flex-1">
-              {" "}
-              <SHInput
-                name="phone"
-                label="Phone Number"
-                type="text"
-                variant="bordered"
-              />
-            </div>
+          <div className="w-full mb-5">
+            <SHTextarea
+              name="description"
+              label="Description"
+              placeholder="Write a description..."
+              rows={5}
+              variant="bordered"
+              required
+            />
           </div>
 
           <div className="text-center">
@@ -153,4 +139,4 @@ const UpdateProfileModal = ({ onClose }: UpdateProfileModalProps) => {
   );
 };
 
-export default UpdateProfileModal;
+export default UpdateVendorModal;
