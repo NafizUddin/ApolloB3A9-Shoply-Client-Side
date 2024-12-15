@@ -5,10 +5,30 @@ import { motion } from "framer-motion";
 import MainModal from "../modal/ReusableModal/MainModal";
 import UpdateVendorModal from "../modal/ReusableModal/UpdateVendorModal";
 import VendorProfileLoading from "../LoadingCards/VendorProfileLoading";
+import { useGetAllOrdersQuery } from "@/src/lib/redux/features/orders/orderApi";
+import { useGetReviewsByIdQuery } from "@/src/lib/redux/features/reviews/reviewApi";
 
 const VendorProfileCard = () => {
   const { userData, isLoading } = useUserDetails();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const totalProducts = userData?.userData?.products?.length || 0;
+  const { data: vendorOrders } = useGetAllOrdersQuery(
+    { vendorId: userData?.userData?.id },
+    {
+      skip: !userData?.userData,
+    }
+  );
+
+  const { data: allReviews } = useGetReviewsByIdQuery(
+    { vendorId: userData?.userData?.id },
+    {
+      skip: !userData?.userData,
+    }
+  );
+
+  const totalVendorOrders = vendorOrders?.data?.length || 0;
+  const totalVendorReviews = allReviews?.length || 0;
 
   return (
     <>
@@ -43,25 +63,25 @@ const VendorProfileCard = () => {
                 {userData?.userData?.description ||
                   "[Provide Shop Description]"}
               </p>
-              <div className="flex flex-wrap items-center justify-between my-6">
-                <div className="space-y-1">
-                  <p className="text-sm text-white/70 font-medium">Products</p>
-                  <p className="text-2xl tracking-wider text-primary lg:text-3xl">
-                    23
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-white/70 font-medium">Orders</p>
-                  <p className="text-2xl tracking-wider text-primary lg:text-3xl">
-                    314
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-white/70 font-medium">Reviews</p>
-                  <p className="text-2xl tracking-wider text-primary lg:text-3xl">
-                    487
-                  </p>
-                </div>
+            </div>
+            <div className="flex flex-wrap items-center justify-between my-6">
+              <div className="space-y-1">
+                <p className="text-sm text-white/70 font-medium">Products</p>
+                <p className="text-2xl tracking-wider text-primary lg:text-3xl text-center">
+                  {totalProducts}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-white/70 font-medium">Orders</p>
+                <p className="text-2xl tracking-wider text-primary lg:text-3xl text-center">
+                  {totalVendorOrders}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-white/70 font-medium">Reviews</p>
+                <p className="text-2xl tracking-wider text-primary lg:text-3xl text-center">
+                  {totalVendorReviews}
+                </p>
               </div>
             </div>
             <div className="mt-4">

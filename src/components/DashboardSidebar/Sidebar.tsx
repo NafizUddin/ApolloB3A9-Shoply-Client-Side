@@ -167,7 +167,7 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
               <Divider className="" />
 
               <div onClick={handleLogout} className="px-2 cursor-pointer">
-                <div className="flex items-start md:items-center space-x-2 py-1 px-2 hover:bg-primary hover:text-white rounded font-bold">
+                <div className="flex items-start md:items-center space-x-2 py-2 px-2 hover:bg-primary hover:text-white rounded font-bold">
                   {/* Logout SVG */}
                   <span>Logout</span>
                 </div>

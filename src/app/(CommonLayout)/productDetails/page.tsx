@@ -56,9 +56,12 @@ const ProductDetails = () => {
   });
 
   const { data: productReview, isLoading: reviewLoading } =
-    useGetReviewsByIdQuery(productId ?? "", {
-      skip: !productId,
-    });
+    useGetReviewsByIdQuery(
+      { productId },
+      {
+        skip: !productId,
+      }
+    );
 
   const [selectedImage, setSelectedImage] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(0);
