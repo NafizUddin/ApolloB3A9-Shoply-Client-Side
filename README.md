@@ -1,53 +1,76 @@
-# Next.js & NextUI Template
+# :ledger: Project: Shoply - E-Commerce FrontEnd Design
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+**Project Name:** Shoply FrontEnd
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+**Project Overview:** This application provides a comprehensive online shopping experience for users, vendors, and administrators. It offers functionalities for browsing and purchasing products, managing shops and inventories, and controlling the entire system. Built with a focus on intuitiveness, responsiveness, and security, it caters to a seamless experience for all user roles.
 
-## Technologies Used
+## [Live Website Link](https://shoplyclientapollob3a9.vercel.app/)
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+Click here to see the live website: [https://shoplyclientapollob3a9.vercel.app/](https://shoplyclientapollob3a9.vercel.app/)
 
-## How to Use
+## [Server Side Repository](https://github.com/NafizUddin/ApolloB3A9-Shoply-Server-Side)
 
-### Use the template with create-next-app
+Click here to see the Server Side Repository: [https://github.com/NafizUddin/ApolloB3A9-Shoply-Server-Side](https://github.com/NafizUddin/ApolloB3A9-Shoply-Server-Side)
 
-To create a new project based on this template using `create-next-app`, run the following command:
+## :keyboard: Technologies
 
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
+- TypeScript
+- Next Js
+- Next UI
+- Redux Toolkit
+- Next Auth
+- Cloudinary
+- Axios
+- SwiperJs
+- Recharts
+- Framer Motion
+- Date Fns
+- JWT Decode
+- React Hook Form
+- React Hot Toast
 
-### Install dependencies
+## [Roles and Responsibilities](https://github.com/NafizUddin/ApolloB3A9-Shoply-Client-Side)
 
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+### Admin
 
-```bash
-npm install
-```
+- Full control over the platform, including user management (suspend/delete users).
+- Monitor transactions, activities, and manage product categories.
+- Blacklist vendor shops and control access.
+- Review platform activities and reports.
 
-### Run the development server
+### Vendor
 
-```bash
-npm run dev
-```
+- Create and manage shops (name, logo, description).
+- Add, edit, or delete products with details like name, price, category, inventory, images, and discounts.
+- View order history and customer reviews.
+- Manage product inventory and customer interactions.
 
-### Setup pnpm (optional)
+### User (Customer)
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+- Browse and search products across all vendor shops.
+- Add products to the cart, purchase, and apply coupons.
+- Compare products from the same category.
+- Leave reviews after purchasing.
+- Follow favorite vendor shops and view recent viewed products.
 
-```bash
-public-hoist-pattern[]=*@nextui-org/*
-```
+## [Project Features](https://github.com/NafizUddin/ApolloB3A9-Shoply-Client-Side)
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+- **Home Page**: Infinite scrolling, advanced filtering/searching, and flash sale highlights.
 
-## License
+- **Product Management**: Rich product details, related products, and reviews on product pages.
 
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+- **Cart Functionality**: Products can only be added from one vendor; users get warnings for conflicts.
+
+- **Secure Payments**: Aamarpay integration for smooth checkout.
+
+- **Vendor Dashboard**: Comprehensive tools for managing shop details, products, and orders.
+
+- **Authentication**: Secure signup, login, password reset, and JWT-based session management.
+
+- **Order History**: Paginated views for vendors and customers.
+
+- **Comparison**: Compare up to three products within the same category.
+
+- **Recent Products**: Displays the last 10 viewed products for users.
+
+- **Responsive Design**: Ensured a mobile-friendly experience with smooth transitions and micro animations.
