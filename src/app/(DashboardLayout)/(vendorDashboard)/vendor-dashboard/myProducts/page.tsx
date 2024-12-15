@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardProductCard from "@/src/components/Cards/DashboardProductCard";
+import DashboardProductLoading from "@/src/components/LoadingCards/DashboardProductLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import { IProduct } from "@/src/types/model";
@@ -40,19 +41,19 @@ const MyProducts = () => {
         </div>
       </div>
 
-      <div className="">
-        {isLoading ? (
-          ""
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {paginatedProducts?.map((singleProduct: IProduct) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        {isLoading
+          ? Array.from({ length: dataPerPage }).map((_, index) => (
+              <div key={index}>
+                <DashboardProductLoading />
+              </div>
+            ))
+          : paginatedProducts?.map((singleProduct: IProduct) => (
               <DashboardProductCard
                 key={singleProduct?.id}
                 singleProduct={singleProduct}
               />
             ))}
-          </div>
-        )}
       </div>
 
       <div className="py-7">
