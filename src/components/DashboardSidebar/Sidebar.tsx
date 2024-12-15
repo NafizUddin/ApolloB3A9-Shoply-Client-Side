@@ -119,7 +119,7 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
                         alt="logo"
                         height={90}
                         width={160}
-                        className="h-16 text-large"
+                        className="h-16 text-large object-contain"
                       />
                     ) : (
                       <Avatar

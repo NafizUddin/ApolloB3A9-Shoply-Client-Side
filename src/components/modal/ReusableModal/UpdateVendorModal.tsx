@@ -20,17 +20,15 @@ const UpdateVendorModal = ({ onClose }: UpdateProfileModalProps) => {
   const [updateVendor] = useUpdateVendorMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const hasImage = !!data.profilePhoto && data.profilePhoto instanceof File;
-
-    console.log(hasImage);
+    const hasImage = !!data.logo && data.logo instanceof File;
 
     toast.loading("Updating Profile...");
 
-    let imageUrl = userData?.userData?.profilePhoto;
+    let imageUrl = userData?.userData?.logo;
 
     if (hasImage) {
       const formData = new FormData();
-      formData.append("file", data.profilePhoto);
+      formData.append("file", data.logo);
       formData.append(
         "upload_preset",
         envConfig.cloudinary_upload_preset as string
@@ -72,6 +70,7 @@ const UpdateVendorModal = ({ onClose }: UpdateProfileModalProps) => {
         onClose && onClose();
       }
     } catch (error: any) {
+      console.log(error);
       toast.error(error.message);
     }
   };
