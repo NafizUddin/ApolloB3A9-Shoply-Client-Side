@@ -9,6 +9,7 @@ import envConfig from "@/src/config/envConfig";
 import axios from "axios";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import SHTextarea from "../../form/SHTextArea";
+import { useUpdateVendorMutation } from "@/src/lib/redux/features/users/userApi";
 
 interface UpdateProfileModalProps {
   onClose?: () => void;
@@ -16,6 +17,7 @@ interface UpdateProfileModalProps {
 
 const UpdateVendorModal = ({ onClose }: UpdateProfileModalProps) => {
   const { userData } = useUserDetails();
+  const [updateVendor] = useUpdateVendorMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const hasImage = !!data.profilePhoto && data.profilePhoto instanceof File;
@@ -54,22 +56,24 @@ const UpdateVendorModal = ({ onClose }: UpdateProfileModalProps) => {
 
     const updateUserInfo = {
       name: data.name ? data.name : userData?.userData?.name,
-      profilePhoto: imageUrl,
-      address: data.address ? data.address : userData?.userData?.address,
-      phone: data.phone ? data.phone : userData?.userData?.phone,
+      logo: imageUrl,
+      shopName: data.shopName ? data.shopName : userData?.userData?.shopName,
+      description: data.description
+        ? data.description
+        : userData?.userData?.description,
     };
     toast.dismiss();
     console.log(updateUserInfo);
 
-    // try {
-    //   const res = await updateCustomer(updateUserInfo).unwrap();
-    //   if (res.success) {
-    //     toast.success("Profile Updated successfully", { duration: 3000 });
-    //     onClose && onClose();
-    //   }
-    // } catch (error: any) {
-    //   toast.error(error.message);
-    // }
+    try {
+      const res = await updateVendor(updateUserInfo).unwrap();
+      if (res.success) {
+        toast.success("Profile Updated successfully", { duration: 3000 });
+        onClose && onClose();
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
   return (
     <div>
