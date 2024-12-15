@@ -1,7 +1,8 @@
 import { nextui } from "@nextui-org/theme";
+import daisyui from "daisyui";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -24,31 +25,29 @@ module.exports = {
   darkMode: "class",
   plugins: [
     nextui({
-      prefix: "nextui", // prefix for themes variables
-      addCommonColors: false, // override common colors (e.g. "blue", "green", "pink").
-      defaultTheme: "dark", // default theme from the themes object
-      defaultExtendTheme: "dark", // default theme to extend on custom themes
-      layout: {}, // common layout tokens (applied to all themes)
+      prefix: "nextui",
+      addCommonColors: false,
+      defaultTheme: "dark",
+      defaultExtendTheme: "dark",
+      layout: {},
       themes: {
         light: {
-          layout: {}, // light theme layout tokens
-          colors: {}, // light theme colors
+          layout: {},
+          colors: {},
         },
         dark: {
-          layout: {}, // dark theme layout tokens
+          layout: {},
           colors: {
             primary: {
               DEFAULT: "#f5840c",
             },
             secondary: {
-              DEFAULT: " #0c84f5",
+              DEFAULT: "#0c84f5",
             },
-          }, // dark theme colors
+          },
         },
-        // ... custom themes
       },
     }),
-
-    require("daisyui"),
+    daisyui,
   ],
 };

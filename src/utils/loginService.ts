@@ -5,7 +5,7 @@ import envConfig from "../config/envConfig";
 
 export const loginUser = async (userData: Record<string, any>) => {
   try {
-    const response = await fetch("http://localhost:5000/api/auth/login", {
+    const response = await fetch(`${envConfig.baseApi}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const registerUser = async (userInfo: Record<string, any>) => {
   try {
     if (role === "User") {
       const response = await fetch(
-        "http://localhost:5000/api/users/create-customer",
+        `${envConfig.baseApi}/users/create-customer`,
         {
           method: "POST",
           headers: {
@@ -62,7 +62,7 @@ export const registerUser = async (userInfo: Record<string, any>) => {
       return data;
     } else {
       const response = await fetch(
-        "http://localhost:5000/api/users/create-customer",
+        `${envConfig.baseApi}/api/users/create-customer`,
         {
           method: "POST",
           headers: {

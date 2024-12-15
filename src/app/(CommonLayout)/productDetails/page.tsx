@@ -20,7 +20,6 @@ import { BsCart3 } from "react-icons/bs";
 import { FaCircleXmark, FaTruckFast } from "react-icons/fa6";
 import { MdAssignmentReturn } from "react-icons/md";
 import { AiFillCheckCircle } from "react-icons/ai";
-import Loading from "@/src/components/Loading/Loading";
 import WarningModal from "@/src/components/modal/WarningModal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -35,6 +34,11 @@ import { useGetReviewsByIdQuery } from "@/src/lib/redux/features/reviews/reviewA
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import ReactStars from "react-stars";
+import dynamic from "next/dynamic";
+
+const Loading = dynamic(() => import("@/src/components/Loading/Loading"), {
+  ssr: false,
+});
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();

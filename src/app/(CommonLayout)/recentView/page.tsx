@@ -1,25 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import Loading from "@/src/components/Loading/Loading";
+import toast from "react-hot-toast";
 import {
   useDeleteRecentProductMutation,
   useGetRecentViewProductsQuery,
 } from "@/src/lib/redux/features/products/productApi";
-import Image from "next/image";
-import { PiStarFourFill } from "react-icons/pi";
+import dynamic from "next/dynamic"; // Import dynamic from next
 import brand from "@/src/assets/brand.png";
-import { IRecentProductView } from "@/src/types/model";
 import Link from "next/link";
+import { IRecentProductView } from "@/src/types/model";
+import { PiStarFourFill } from "react-icons/pi";
 import { Pagination } from "@nextui-org/pagination";
-import toast from "react-hot-toast";
+
+const Loading = dynamic(() => import("@/src/components/Loading/Loading"), {
+  ssr: false,
+});
+
+// Dynamically import Image to avoid SSR issues (next/image can cause SSR issues)
+const DynamicImage = dynamic(() => import("next/image"), { ssr: false });
 
 const RecentViewProducts = () => {
   const { data: recentViewedProducts, isLoading } =
     useGetRecentViewProductsQuery(undefined);
-
   const [deleteRecentProduct] = useDeleteRecentProductMutation();
-
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 8;
 
@@ -49,6 +53,7 @@ const RecentViewProducts = () => {
       ) : (
         <div>
           <div className="flex justify-center items-center gap-2 uppercase mt-6">
+            {/* Dynamically imported PiStarFourFill */}
             <PiStarFourFill className="text-primary" />
             <span className="font-medium text-primary">Take a look again</span>
           </div>
@@ -61,7 +66,13 @@ const RecentViewProducts = () => {
               <div>
                 <div className="max-w-lg mx-auto my-[83px]">
                   <div className="flex justify-center items-center">
-                    <Image src={brand} alt="Product" width={200} height={200} />
+                    {/* Dynamically imported Image component */}
+                    <DynamicImage
+                      src={brand}
+                      alt="Product"
+                      width={200}
+                      height={200}
+                    />
                   </div>
                   <p className="text-2xl font-semibold text-center mt-3 text-white">
                     Sorry, you have viewed no products yet.

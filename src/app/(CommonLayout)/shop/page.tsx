@@ -1,8 +1,6 @@
 "use client";
 
-import HomeProductCard from "@/src/components/Cards/HomeProductCard";
-import Loading from "@/src/components/Loading/Loading";
-import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
+import dynamic from "next/dynamic";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import {
   useGetSingleCustomerQuery,
@@ -13,11 +11,17 @@ import {
   useUnfollowUserMutation,
 } from "@/src/lib/redux/features/users/userApi";
 import { IFollow, IProduct } from "@/src/types/model";
-import { Pagination } from "@nextui-org/pagination";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaUserFriends } from "react-icons/fa";
+import ProductLoading from "@/src/components/LoadingCards/ProductLoading";
+import HomeProductCard from "@/src/components/Cards/HomeProductCard";
+import { Pagination } from "@nextui-org/pagination";
+
+const Loading = dynamic(() => import("@/src/components/Loading/Loading"), {
+  ssr: false,
+});
 
 const ShopPage = () => {
   const searchParams = useSearchParams();
@@ -46,6 +50,7 @@ const ShopPage = () => {
   const { data: singleCustomer } = useGetSingleCustomerQuery(email ?? "", {
     skip: !email,
   });
+
   const [followUser] = useFollowUserMutation();
   const [unfollowUser] = useUnfollowUserMutation();
 
@@ -72,7 +77,7 @@ const ShopPage = () => {
     });
   };
 
-  const handleunfollowVendor = async () => {
+  const handleUnfollowVendor = async () => {
     const vendorInfo = {
       vendorId: singleVendor?.id,
     };
@@ -126,7 +131,7 @@ const ShopPage = () => {
                   </button>
                 ) : (
                   <button
-                    onClick={handleunfollowVendor}
+                    onClick={handleUnfollowVendor}
                     className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3"
                   >
                     Unfollow
