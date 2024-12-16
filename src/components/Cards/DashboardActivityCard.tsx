@@ -54,7 +54,7 @@ const DashboardActivityCard = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 text-white text-center lg:text-left">
+      <h1 className="text-2xl font-bold mb-4 text-white text-center lg:text-left lg:ml-8">
         Product Count by Vendor
       </h1>
       <div className="w-full h-[400px] sm:h-[500px]">
