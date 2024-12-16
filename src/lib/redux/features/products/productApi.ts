@@ -106,6 +106,19 @@ const productApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["products"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ productInfo, productId }) => {
+        return {
+          url: `/products/${productId}`,
+          method: "PATCH",
+          body: productInfo,
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response.data;
+      },
+      invalidatesTags: ["products"],
+    }),
     addRecentProduct: builder.mutation({
       query: (productInfo) => {
         return {
@@ -142,4 +155,5 @@ export const {
   useAddRecentProductMutation,
   useDeleteRecentProductMutation,
   useAddNewProductMutation,
+  useUpdateProductMutation,
 } = productApi;

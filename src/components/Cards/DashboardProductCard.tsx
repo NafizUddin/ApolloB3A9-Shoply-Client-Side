@@ -2,12 +2,20 @@ import { IProduct } from "@/src/types/model";
 import { Button } from "@nextui-org/button";
 import { Card, CardHeader, CardFooter } from "@nextui-org/card";
 import { Image } from "@nextui-org/image";
+import { useDisclosure } from "@nextui-org/modal";
+import MainModal from "../modal/ReusableModal/MainModal";
+import UpdateProductModal from "../modal/ReusableModal/UpdateProductModal";
+import Link from "next/link";
 
 const DashboardProductCard = ({
   singleProduct,
 }: {
   singleProduct: IProduct;
 }) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const params = new URLSearchParams();
+  params.set("product", singleProduct.id);
+
   return (
     <Card
       isFooterBlurred
@@ -20,12 +28,15 @@ const DashboardProductCard = ({
           </button>
         )}
       </CardHeader>
-      <Image
-        removeWrapper
-        alt="Card example background"
-        className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
-        src={singleProduct?.image[0]}
-      />
+      <Link href={`/productDetails?${params.toString()}`}>
+        <Image
+          removeWrapper
+          alt="Card example background"
+          className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
+          src={singleProduct?.image[0]}
+        />
+      </Link>
+
       <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
         <div>
           <p className="text-black text-sm font-bold">{singleProduct?.name}</p>
@@ -33,10 +44,20 @@ const DashboardProductCard = ({
             {singleProduct?.category?.name}
           </p>
         </div>
-        <Button className="text-tiny" color="primary" radius="full" size="sm">
+        <Button
+          onClick={onOpen}
+          className="text-tiny"
+          color="primary"
+          radius="full"
+          size="sm"
+        >
           Update
         </Button>
       </CardFooter>
+
+      <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <UpdateProductModal singleProduct={singleProduct} />
+      </MainModal>
     </Card>
   );
 };

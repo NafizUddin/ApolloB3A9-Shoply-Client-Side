@@ -151,7 +151,7 @@ const HomeProductCard = ({
           </button>
         )}
 
-        {userData?.userData ? (
+        {userData?.userData?.role === "CUSTOMER" ? (
           <div>
             {singleProduct.inventory > 0 && (
               <label
@@ -171,10 +171,7 @@ const HomeProductCard = ({
             )}
           </div>
         ) : (
-          <span
-            onClick={handleAddToCart}
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white"
-          >
+          <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-40 h-[75px] rounded-t-full bg-primary text-white flex flex-col items-center justify-center text-sm font-semibold opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 cursor-pointer border border-white">
             <span>
               <IoMdCart className="text-xl" />
             </span>
@@ -203,7 +200,9 @@ const HomeProductCard = ({
             </h2>
           )}
         </div>
-        <p>Category: {singleProduct?.category?.name}</p>
+        <p className="md:text-lg font-medium">
+          Category: {singleProduct?.category?.name}
+        </p>
 
         <Link href={`/productDetails?${params.toString()}`}>
           <button className="relative h-10 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">

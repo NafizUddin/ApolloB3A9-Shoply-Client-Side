@@ -79,7 +79,7 @@ const AddProduct = () => {
       const res = await addNewProduct(productInfo).unwrap();
       console.log(res);
       if (res) {
-        toast.success("Profile added successfully", { duration: 3000 });
+        toast.success("Product added successfully", { duration: 3000 });
         router.push("/vendor-dashboard/myProducts");
       }
     } catch (error: any) {
@@ -94,7 +94,8 @@ const AddProduct = () => {
 
       <div>
         <h1 className="mt-5 mb-2 font-bold text-primary">
-          Upload Product Images:
+          Upload Product Images:{" "}
+          <span className="text-gray-400">(Add upto 2 or 3 images)</span>
         </h1>
 
         <SHForm onSubmit={onSubmit}>
