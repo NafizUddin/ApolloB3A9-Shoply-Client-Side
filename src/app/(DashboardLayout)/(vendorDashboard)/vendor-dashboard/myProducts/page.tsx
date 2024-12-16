@@ -6,6 +6,7 @@ import DashboardSectionTitle from "@/src/components/ui/components/DashboardSecti
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import { IProduct } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
+import Link from "next/link";
 import { useState } from "react";
 
 const MyProducts = () => {
@@ -35,9 +36,11 @@ const MyProducts = () => {
           </h1>
         </div>
         <div>
-          <button className="relative h-9 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
-            Add New Product
-          </button>
+          <Link href={"/vendor-dashboard/addProduct"}>
+            <button className="relative h-9 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
+              Add New Product
+            </button>
+          </Link>
         </div>
       </div>
 
