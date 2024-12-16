@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { XCircleIcon } from "lucide-react";
@@ -42,6 +43,12 @@ const SHFileInput = ({
     setValue(name, allowMultiple ? [] : null);
   };
 
+  const removeFile = (indexToRemove: any) => {
+    setFileNames((prevFileNames) =>
+      prevFileNames.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
   return (
     <div className="flex flex-col w-full">
       <label
@@ -74,14 +81,21 @@ const SHFileInput = ({
             </p>
           </div>
         ) : (
-          <div className="flex items-center justify-between w-full px-4">
-            <p className="text-sm font-medium text-white truncate">
-              Selected Files: {fileNames.join(", ")}
-            </p>
-            <XCircleIcon
-              className="w-6 h-6 text-red-500 hover:text-red-700 cursor-pointer"
-              onClick={clearFileSelection}
-            />
+          <div className="flex flex-col items-start w-full px-4 space-y-2">
+            {fileNames.map((fileName, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between w-full"
+              >
+                <p className="text-sm font-medium text-white truncate max-w-2xl">
+                  {index + 1}. {fileName}
+                </p>
+                <XCircleIcon
+                  className="w-6 h-6 text-red-500 hover:text-red-700 cursor-pointer"
+                  onClick={() => removeFile(index)}
+                />
+              </div>
+            ))}
           </div>
         )}
         <input

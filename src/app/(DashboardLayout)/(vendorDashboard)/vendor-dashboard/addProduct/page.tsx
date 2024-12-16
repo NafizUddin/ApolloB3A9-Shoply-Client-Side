@@ -6,11 +6,18 @@ import SHInput from "@/src/components/form/SHInput";
 import SHSelect from "@/src/components/form/SHSelect";
 import SHTextarea from "@/src/components/form/SHTextArea";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
+import envConfig from "@/src/config/envConfig";
 import { useCategories } from "@/src/hooks/CustomHooks/useCategories";
+import { useAddNewProductMutation } from "@/src/lib/redux/features/products/productApi";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const AddProduct = () => {
   const { categories } = useCategories();
+  const [addNewProduct] = useAddNewProductMutation();
+  const router = useRouter();
 
   const flashSale = [
     { key: true, label: "Yes" },
@@ -18,61 +25,67 @@ const AddProduct = () => {
   ];
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.image);
+    toast.loading("Adding product...");
+    const files =
+      data.image instanceof FileList ? Array.from(data.image) : data.image;
 
-    const hasImage = !!data.image && data.image instanceof File;
+    let imageUrls: string[] = [];
 
-    // toast.loading("Updating Profile...");
+    if (files && files.length > 0) {
+      const uploadPromises = files.map(async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append(
+          "upload_preset",
+          envConfig.cloudinary_upload_preset as string
+        );
 
-    // let imageUrl = userData?.userData?.logo;
+        try {
+          const response = await axios.post(
+            envConfig.cloudinary_url as string,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          return response.data.secure_url;
+        } catch (error: any) {
+          console.error("File upload error:", error.message);
+          return null;
+        }
+      });
 
-    // if (hasImage) {
-    //   const formData = new FormData();
-    //   formData.append("file", data.logo);
-    //   formData.append(
-    //     "upload_preset",
-    //     envConfig.cloudinary_upload_preset as string
-    //   );
+      imageUrls = (await Promise.all(uploadPromises)).filter(
+        (url) => url !== null
+      );
+    }
 
-    //   try {
-    //     const response = await axios.post(
-    //       envConfig.cloudinary_url as string,
-    //       formData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       }
-    //     );
-    //     imageUrl = response.data.secure_url;
-    //   } catch (error: any) {
-    //     console.error(error.message);
-    //     toast.error("Failed to upload image");
-    //     return;
-    //   }
-    // }
+    const productInfo = {
+      name: data.name,
+      image: imageUrls,
+      price: Number(data.price),
+      inventory: Number(data.inventory),
+      categoryId: data.category,
+      description: data.description,
+      ...(data?.flashSale && { flashSale: !!data.flashSale }),
+      ...(data?.discount && { discount: Number(data.discount) }),
+    };
+    toast.dismiss();
+    console.log("productInfo:", productInfo);
 
-    // const updateUserInfo = {
-    //   name: data.name ? data.name : userData?.userData?.name,
-    //   logo: imageUrl,
-    //   shopName: data.shopName ? data.shopName : userData?.userData?.shopName,
-    //   description: data.description
-    //     ? data.description
-    //     : userData?.userData?.description,
-    // };
-    // toast.dismiss();
-    // console.log(updateUserInfo);
-
-    // try {
-    //   const res = await updateVendor(updateUserInfo).unwrap();
-    //   if (res.success) {
-    //     toast.success("Profile Updated successfully", { duration: 3000 });
-    //     onClose && onClose();
-    //   }
-    // } catch (error: any) {
-    //   console.log(error);
-    //   toast.error(error.message);
-    // }
+    try {
+      const res = await addNewProduct(productInfo).unwrap();
+      console.log(res);
+      if (res) {
+        toast.success("Profile added successfully", { duration: 3000 });
+        router.push("/vendor-dashboard/myProducts");
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (

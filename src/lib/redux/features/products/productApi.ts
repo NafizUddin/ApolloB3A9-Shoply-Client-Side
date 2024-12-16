@@ -93,6 +93,19 @@ const productApi = baseApi.injectEndpoints({
       },
       providesTags: ["recent-products"],
     }),
+    addNewProduct: builder.mutation({
+      query: (productInfo) => {
+        return {
+          url: "/products",
+          method: "POST",
+          body: productInfo,
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response.data;
+      },
+      invalidatesTags: ["products"],
+    }),
     addRecentProduct: builder.mutation({
       query: (productInfo) => {
         return {
@@ -128,4 +141,5 @@ export const {
   useGetRecentViewProductsQuery,
   useAddRecentProductMutation,
   useDeleteRecentProductMutation,
+  useAddNewProductMutation,
 } = productApi;
