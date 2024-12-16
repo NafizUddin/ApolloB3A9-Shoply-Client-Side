@@ -69,7 +69,9 @@ const AddProduct = () => {
       inventory: Number(data.inventory),
       categoryId: data.category,
       description: data.description,
-      ...(data?.flashSale && { flashSale: !!data.flashSale }),
+      ...(data?.flashSale && {
+        flashSale: data.flashSale === "true" ? true : false,
+      }),
       ...(data?.discount && { discount: Number(data.discount) }),
     };
     toast.dismiss();

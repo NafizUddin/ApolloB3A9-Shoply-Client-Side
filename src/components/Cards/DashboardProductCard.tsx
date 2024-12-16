@@ -9,8 +9,10 @@ import Link from "next/link";
 
 const DashboardProductCard = ({
   singleProduct,
+  refetch,
 }: {
   singleProduct: IProduct;
+  refetch: any;
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = new URLSearchParams();
@@ -22,7 +24,7 @@ const DashboardProductCard = ({
       className="w-11/12 mx-auto md:w-full h-[300px] mr-6 md:mr-0"
     >
       <CardHeader className="absolute z-10 top-1 flex-col items-start">
-        {singleProduct.flashSale && (
+        {singleProduct?.flashSale && (
           <button className="rounded-xl bg-primary px-3 py-1 font-medium duration-200 text-white">
             {singleProduct.discount}% off
           </button>
@@ -56,7 +58,7 @@ const DashboardProductCard = ({
       </CardFooter>
 
       <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <UpdateProductModal singleProduct={singleProduct} />
+        <UpdateProductModal singleProduct={singleProduct} refetch={refetch} />
       </MainModal>
     </Card>
   );

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const MyProducts = () => {
-  const { userData, isLoading } = useUserDetails();
+  const { userData, isLoading, refetch } = useUserDetails();
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 6;
 
@@ -55,6 +55,7 @@ const MyProducts = () => {
               <DashboardProductCard
                 key={singleProduct?.id}
                 singleProduct={singleProduct}
+                refetch={refetch}
               />
             ))}
       </div>

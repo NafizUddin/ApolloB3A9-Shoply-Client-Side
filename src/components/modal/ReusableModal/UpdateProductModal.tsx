@@ -1,12 +1,8 @@
 import envConfig from "@/src/config/envConfig";
 import { useCategories } from "@/src/hooks/CustomHooks/useCategories";
-import {
-  useAddNewProductMutation,
-  useUpdateProductMutation,
-} from "@/src/lib/redux/features/products/productApi";
+import { useUpdateProductMutation } from "@/src/lib/redux/features/products/productApi";
 import { IProduct } from "@/src/types/model";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import SHForm from "../../form/SHForm";
@@ -18,11 +14,13 @@ import SHTextarea from "../../form/SHTextArea";
 interface UpdateProductModalProps {
   onClose?: () => void;
   singleProduct?: IProduct | null;
+  refetch: any;
 }
 
 const UpdateProductModal = ({
   onClose,
   singleProduct,
+  refetch,
 }: UpdateProductModalProps) => {
   const { categories } = useCategories();
   const [updateProduct] = useUpdateProductMutation();
@@ -82,10 +80,11 @@ const UpdateProductModal = ({
       description: data.description
         ? data.description
         : singleProduct?.description,
-      ...(data?.flashSale && { flashSale: !!data.flashSale }),
+      ...(data?.flashSale && {
+        flashSale: data.flashSale === "true" ? true : false,
+      }),
       ...(data?.discount && { discount: Number(data.discount) }),
     };
-    toast.dismiss();
     console.log("productInfo:", productInfo);
 
     try {
@@ -95,7 +94,10 @@ const UpdateProductModal = ({
       }).unwrap();
       console.log(res);
       if (res) {
+        toast.dismiss();
         toast.success("Product updated successfully", { duration: 3000 });
+        onClose && onClose();
+        refetch();
       }
     } catch (error: any) {
       console.log(error);
@@ -114,7 +116,7 @@ const UpdateProductModal = ({
           price: singleProduct?.price,
           inventory: singleProduct?.inventory,
           category: singleProduct?.categoryId,
-          flashSale: singleProduct?.flashSale || "",
+          flashSale: singleProduct?.flashSale,
           discount: singleProduct?.discount || 0,
           description: singleProduct?.description,
         }}
