@@ -28,13 +28,13 @@ export default function AdminDashboardLayout({
       icon: <Home size={20} />,
     },
     {
-      label: "User Management",
-      href: "/admin-dashboard/users",
+      label: "Customer Management",
+      href: "/admin-dashboard/customers",
       icon: <User size={20} />,
     },
     {
-      label: "Content Management",
-      href: "/admin-dashboard/posts",
+      label: "Vendor Management",
+      href: "/admin-dashboard/vendors",
       icon: <BookOpenText size={20} />,
     },
     {

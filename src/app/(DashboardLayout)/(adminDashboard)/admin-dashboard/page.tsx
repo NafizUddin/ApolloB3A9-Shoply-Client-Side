@@ -1,6 +1,8 @@
 /* eslint-disable react/self-closing-comp */
 "use client";
 
+import DashboardActivityCard from "@/src/components/Cards/DashboardActivityCard";
+import DashboardChartLoading from "@/src/components/LoadingCards/DashboardChartLoading";
 import StatCardLoading from "@/src/components/LoadingCards/StatCardLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import { useGetAllUsersQuery } from "@/src/lib/redux/features/auth/authApi";
@@ -93,6 +95,10 @@ const AdminDashboardHome = () => {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="my-5">
+        {productLoading ? <DashboardChartLoading /> : <DashboardActivityCard />}
       </div>
     </div>
   );
