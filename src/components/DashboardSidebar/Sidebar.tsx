@@ -125,6 +125,7 @@ const Sidebar = ({ links, commonLinks }: SidebarProps) => {
                       <Avatar
                         src={userData?.userData?.profilePhoto}
                         className="w-16 h-16 text-large"
+                        alt="profile photo"
                       />
                     )}
                   </>

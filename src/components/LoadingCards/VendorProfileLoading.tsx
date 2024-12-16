@@ -1,4 +1,6 @@
 /* eslint-disable react/self-closing-comp */
+"use client";
+
 import { motion } from "framer-motion";
 const VendorProfileLoading = () => {
   return (

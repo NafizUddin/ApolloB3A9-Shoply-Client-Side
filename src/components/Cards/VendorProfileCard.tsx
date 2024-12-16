@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+"use client";
+
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import { useDisclosure } from "@nextui-org/modal";
 import { motion } from "framer-motion";
@@ -7,6 +9,7 @@ import UpdateVendorModal from "../modal/ReusableModal/UpdateVendorModal";
 import VendorProfileLoading from "../LoadingCards/VendorProfileLoading";
 import { useGetAllOrdersQuery } from "@/src/lib/redux/features/orders/orderApi";
 import { useGetReviewsByIdQuery } from "@/src/lib/redux/features/reviews/reviewApi";
+import Image from "next/image";
 
 const VendorProfileCard = () => {
   const { userData, isLoading } = useUserDetails();
@@ -42,7 +45,7 @@ const VendorProfileCard = () => {
           className="flex flex-col sm:flex-row sm:max-w-2xl max-w-xs mx-auto overflow-hidden rounded-lg shadow-lg bg-[#18181B] p-2 my-16"
         >
           <div className="p-2 sm:w-1/2">
-            <img
+            <Image
               className="rounded sm:h-80 object-contain border-2 border-dashed border-primary px-3"
               src={
                 userData?.userData?.logo ||

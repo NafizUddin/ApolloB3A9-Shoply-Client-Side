@@ -57,7 +57,7 @@ const ProductDetails = () => {
 
   const { data: productReview, isLoading: reviewLoading } =
     useGetReviewsByIdQuery(
-      { productId },
+      { productId: productId ?? "" },
       {
         skip: !productId,
       }

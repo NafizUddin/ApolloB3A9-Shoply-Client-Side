@@ -5,7 +5,7 @@ import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
 import {
   useGetSingleCustomerQuery,
   useGetSingleVendorQuery,
-} from "@/src/lib/redux/features/category/authApi";
+} from "@/src/lib/redux/features/auth/authApi";
 import {
   useFollowUserMutation,
   useUnfollowUserMutation,

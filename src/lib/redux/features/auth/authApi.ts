@@ -35,15 +35,9 @@ const authApi = baseApi.injectEndpoints({
         const params = queryData ? { ...queryData } : {};
 
         return {
-          url: "/auth/users",
+          url: "/users",
           method: "GET",
           params,
-        };
-      },
-      transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          usersData: response.data.result,
-          meta: response.data.meta,
         };
       },
       providesTags: ["users"],

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useGetMyProfileQuery } from "@/src/lib/redux/features/category/authApi";
+import { useGetMyProfileQuery } from "@/src/lib/redux/features/auth/authApi";
 import { selectCurrentToken } from "@/src/lib/redux/features/auth/authSlice";
 import { useAppSelector } from "@/src/lib/redux/hooks";
 

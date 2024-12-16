@@ -61,16 +61,13 @@ export const registerUser = async (userInfo: Record<string, any>) => {
 
       return data;
     } else {
-      const response = await fetch(
-        `${envConfig.baseApi}/api/users/create-customer`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(remaining),
-        }
-      );
+      const response = await fetch(`${envConfig.baseApi}/users/create-vendor`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(remaining),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

@@ -5,7 +5,7 @@ import SHInput from "@/src/components/form/SHInput";
 import PasswordChangeLoading from "@/src/components/LoadingCards/PasswordChangeLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import useUserDetails from "@/src/hooks/CustomHooks/useUserDetails";
-import { useChangePasswordMutation } from "@/src/lib/redux/features/category/authApi";
+import { useChangePasswordMutation } from "@/src/lib/redux/features/auth/authApi";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 
