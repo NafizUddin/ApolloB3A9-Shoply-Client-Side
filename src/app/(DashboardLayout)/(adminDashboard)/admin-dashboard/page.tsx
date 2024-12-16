@@ -33,8 +33,8 @@ const AdminDashboardHome = () => {
           <StatCardLoading />
         ) : (
           <div className="flex flex-col md:flex-row justify-center my-7">
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-              <div className="shadow-md p-4 flex-1 border-2 border-primary rounded-md">
+            <div className="grid grid-cols-1 md:grid-cols-8 xl:grid-cols-12 mr-5 gap-6 xl:gap-8">
+              <div className="shadow-md p-4 flex-1 border-2 border-primary rounded-md md:col-span-4 xl:col-span-4">
                 <div className="flex justify-between items-center w-full md:w-56">
                   <div>
                     <div className="uppercase text-sm text-white font-semibold">
@@ -63,7 +63,7 @@ const AdminDashboardHome = () => {
                 </div>
               </div>
 
-              <div className="shadow-md p-4 flex-1 border-2 border-primary rounded-md">
+              <div className="shadow-md p-4 flex-1 border-2 border-primary rounded-md md:col-span-4 xl:col-span-4">
                 <div className="flex justify-between items-center w-full md:w-56">
                   <div>
                     <div className="uppercase text-sm text-white font-semibold">
@@ -77,7 +77,7 @@ const AdminDashboardHome = () => {
                 </div>
               </div>
 
-              <div className="shadow-md p-4 flex-1 border-2 border-primary rounded-md">
+              <div className="shadow-md p-4 flex-1 border-2 border-primary rounded-md md:col-start-3 md:col-span-4 xl:col-span-4">
                 <div className="flex justify-between items-center w-full md:w-56">
                   <div>
                     <div className="uppercase text-sm text-white font-semibold">
