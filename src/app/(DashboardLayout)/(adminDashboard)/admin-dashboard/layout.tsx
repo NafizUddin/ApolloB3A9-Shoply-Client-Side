@@ -9,6 +9,7 @@ import {
   TicketPercent,
   Eye,
   ShoppingBag,
+  BadgeDollarSign,
 } from "lucide-react";
 import Sidebar from "@/src/components/DashboardSidebar/Sidebar";
 
@@ -49,6 +50,11 @@ export default function AdminDashboardLayout({
       label: "Category Management",
       href: "/admin-dashboard/category",
       icon: <SquareMenu size={20} />,
+    },
+    {
+      label: "Payment Management",
+      href: "/admin-dashboard/payments",
+      icon: <BadgeDollarSign size={20} />,
     },
     {
       label: "Coupon Management",

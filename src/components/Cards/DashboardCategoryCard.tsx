@@ -30,10 +30,10 @@ const DashboardCategoryCard = ({ singleCategory }: CardProps) => {
         </p>
       </div>
       <div className="flex justify-between px-4 gap-2 pb-4">
-        <button className="relative h-12 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
+        <button className="relative h-9 w-full origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3">
           Edit
         </button>
-        <button className="relative h-12 w-full origin-top transform rounded-lg border-2 border-primary text-white before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 bg-primary hover:text-primary hover:bg-transparent hover:before:h-full hover:before:bg-transparent uppercase font-bold px-3 transition-all duration-500 ease-in-out">
+        <button className="relative h-9 w-full origin-top transform rounded-lg border-2 border-primary text-white before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 bg-primary hover:text-primary hover:bg-transparent hover:before:h-full hover:before:bg-transparent uppercase font-bold px-3 transition-all duration-500 ease-in-out">
           Delete
         </button>
       </div>

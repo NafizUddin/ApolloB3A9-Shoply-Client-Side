@@ -6,12 +6,26 @@ import DashboardSectionTitle from "@/src/components/ui/components/DashboardSecti
 import { useGetAllCategoriesQuery } from "@/src/lib/redux/features/category/categoryApi";
 import { ICategory } from "@/src/types/model";
 import { useDisclosure } from "@nextui-org/modal";
+import { Pagination } from "@nextui-org/pagination";
+import { useState } from "react";
 
 const CategoryManagement = () => {
   const { data: allCategories, isLoading } =
     useGetAllCategoriesQuery(undefined);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [currentPage, setCurrentPage] = useState(1);
+  const dataPerPage = 6;
+
+  const startIndex = (currentPage - 1) * dataPerPage;
+  const endIndex = startIndex + dataPerPage;
+  const paginatedCategories = allCategories?.slice(startIndex, endIndex) || [];
+  const totalCategories = allCategories?.length || 0;
+  const totalPages = Math.ceil(totalCategories / dataPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   console.log(allCategories);
 
@@ -46,12 +60,26 @@ const CategoryManagement = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mr-5 lg:mr-0">
-            {allCategories?.map((singleCategory: ICategory) => (
+            {paginatedCategories?.map((singleCategory: ICategory) => (
               <DashboardCategoryCard
                 key={singleCategory?.id}
                 singleCategory={singleCategory}
               />
             ))}
+          </div>
+        )}
+      </div>
+
+      <div className="pb-8">
+        {totalCategories > 0 && (
+          <div className="flex justify-center items-center mt-4">
+            <Pagination
+              total={totalPages}
+              initialPage={1}
+              page={currentPage}
+              onChange={handlePageChange}
+              showControls
+            />
           </div>
         )}
       </div>
