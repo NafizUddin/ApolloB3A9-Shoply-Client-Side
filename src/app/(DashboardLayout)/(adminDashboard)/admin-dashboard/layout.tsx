@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import {
   Home,
   User,
-  ShoppingBag,
   SquareMenu,
   CirclePercent,
   House,
   Package2,
   TicketPercent,
   Eye,
+  ShoppingBag,
 } from "lucide-react";
 import Sidebar from "@/src/components/DashboardSidebar/Sidebar";
 

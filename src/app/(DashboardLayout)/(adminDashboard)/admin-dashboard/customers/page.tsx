@@ -3,7 +3,7 @@
 import TableLoadingSkeleton from "@/src/components/LoadingCards/TableLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import { useGetAllUsersQuery } from "@/src/lib/redux/features/auth/authApi";
-import { ICustomer, IUser } from "@/src/types/model";
+import { IUser } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -120,7 +120,7 @@ const CustomerManagement = () => {
               </table>
             </motion.div>
 
-            <div className="pt-7">
+            <div className="py-7">
               {allCustomers?.data?.length > 0 && (
                 <div className="flex justify-center items-center mt-4">
                   <Pagination

@@ -47,6 +47,8 @@ const VendorProfileCard = () => {
           <div className="p-2 sm:w-1/2">
             <Image
               className="rounded sm:h-80 object-contain border-2 border-dashed border-primary px-3"
+              width={250}
+              height={320}
               src={
                 userData?.userData?.logo ||
                 "https://i.postimg.cc/d1tv6W8n/Please-Update-Your-Shop-Logo.png"
