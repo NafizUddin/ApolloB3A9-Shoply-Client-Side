@@ -11,10 +11,14 @@ import {
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
+import MainModal from "../modal/ReusableModal/MainModal";
+import { useDisclosure } from "@nextui-org/modal";
+import UpdateCouponModal from "../modal/ReusableModal/UpdateCouponModal";
 
 const DashboardCouponCard = ({ singleCoupon }: { singleCoupon: ICoupon }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteCoupon] = useDeleteCouponMutation();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleDelete = async () => {
     toast.loading("Deleting Coupon...");
@@ -58,9 +62,7 @@ const DashboardCouponCard = ({ singleCoupon }: { singleCoupon: ICoupon }) => {
             <DropdownItem key="edit">
               {" "}
               <span
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
+                onClick={onOpen}
                 className="flex gap-2 items-center text-primary"
               >
                 <span>
@@ -151,6 +153,10 @@ const DashboardCouponCard = ({ singleCoupon }: { singleCoupon: ICoupon }) => {
         </p>
         <p>*Terms and conditions apply.</p>
       </div>
+
+      <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <UpdateCouponModal singleCoupon={singleCoupon} />
+      </MainModal>
 
       {isDeleteModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
