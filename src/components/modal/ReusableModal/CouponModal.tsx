@@ -184,7 +184,7 @@ const CouponModal = ({ onClose }: CouponModalProps) => {
                     <div className="text-sm mt-3">
                       <p>
                         Valid until{" "}
-                        <span className="font-semibold">
+                        <span className="font-semibold text-primary">
                           {format(
                             new Date(singleCoupon.endDate),
                             "MMMM dd, yyyy"
