@@ -3,10 +3,15 @@
 import TableLoadingSkeleton from "@/src/components/LoadingCards/TableLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import { useGetAllUsersQuery } from "@/src/lib/redux/features/auth/authApi";
+import {
+  useBlockUserMutation,
+  useUnblockUserMutation,
+} from "@/src/lib/redux/features/users/userApi";
 import { IUser } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const CustomerManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +22,9 @@ const CustomerManagement = () => {
     role: "CUSTOMER",
   });
 
+  const [blockUser] = useBlockUserMutation();
+  const [unblockUser] = useUnblockUserMutation();
+
   const { data: allCustomers, isLoading: customerLoading } =
     useGetAllUsersQuery(queryObj);
 
@@ -26,8 +34,40 @@ const CustomerManagement = () => {
     setCurrentPage(page);
   };
 
-  const handleBlockUser = async (userId: string) => {
-    console.log(userId);
+  const handleBlockUser = async (email: string) => {
+    try {
+      await toast.promise(blockUser(email).unwrap(), {
+        loading: "Blocking...",
+        success: (res) => {
+          if (res.success) {
+            return "Customer is blocked successfully!";
+          } else {
+            throw new Error(res.message);
+          }
+        },
+        error: "Failed to block",
+      });
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleUnblockUser = async (email: string) => {
+    try {
+      await toast.promise(unblockUser(email).unwrap(), {
+        loading: "Unblocking...",
+        success: (res) => {
+          if (res.success) {
+            return "Customer is unblocked successfully!";
+          } else {
+            throw new Error(res.message);
+          }
+        },
+        error: "Failed to unblock!",
+      });
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
@@ -38,8 +78,6 @@ const CustomerManagement = () => {
       role: "CUSTOMER",
     }));
   }, [currentPage]);
-
-  console.log(allCustomers?.data);
 
   return (
     <div>
@@ -103,14 +141,25 @@ const CustomerManagement = () => {
                               {singleCustomer?.customer?.phone}
                             </td>
                             <td className="">
-                              <button
-                                onClick={() =>
-                                  handleBlockUser(singleCustomer?.id)
-                                }
-                                className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
-                              >
-                                Block
-                              </button>
+                              {singleCustomer?.status === "ACTIVE" ? (
+                                <button
+                                  onClick={() =>
+                                    handleBlockUser(singleCustomer?.email)
+                                  }
+                                  className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
+                                >
+                                  Block
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleUnblockUser(singleCustomer?.email)
+                                  }
+                                  className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
+                                >
+                                  Unblock
+                                </button>
+                              )}
                             </td>
                           </tr>
                         );
