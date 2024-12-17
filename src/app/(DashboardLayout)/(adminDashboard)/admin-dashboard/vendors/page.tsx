@@ -7,6 +7,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import TableLoadingSkeleton from "@/src/components/LoadingCards/TableLoading";
 import { IUser } from "@/src/types/model";
+import {
+  useBlockUserMutation,
+  useUnblockUserMutation,
+} from "@/src/lib/redux/features/users/userApi";
+import toast from "react-hot-toast";
 
 const VendorManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +22,9 @@ const VendorManagement = () => {
     role: "VENDOR",
   });
 
+  const [blockUser] = useBlockUserMutation();
+  const [unblockUser] = useUnblockUserMutation();
+
   const { data: allVendors, isLoading: vendorLoading } =
     useGetAllUsersQuery(queryObj);
 
@@ -26,8 +34,40 @@ const VendorManagement = () => {
     setCurrentPage(page);
   };
 
-  const handleBlockUser = async (userId: string) => {
-    console.log(userId);
+  const handleBlockUser = async (email: string) => {
+    try {
+      await toast.promise(blockUser(email).unwrap(), {
+        loading: "Suspending...",
+        success: (res) => {
+          if (res.success) {
+            return "Vendor is suspended successfully";
+          } else {
+            throw new Error(res.message);
+          }
+        },
+        error: "Failed to suspend",
+      });
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleUnblockUser = async (email: string) => {
+    try {
+      await toast.promise(unblockUser(email).unwrap(), {
+        loading: "Activating...",
+        success: (res) => {
+          if (res.success) {
+            return "Vendor is activated successfully";
+          } else {
+            throw new Error(res.message);
+          }
+        },
+        error: "Failed to activate!",
+      });
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
@@ -98,14 +138,25 @@ const VendorManagement = () => {
                               {singleVendor?.vendor?.name}
                             </td>
                             <td className="">
-                              <button
-                                onClick={() =>
-                                  handleBlockUser(singleVendor?.id)
-                                }
-                                className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
-                              >
-                                Suspend
-                              </button>
+                              {singleVendor?.status === "ACTIVE" ? (
+                                <button
+                                  onClick={() =>
+                                    handleBlockUser(singleVendor?.email)
+                                  }
+                                  className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
+                                >
+                                  Suspend
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleUnblockUser(singleVendor?.email)
+                                  }
+                                  className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
+                                >
+                                  Activate
+                                </button>
+                              )}
                             </td>
                           </tr>
                         );
