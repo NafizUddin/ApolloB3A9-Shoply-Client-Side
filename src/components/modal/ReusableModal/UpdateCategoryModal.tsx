@@ -1,6 +1,6 @@
 "use client";
 
-import { useCreateCategoryMutation } from "@/src/lib/redux/features/category/categoryApi";
+import { ICategory } from "@/src/types/model";
 import { SquareMenu } from "lucide-react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import SHForm from "../../form/SHForm";
@@ -9,23 +9,20 @@ import SHInput from "../../form/SHInput";
 import toast from "react-hot-toast";
 import envConfig from "@/src/config/envConfig";
 import axios from "axios";
+import { useUpdateCategoryMutation } from "@/src/lib/redux/features/category/categoryApi";
 
 interface ModalProps {
   onClose?: () => void;
+  singleCategory: ICategory;
 }
 
-const CreateCategoryModal = ({ onClose }: ModalProps) => {
-  const [createCategory] = useCreateCategoryMutation();
+const UpdateCategoryModal = ({ onClose, singleCategory }: ModalProps) => {
+  const [updateCategory] = useUpdateCategoryMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const hasImage = !!data.image && data.image instanceof File;
 
-    if (!hasImage) {
-      toast.error("Please upload an image");
-      return;
-    }
-
-    toast.loading("Creating category...");
+    toast.loading("Updating category...");
 
     let imageUrl = "";
 
@@ -56,15 +53,18 @@ const CreateCategoryModal = ({ onClose }: ModalProps) => {
     }
 
     const categoryInfo = {
-      category: data.name,
+      category: data.name ? data.name : singleCategory?.name,
       image: imageUrl,
     };
 
     try {
-      const res = await createCategory(categoryInfo).unwrap();
+      const res = await updateCategory({
+        id: singleCategory?.id,
+        categoryInfo,
+      }).unwrap();
       if (res) {
         toast.dismiss();
-        toast.success("Category created successfully", { duration: 3000 });
+        toast.success("Category updated successfully!", { duration: 3000 });
         onClose && onClose();
       }
     } catch (error: any) {
@@ -80,11 +80,16 @@ const CreateCategoryModal = ({ onClose }: ModalProps) => {
         <span>
           <SquareMenu className="text-primary text-3xl" />
         </span>
-        <span>Create Category</span>
+        <span>Update Category</span>
       </div>
 
       <div className="mt-4">
-        <SHForm onSubmit={onSubmit}>
+        <SHForm
+          defaultValues={{
+            name: singleCategory?.name,
+          }}
+          onSubmit={onSubmit}
+        >
           <SHFileInput
             name="image"
             label="Click to upload or drag
@@ -92,12 +97,7 @@ const CreateCategoryModal = ({ onClose }: ModalProps) => {
           />
 
           <div className="flex-1 my-5">
-            <SHInput
-              name="name"
-              label="Category Name"
-              variant="bordered"
-              required
-            />
+            <SHInput name="name" label="Category Name" variant="bordered" />
           </div>
 
           <div className="text-center">
@@ -114,4 +114,4 @@ const CreateCategoryModal = ({ onClose }: ModalProps) => {
   );
 };
 
-export default CreateCategoryModal;
+export default UpdateCategoryModal;
