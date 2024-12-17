@@ -2,6 +2,8 @@
 
 import DashboardCategoryCard from "@/src/components/Cards/DashboardCategoryCard";
 import DashboardCategoryLoading from "@/src/components/LoadingCards/DashboardCategoryLoading";
+import CreateCategoryModal from "@/src/components/modal/ReusableModal/CreateCategoryModal";
+import MainModal from "@/src/components/modal/ReusableModal/MainModal";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import { useGetAllCategoriesQuery } from "@/src/lib/redux/features/category/categoryApi";
 import { ICategory } from "@/src/types/model";
@@ -26,8 +28,6 @@ const CategoryManagement = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  console.log(allCategories);
 
   return (
     <div>
@@ -83,6 +83,10 @@ const CategoryManagement = () => {
           </div>
         )}
       </div>
+
+      <MainModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <CreateCategoryModal />
+      </MainModal>
     </div>
   );
 };

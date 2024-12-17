@@ -43,10 +43,17 @@ const SHFileInput = ({
     setValue(name, allowMultiple ? [] : null);
   };
 
-  const removeFile = (indexToRemove: any) => {
-    setFileNames((prevFileNames) =>
-      prevFileNames.filter((_, index) => index !== indexToRemove)
-    );
+  const removeFile = (indexToRemove: number) => {
+    setFileNames((prevFileNames) => {
+      const updatedFileNames = prevFileNames.filter(
+        (_, index) => index !== indexToRemove
+      );
+      setValue(
+        name,
+        allowMultiple ? updatedFileNames : updatedFileNames[0] || null
+      );
+      return updatedFileNames;
+    });
   };
 
   return (
