@@ -44,6 +44,8 @@ export interface ICustomer {
   email: string;
   profilePhoto?: string;
   isDeleted: boolean;
+  address?: string;
+  phone?: string;
   createdAt: Date;
   updatedAt: Date;
   orders: IOrder[];

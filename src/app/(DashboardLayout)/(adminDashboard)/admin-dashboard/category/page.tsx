@@ -1,7 +1,14 @@
+"use client";
+
+import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
+import { useCategories } from "@/src/hooks/CustomHooks/useCategories";
+
 const CategoryManagement = () => {
+  const { categories } = useCategories();
+
   return (
     <div>
-      <h1>Hello, CategoryManagement </h1>
+      <DashboardSectionTitle heading="Product Category Management" />
     </div>
   );
 };
