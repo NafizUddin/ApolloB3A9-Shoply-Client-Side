@@ -31,13 +31,28 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["users"],
     }),
     getAllUsers: builder.query({
-      query: (queryData) => {
-        const params = queryData ? { ...queryData } : {};
+      query: (queryObj) => {
+        const { page, limit, role } = queryObj;
+
+        let url = "/users";
+        let params = new URLSearchParams();
+
+        if (role) {
+          params.append("role", role);
+        }
+
+        if (page && limit) {
+          params.append("page", page);
+          params.append("limit", limit);
+        }
+
+        if (params.toString()) {
+          url += `?${params.toString()}`;
+        }
 
         return {
-          url: "/users",
+          url,
           method: "GET",
-          params,
         };
       },
       providesTags: ["users"],

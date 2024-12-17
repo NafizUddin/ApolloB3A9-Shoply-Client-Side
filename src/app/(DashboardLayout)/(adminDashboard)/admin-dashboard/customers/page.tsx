@@ -3,19 +3,22 @@
 import TableLoadingSkeleton from "@/src/components/LoadingCards/TableLoading";
 import DashboardSectionTitle from "@/src/components/ui/components/DashboardSectionTitle";
 import { useGetAllUsersQuery } from "@/src/lib/redux/features/auth/authApi";
-import { ICustomer } from "@/src/types/model";
+import { ICustomer, IUser } from "@/src/types/model";
 import { Pagination } from "@nextui-org/pagination";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CustomerManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 5;
+  const [queryObj, setQueryObj] = useState({
+    page: currentPage,
+    limit: dataPerPage,
+    role: "CUSTOMER",
+  });
 
   const { data: allCustomers, isLoading: customerLoading } =
-    useGetAllUsersQuery({
-      role: "CUSTOMER",
-    });
+    useGetAllUsersQuery(queryObj);
 
   const totalPages = Math.ceil((allCustomers?.meta?.total || 0) / dataPerPage);
 
@@ -26,6 +29,17 @@ const CustomerManagement = () => {
   const handleBlockUser = async (userId: string) => {
     console.log(userId);
   };
+
+  useEffect(() => {
+    setQueryObj((prev) => ({
+      ...prev,
+      page: currentPage,
+      limit: dataPerPage,
+      role: "CUSTOMER",
+    }));
+  }, [currentPage]);
+
+  console.log(allCustomers?.data);
 
   return (
     <div>
@@ -54,7 +68,7 @@ const CustomerManagement = () => {
                     <th className="text-gray-300">No.</th>
                     <th className="text-gray-300">Profile Photo</th>
                     <th className="text-gray-300">Name</th>
-                    <th className="text-gray-300">Email</th>
+                    <th className="text-gray-300 text-center">Email</th>
                     <th className="text-gray-300">Address</th>
                     <th className="text-gray-300">Phone</th>
                     <th className="text-gray-300">Action</th>
@@ -63,7 +77,7 @@ const CustomerManagement = () => {
                 <tbody>
                   {allCustomers?.data.length > 0 &&
                     allCustomers?.data?.map(
-                      (singleCustomer: ICustomer, index: number) => {
+                      (singleCustomer: IUser, index: number) => {
                         return (
                           <tr key={index} className="rounded-lg">
                             <th className="text-white">
@@ -71,22 +85,22 @@ const CustomerManagement = () => {
                             </th>
                             <td className="flex justify-center items-center">
                               <img
-                                src={singleCustomer?.profilePhoto}
+                                src={singleCustomer?.customer?.profilePhoto}
                                 alt="profilePhoto"
                                 className="w-12 h-12 object-cover rounded-full"
                               />
                             </td>
                             <td className="text-white font-semibold">
-                              {singleCustomer?.name}
+                              {singleCustomer?.customer?.name}
                             </td>
                             <td className="font-semibold text-center text-white">
                               {singleCustomer?.email}
                             </td>
                             <td className="font-semibold text-white">
-                              {singleCustomer?.address}
+                              {singleCustomer?.customer?.address}
                             </td>
                             <td className="font-semibold text-white">
-                              {singleCustomer?.phone}
+                              {singleCustomer?.customer?.phone}
                             </td>
                             <td className="">
                               <button
@@ -95,7 +109,7 @@ const CustomerManagement = () => {
                                 }
                                 className="relative h-10 w-30 origin-top transform rounded-lg border-2 border-primary text-primary before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-primary uppercase font-bold px-3 text-xs"
                               >
-                                Block User
+                                Block
                               </button>
                             </td>
                           </tr>
