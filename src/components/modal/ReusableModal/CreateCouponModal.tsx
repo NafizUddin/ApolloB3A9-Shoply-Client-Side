@@ -35,8 +35,6 @@ const CreateCouponModal = ({ onClose }: CreateCouponModalProps) => {
       endDate: formattedDate,
       discountValue: Number(discountValue),
     };
-    console.log(couponData);
-
     try {
       const res = await createCoupon(couponData).unwrap();
       if (res.success) {

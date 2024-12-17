@@ -7,11 +7,25 @@ import DashboardSectionTitle from "@/src/components/ui/components/DashboardSecti
 import { useGetAllCouponsQuery } from "@/src/lib/redux/features/coupon/couponApi";
 import { ICoupon } from "@/src/types/model";
 import { useDisclosure } from "@nextui-org/modal";
+import { Pagination } from "@nextui-org/pagination";
 import { format } from "date-fns";
+import { useState } from "react";
 
 const CouponManagement = () => {
   const { data: allCoupons, isLoading } = useGetAllCouponsQuery(undefined);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [currentPage, setCurrentPage] = useState(1);
+  const dataPerPage = 6;
+
+  const startIndex = (currentPage - 1) * dataPerPage;
+  const endIndex = startIndex + dataPerPage;
+  const paginatedCoupons = allCoupons?.slice(startIndex, endIndex) || [];
+  const totalCoupons = allCoupons?.length || 0;
+  const totalPages = Math.ceil(totalCoupons / dataPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div>
@@ -33,7 +47,7 @@ const CouponManagement = () => {
         </div>
       </div>
 
-      <div className="py-8">
+      <div className="pb-8">
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {Array.from({ length: 3 }).map((_, index) => (
@@ -44,7 +58,7 @@ const CouponManagement = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mr-5 lg:mr-0">
-            {allCoupons?.map((singleCoupon: ICoupon) => {
+            {paginatedCoupons?.map((singleCoupon: ICoupon) => {
               return (
                 <div
                   key={singleCoupon?.id}
@@ -91,6 +105,20 @@ const CouponManagement = () => {
                 </div>
               );
             })}
+          </div>
+        )}
+      </div>
+
+      <div>
+        {totalCoupons > 0 && (
+          <div className="flex justify-center items-center mt-4">
+            <Pagination
+              total={totalPages}
+              initialPage={1}
+              page={currentPage}
+              onChange={handlePageChange}
+              showControls
+            />
           </div>
         )}
       </div>
