@@ -6,6 +6,9 @@ import SHForm from "../../form/SHForm";
 import SHInput from "../../form/SHInput";
 import SHSelect from "../../form/SHSelect";
 import SHDatePicker from "../../form/SHDatePicker";
+import { parseISO, format } from "date-fns";
+import { useCreateCouponMutation } from "@/src/lib/redux/features/coupon/couponApi";
+import toast from "react-hot-toast";
 
 interface CreateCouponModalProps {
   onClose?: () => void;
@@ -17,8 +20,34 @@ const CreateCouponModal = ({ onClose }: CreateCouponModalProps) => {
     { key: "FIXED", label: "FIXED" },
   ];
 
+  const [createCoupon] = useCreateCouponMutation();
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    toast.loading("Creating coupon...");
+    const { endDate, discountValue, ...remaining } = data;
+
+    const parsedDate = parseISO(endDate);
+
+    const formattedDate = format(parsedDate, "yyyy-MM-dd'T'23:59:59'Z'");
+
+    const couponData = {
+      ...remaining,
+      endDate: formattedDate,
+      discountValue: Number(discountValue),
+    };
+    console.log(couponData);
+
+    try {
+      const res = await createCoupon(couponData).unwrap();
+      if (res.success) {
+        toast.dismiss();
+        toast.success("Coupon created successfully!");
+        onClose && onClose();
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
